@@ -1,0 +1,27 @@
+- hosts: localhost
+  become: true
+  tasks: 
+  - name: Install zsh
+    apt: name=zsh
+  - name: Change shell
+    shell: chsh -s `which zsh`
+  - name: Install ohmyzsh
+    shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+  - name: Install the zsh plugin autosuggestiongs
+    ansible.builtin.git:
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+      dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+  - name: Check if zsh-autosuggestions is already in the plugins list
+    shell: grep -q 'zsh-autosuggestions' ~/.zshrc
+    register: grep_result
+    ignore_errors: true
+    changed_when: false
+    failed_when: grep_result.rc > 1
+  - name: Add zsh-autosuggestions to the plugins list
+    shell: sed -i '/^plugins=(/s/)$/\ zsh-autosuggestions)/' ~/.zshrc
+    when: grep_result.rc != 0
+  - name: Reload .zshrc to apply changes
+    shell: source ~/.zshrc
+    args:
+      executable: /bin/zsh
+    when: grep_result.rc != 0 
