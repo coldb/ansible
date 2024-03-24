@@ -10,14 +10,10 @@ When making updates to the files then the docker image needs to be rebuilt.
 
 ## Using the docker image
 
-Run `docker run --rm -it new-computer bash`. This will start the container and open the terminal.
+Run `./build-dockers && docker run --rm -it new-computer bash`. This will start the container and open the terminal.
 
 Once in the terminal run `ansible-playbook local.yaml`. This will trigger the install ansible install.
 
 ### Install only relevant tags
 
 To install only the relevant tags use the `-t` flag with the name of the tag to install. Example `ansible-playbook -t node local.yaml`
-
-## Zsh configuration
-
-The zsh configuration can be found at `/root/.zshrc`.
