@@ -14,7 +14,7 @@
 
 - name: Check that the .oh-my-zsh exists
   stat:
-    path: /home/theprimeagen/.oh-my-zsh
+    path: /home/coldb/.oh-my-zsh
   register: oh_my_stats
   tags:
     - install
