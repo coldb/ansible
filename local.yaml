@@ -1,13 +1,17 @@
 - hosts: localhost
   pre_tasks:
-    - name: Update cache
-      become: true
-      apt: 
-        update_cache: true
-      tags:
-      - zsh
-      - node
+  - name: Update Apt
+    become: true
+    apt:
+      force_apt_get: true
+      update_cache: true
+      state: present
+    tags:
+      - install
+      - core
   tasks: 
+  - import_tasks: tasks/core.yaml
   - import_tasks: tasks/zsh.yaml
   - import_tasks: tasks/node.yaml
   - import_tasks: tasks/dotfiles.yaml
+  - import_tasks: tasks/productivity-tools.yaml
