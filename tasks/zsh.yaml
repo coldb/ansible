@@ -22,7 +22,6 @@
 
 - name: Install ohmyzsh
   shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
-  become_user: coldb
   when: oh_my_stats.stat.exists == False
   tags:
     - install
@@ -38,7 +37,6 @@
   ansible.builtin.git:
     repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
     dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
-  become_user: coldb
   tags:
     - install
     - zsh
