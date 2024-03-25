@@ -21,8 +21,9 @@
     - zsh
 
 - name: Install ohmyzsh
-  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
+  shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
   become_user: coldb
+  when: oh_my_stats.stat.exists == False
   tags:
     - install
     - zsh
