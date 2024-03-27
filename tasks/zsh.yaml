@@ -32,6 +32,9 @@
   ansible.builtin.file:
     path: ~/.zshrc
     state: absent
+  tags:
+  - install
+  - zsh
 
 - name: Install the zsh plugin autosuggestiongs
   ansible.builtin.git:

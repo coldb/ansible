@@ -6,4 +6,11 @@ sudo apt-get update -y
 sudo apt-get install -y curl git software-properties-common ansible
 
 ## pull ansible
-sudo ansible-pull -U https://github.com/coldb/ansible.git
+git clone https://github.com/coldb/ansible.git
+cd ansible
+
+if [ -n "$1" ]; then
+    ansible-playbook local.yaml -t $1
+else
+    ansible-playbook local.yaml
+fi
