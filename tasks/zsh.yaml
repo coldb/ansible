@@ -6,7 +6,7 @@
     - zsh
 
 - name: Change shell
-  shell: chsh -s `which zsh`
+  shell: chsh -s $(which zsh)
   become: true
   tags:
     - install
