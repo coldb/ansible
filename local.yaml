@@ -1,4 +1,7 @@
 - hosts: localhost
+  vars:
+    source_key: "./.ssh/id_ed25519"
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   pre_tasks:
   - name: Update Apt
     become: true
@@ -10,6 +13,7 @@
       - install
       - core
   tasks: 
+  - import_tasks: tasks/ssh.yaml
   - import_tasks: tasks/core.yaml
   - import_tasks: tasks/zsh.yaml
   - import_tasks: tasks/node.yaml
