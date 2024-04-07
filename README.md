@@ -2,7 +2,11 @@
 
 ## Triggering triggering script on new computer
 
-To trigger the script without first cloning the repository run the following `curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run | sh`
+To trigger the script without first cloning the repository run the following 
+
+```bash
+curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run | sh
+```
 
 ## Building docker images
 
