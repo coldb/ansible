@@ -1,4 +1,7 @@
-- [ ] Add typescript installation to nodejs script
+- [x] Add typescript installation to nodejs script
 - [ ] Add typescript language server setup 
-- [ ] Add ssh support
-- [ ] Add neovim support
+- [x] Add ssh support
+- [ ] Add support for vim and neovim
+- [ ] Add keyboard setup
+- [ ] Add i3 configuration
+- [ ] Document all the install options
