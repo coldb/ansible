@@ -43,7 +43,7 @@
 
 - name: Add udev rule for uinput group
   ansible.builtin.copy:
-    content: 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput'
+    content: 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"'
     dest: /etc/udev/rules.d/99-input.rules
   become: true
   tags:
