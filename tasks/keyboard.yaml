@@ -93,6 +93,7 @@
 - name: Reload systemd
   ansible.builtin.systemd_service:
     daemon_reload: true
+  scope: user
   become: true
   tags:
     - install
@@ -104,6 +105,7 @@
     name: kanata
     state: started
     enabled: true
+  scope: user
   become: true
   tags:
     - install
