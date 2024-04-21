@@ -3,6 +3,8 @@
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
     username: "coldb"
+  become_method: sudo
+  become_flags: '-E'
   pre_tasks:
   - name: Update Apt
     become: true
