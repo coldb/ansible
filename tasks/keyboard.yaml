@@ -93,9 +93,17 @@
 - name: Reload systemd
   ansible.builtin.systemd_service:
     daemon_reload: true
+  tags:
+    - install
+    - dotfiles
+    - keyboard
 
 - name: Enable kanata systemd service and start it
   ansible.builtin.systemd_service:
     name: kanata
     state: started
     enabled: true
+  tags:
+    - install
+    - dotfiles
+    - keyboard
