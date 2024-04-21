@@ -73,8 +73,8 @@
     that:
       - uinput_stats.stat.exists
       - uinput_stats.stat.mode == '0660'
-      - uinput_stats.stat.owner == 'root'
-      - uinput_stats.stat.group == 'uinput'
+      - uinput_stats.stat.pw_name == 'root'
+      - uinput_stats.stat.gr_name == 'uinput'
     fail_msg: "/dev/uinput does not have the correct permissions"
     success_msg: "/dev/uinput permissions are correct"
   tags:
