@@ -2,6 +2,7 @@
   vars:
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
+    username: "coldb"
   pre_tasks:
   - name: Update Apt
     become: true
@@ -19,3 +20,4 @@
   - import_tasks: tasks/node.yaml
   - import_tasks: tasks/dotfiles.yaml
   - import_tasks: tasks/productivity-tools.yaml
+  - import_tasks: tasks/keyboard.yaml
