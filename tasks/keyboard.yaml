@@ -58,3 +58,44 @@
     - install
     - dotfiles
     - keyboard
+
+- name: Get information about /dev/uinput
+  ansible.builtin.stat:
+    path: /dev/uinput
+  register: uinput_stats
+  tags:
+    - install
+    - dotfiles
+    - keyboard
+
+- name: Verify /dev/uinput settings
+  ansible.builtin.assert:
+    that:
+      - uinput_stats.stat.exists
+      - uinput_stats.stat.mode == '0660'
+      - uinput_stats.stat.owner == 'root'
+      - uinput_stats.stat.group == 'uinput'
+    fail_msg: "/dev/uinput does not have the correct permissions"
+    success_msg: "/dev/uinput permissions are correct"
+  tags:
+    - install
+    - dotfiles
+    - keyboard
+
+- name: Load the uinput module into the kernel
+  shell: modprobe uinput
+  become: true
+  tags:
+    - install
+    - dotfiles
+    - keyboard
+
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Enable kanata systemd service and start it
+  ansible.builtin.systemd_service:
+    name: kanata
+    state: started
+    enabled: true
