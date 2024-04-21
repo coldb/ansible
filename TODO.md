@@ -2,6 +2,7 @@
 - [ ] Add typescript language server setup 
 - [x] Add ssh support
 - [ ] Add support for vim and neovim
-- [ ] Add keyboard setup
+- [x] Add keyboard setup
 - [ ] Add i3 configuration
 - [ ] Document all the install options
+- [ ] Enable remote desktop with install
