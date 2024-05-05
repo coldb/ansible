@@ -1,0 +1,27 @@
+- name: Install xRDP
+  apt: name=xrdp
+  become: true
+  tags:
+    - rdp
+
+- name: Enable xRDP service and start it
+  ansible.builtin.systemd_service:
+    name: xrdp
+    state: started
+    enabled: true
+  become: true
+  tags:
+    - rdp
+
+- name: Check if i3 is installed
+  command: which i3
+  register: i3check_result
+  ignore_errors: true
+  failed_when: i3check_result.rc != 0 and i3check_result.rc != 1
+  tags:
+    - rdp
+
+- name: Configure xRDP to start i3 session
+  shell: echo "exec i3" > ~/.xsession
+  tags:
+    - rdp
