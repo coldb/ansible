@@ -5,8 +5,19 @@
     - install
     - zsh
 
+- name: Find the path of zsh
+  shell: which zsh
+  register: zsh_path
+  changed_when: False
+  tags:
+    - install
+    - zsh
+
 - name: Change shell
-  shell: chsh -s $(which zsh)
+  become: true
+  user:
+    name: "{{ username }}"
+    shell: "{{ zsh_path.stdout.strip() }}"
   tags:
     - install
     - zsh
