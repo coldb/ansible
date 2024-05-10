@@ -17,7 +17,6 @@
   tags:
     - install
     - dotfiles
-    - stow
 
 - name: Stow dotfiles
   shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu
