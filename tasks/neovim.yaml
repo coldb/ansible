@@ -1,0 +1,8 @@
+- name: Install xRDP
+  apt: name=neovim
+  become: true
+  tags:
+    - install
+    - neovim
+
+

@@ -23,3 +23,4 @@
   - import_tasks: tasks/productivity-tools.yaml
   - import_tasks: tasks/keyboard.yaml
   - import_tasks: tasks/rdp.yaml
+  - import_tasks: tasks/neovim.yaml
