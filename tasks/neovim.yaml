@@ -15,14 +15,14 @@
     - neovim
 
 - name: Read the expected neovim checksum from the file
-  command: cat "{{ lookup('env', 'HOME') }}/nvim.appimage.sha256sum"
+  shell: cat "{{ lookup('env', 'HOME') }}/nvim.appimage.sha256sum" | awk '{print $1}' 
   register: expected_checksum
   tags:
     - install
     - neovim
 
 - name: Compute the actual neovim checksum of the downloaded file
-  command: sha256sum "{{ lookup('env', 'HOME') }}/nvim.appimage"
+  shell: sha256sum "{{ lookup('env', 'HOME') }}/nvim.appimage" | awk '{print $1}'
   register: actual_checksum
   tags:
     - install
