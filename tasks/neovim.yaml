@@ -44,16 +44,11 @@
     - install
     - neovim
 
-- name: Add correct permissions for user to use neovim executable
-  command: chmod u+x ~/nvim.appimage
-  tags:
-    - install
-    - neovim
-
 - name: Copy imagefile to /usr/local/bin/
   ansible.builtin.copy:
     src: ~/nvim.appimage
     dest: /usr/local/bin/nvim
+    mode: '0755'
   become: true
   tags:
     - install
