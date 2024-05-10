@@ -1,7 +1,7 @@
 - name: Download latest neovim appimage
   ansible.builtin.get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-    dest: "{{ lookup('env', 'HOME') }}/nvim.appimage"
+    dest: ~/nvim.appimage
   tags:
     - install
     - neovim
@@ -9,20 +9,20 @@
 - name: Download latest neovim appimage checksum
   ansible.builtin.get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage.sha256sum
-    dest: "{{ lookup('env', 'HOME') }}/nvim.appimage.sha256sum"
+    dest: ~/nvim.appimage.sha256sum
   tags:
     - install
     - neovim
 
 - name: Read the expected neovim checksum from the file
-  shell: cat "{{ lookup('env', 'HOME') }}/nvim.appimage.sha256sum" | awk '{print $1}' 
+  shell: cat ~/nvim.appimage.sha256sum | awk '{print $1}' 
   register: expected_checksum
   tags:
     - install
     - neovim
 
 - name: Compute the actual neovim checksum of the downloaded file
-  shell: sha256sum "{{ lookup('env', 'HOME') }}/nvim.appimage" | awk '{print $1}'
+  shell: sha256sum ~/nvim.appimage | awk '{print $1}'
   register: actual_checksum
   tags:
     - install
@@ -45,14 +45,14 @@
     - neovim
 
 - name: Add correct permissions for user to use neovim executable
-  command: chmod u+x "{{ lookup('env', 'HOME') }}/nvim.appimage"
+  command: chmod u+x ~/nvim.appimage
   tags:
     - install
     - neovim
 
 - name: Copy imagefile to /usr/local/bin/
   ansible.builtin.copy:
-    src: "{{ lookup('env', 'HOME') }}/nvim.appimage"
+    src: ~/nvim.appimage
     dest: /usr/local/bin/nvim
   become: true
   tags:
@@ -61,7 +61,7 @@
 
 - name: Remove neovim checksum file
   ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/nvim.appimage.sha256sum"
+    path: ~/nvim.appimage.sha256sum
     state: absent
   tags:
     - install
