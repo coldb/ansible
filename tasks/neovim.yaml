@@ -1,8 +1,67 @@
-- name: Install xRDP
-  apt: name=neovim
-  become: true
+- name: Download latest neovim appimage
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    dest: ~/nvim.appimage
   tags:
     - install
     - neovim
 
+- name: Download latest neovim appimage checksum
+  ansible.builtin.get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage.sha256sum
+    dest: ~/nvim.appimage.sha256sum
+  tags:
+    - install
+    - neovim
 
+- name: Read the expected neovim checksum from the file
+  command: cat ~/nvim.appimage.sha256sum
+  register: expected_checksum
+  tags:
+    - install
+    - neovim
+
+- name: Compute the actual neovim checksum of the downloaded file
+  command: sha256sum ~/nvim.appimage
+  register: actual_checksum
+  tags:
+    - install
+    - neovim
+
+- name: Verify the neovim checksums match
+  fail:
+    msg: "Checksum mismatch! Downloaded neovim file may be corrupted."
+  when: expected_checksum.stdout not in actual_checksum.stdout
+  tags:
+    - install
+    - neovim
+
+- name: Success message if neovim checksums match
+  debug:
+    msg: "Neovim checksum verification successful!"
+  when: expected_checksum.stdout in actual_checksum.stdout
+  tags:
+    - install
+    - neovim
+
+- name: Add correct permissions for user to use neovim executable
+  command: chmod u+x ~/nvim.appimage
+  tags:
+    - install
+    - neovim
+
+- name: Copy imagefile to /usr/local/bin/
+  ansible.builtin.copy:
+    src: ~/nvim.appimage
+    dest: /usr/local/bin/nvim
+  tags:
+    - install
+    - neovim
+
+- name: Remove neovim checksum file
+  ansible.builtin.file:
+    path: ~/nvim.appimage.sha256sum
+    state: absent
+  tags:
+    - install
+    - neovim
