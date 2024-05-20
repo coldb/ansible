@@ -24,14 +24,14 @@
     - git
 
 - name: Extract Lazygit tar.gz
-  shell: "tar xf lazygit.tar.gz lazygit"
+  shell: "tar xf ~/lazygit.tar.gz lazygit"
   tags:
     - install
     - productivity
     - git
 
 - name: Install Lazygit
-  shell: "install lazygit /usr/local/bin"
+  shell: "install ~/lazygit /usr/local/bin"
   become: true
   tags:
     - install
