@@ -1,6 +1,6 @@
 - name: Download latest neovim appimage
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    url: https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage
     dest: ~/nvim.appimage
   tags:
     - install
@@ -8,7 +8,7 @@
 
 - name: Download latest neovim appimage checksum
   ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage.sha256sum
+    url: https://github.com/neovim/neovim/releases/download/v0.9.5/nvim.appimage.sha256sum
     dest: ~/nvim.appimage.sha256sum
   tags:
     - install

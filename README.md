@@ -29,3 +29,7 @@ To install only the relevant tags use the `-t` flag with the name of the tag to 
 ### Install with .ssh keys
 
 To install the dotfiles the .ssh keys need to be installed as well. To do this the following command can be executed `ansible-playbook -t dotfiles local.yaml --ask-become-pass --ask-vault-pass`
+
+## Setup high resolution screen support
+
+When the computer screen has a very high resolution the i3 interface needs to be scaled to match. To enable high resolution settings run the group `i3-scaling`.

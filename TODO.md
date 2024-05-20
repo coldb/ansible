@@ -6,8 +6,10 @@
 - [ ] Add i3 configuration
 - [ ] Document all the install options
 - [ ] Enable remote desktop with install
+- [ ] Install a nerdfont (CaskaydiaMono, Hack)
+- [ ] Add support for multiple monitors
 
-- [ ] Test if rdp configuration wrorks
+- [x] Test if rdp configuration wrorks
 
 **Allow RDP through firewall**
 

@@ -5,6 +5,7 @@
     - install
     - dotfiles
     - stow
+    - i3-scaling
 
 - name: Cloning .dotfiles
   ansible.builtin.git:
@@ -17,6 +18,7 @@
   tags:
     - install
     - dotfiles
+    - i3-scaling
 
 - name: Stow dotfiles
   shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu
@@ -24,3 +26,10 @@
     - install
     - dotfiles
     - stow
+
+- name: Enable high resolution monitor support
+  shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu 
+  environment:
+    STOW_FOLDERS: "i3-scaling"
+  tags:
+    - i3-scaling
