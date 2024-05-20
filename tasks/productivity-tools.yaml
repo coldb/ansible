@@ -24,7 +24,7 @@
     - git
 
 - name: Extract Lazygit tar.gz
-  shell: "tar xf ~/lazygit.tar.gz lazygit"
+  shell: "tar xf ~/lazygit.tar.gz ~/lazygit"
   tags:
     - install
     - productivity
