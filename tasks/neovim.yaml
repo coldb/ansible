@@ -54,6 +54,14 @@
     - install
     - neovim
 
+- name: Remove neovim image file
+  ansible.builtin.file:
+    path: ~/nvim.appimage
+    state: absent
+  tags:
+    - install
+    - neovim
+
 - name: Remove neovim checksum file
   ansible.builtin.file:
     path: ~/nvim.appimage.sha256sum
