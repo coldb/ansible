@@ -12,5 +12,5 @@ cd ansible
 if [ -n "$1" ]; then
     ansible-playbook local.yaml -t $1 --ask-become-pass --ask-vault-pass
 else
-    ansible-playbook local.yaml --ask-become-pass --ask-vault-pass
+    ansible-playbook local.yaml -t install --ask-become-pass --ask-vault-pass
 fi
