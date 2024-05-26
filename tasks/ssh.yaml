@@ -46,4 +46,10 @@
     - install
     - dotfiles 
     - ssh
-  
+
+- name: Update ansible repository to ssh
+  shell: cd {{ lookup('env','HOME') }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git
+  tags:
+    - install
+    - dotfiles
+    - ssh
