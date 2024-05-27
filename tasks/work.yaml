@@ -1,0 +1,15 @@
+- name: Cloning work .dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:coldb/.dotfiles-work.git'
+    dest: "{{ lookup('env', 'HOME') }}/work/.dotfiles-work"
+    update: true
+  tags:
+    - work
+
+- name: Cloning work ansible
+  ansible.builtin.git:
+    repo: 'git@github.com:coldb/ansible-work.git'
+    dest: "{{ lookup('env', 'HOME') }}/work/ansible-work"
+    update: true
+  tags:
+    - work
