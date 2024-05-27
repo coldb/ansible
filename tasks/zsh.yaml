@@ -53,3 +53,15 @@
   tags:
     - install
     - zsh
+
+- name: Install terminal catppuccin profiles
+  shell: curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.2.0/install.py | python3 -
+  tags:
+    - install
+    - zsh
+
+- name: Set terminal profile to catppuccin macchiato profile
+  shell: gsettings set org.gnome.Terminal.ProfilesList default 5083e06b-024e-46be-9cd2-892b814f1fc8
+  tags:
+    - install
+    - zsh
