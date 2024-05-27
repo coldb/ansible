@@ -10,16 +10,14 @@
   ansible.builtin.git:
     repo: 'https://github.com/tmux-plugins/tpm.git' 
     dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
-    version: main
   tags:
     - install
     - productivity
 
-- name: Cloning Tmux Plugin Manager
+- name: Cloning Tmux Plugin Tmuxifier
   ansible.builtin.git:
     repo: 'https://github.com/jimeh/tmuxifier.git'
     dest: "{{ lookup('env', 'HOME') }}/.tmuxifier"
-    version: main
   tags:
     - install
     - productivity
