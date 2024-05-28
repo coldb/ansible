@@ -54,31 +54,8 @@
     - dotfiles
     - ssh
 
-
 - name: Include variables
   include_vars: auth_codes/variables.yaml
-  tags:
-    - install
-    - dotfiles
-    - ssh
-
-- name: Set .dotfiles user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - install
-    - dotfiles
-    - ssh
-
-- name: Set .dotfiles user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    scope: local
-    value: "{{ git_email }}"
   tags:
     - install
     - dotfiles

@@ -27,6 +27,32 @@
     - dotfiles
     - stow
 
+- name: Include variables
+  include_vars: auth_codes/variables.yaml
+  tags:
+    - install
+    - dotfiles
+
+- name: Set .dotfiles user.name local configuration
+  community.general.git_config:
+    name: user.name
+    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    scope: local
+    value: "{{ git_user }}"
+  tags:
+    - install
+    - dotfiles
+
+- name: Set .dotfiles user.email local configuration
+  community.general.git_config:
+    name: user.email
+    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
+    scope: local
+    value: "{{ git_email }}"
+  tags:
+    - install
+    - dotfiles
+
 - name: Enable high resolution monitor support
   shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu 
   environment:
