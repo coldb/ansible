@@ -1,13 +1,17 @@
 - [x] Add typescript installation to nodejs script
-- [ ] Add typescript language server setup 
+- [x] Add typescript language server setup 
 - [x] Add ssh support
-- [ ] Add support for vim and neovim
+- [x] Add support for vim and neovim
 - [x] Add keyboard setup
 - [ ] Add i3 configuration
 - [ ] Document all the install options
-- [ ] Enable remote desktop with install
-- [ ] Install a nerdfont (CaskaydiaMono, Hack)
+- [x] Enable remote desktop with install
+- [x] Install a nerdfont (CaskaydiaMono, Hack)
 - [ ] Add support for multiple monitors
+- [ ] Create a command to trigger the different tags with fzf
+- [ ] Document different things that are installed
+- [ ] Move work and personal repositories to encrypted files
+- [ ] Move personal data to personal repository
 
 - [x] Test if rdp configuration wrorks
 

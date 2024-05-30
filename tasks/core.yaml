@@ -46,3 +46,28 @@
   tags:
     - install
     - core
+
+# Playerctl is used to enable the play, pause, next, prev media keys
+- name: Download playerctl for media controls
+  ansible.builtin.get_url:
+    url: https://github.com/altdesktop/playerctl/releases/download/v2.4.1/playerctl-2.4.1_amd64.deb
+    dest: "{{ lookup('env', 'HOME') }}/playerctl-2.4.1_amd64.deb"
+  tags:
+    - install
+    - core
+
+- name: Install playerctl
+  become: true
+  ansible.builtin.apt:
+    deb: "{{ lookup('env', 'HOME') }}/playerctl-2.4.1_amd64.deb"
+  tags:
+    - install
+    - core
+
+- name: Remove playerctl install file
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/playerctl-2.4.1_amd64.deb"
+    state: absent
+  tags:
+    - install
+    - core
