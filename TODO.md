@@ -12,6 +12,7 @@
 - [ ] Document different things that are installed
 - [ ] Move work and personal repositories to encrypted files
 - [ ] Move personal data to personal repository
+- [ ] Add support to i3 to take screenshots
 
 - [x] Test if rdp configuration wrorks
 
