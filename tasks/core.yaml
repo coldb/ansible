@@ -88,6 +88,14 @@
     - install
     - core
 
+- name: Install rofi to replace dmenu in i3
+  become: true
+  apt:
+    name: "rofi"
+  tags:
+    - install
+    - core
+
 - name: Install feh for backgrounds in i3
   become: true
   apt:
