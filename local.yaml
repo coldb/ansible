@@ -2,7 +2,7 @@
   vars:
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
-    username: "coldb"
+    username: "s_lerg"
   pre_tasks:
   - name: Update Apt
     become: true

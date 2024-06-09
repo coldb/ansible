@@ -13,14 +13,14 @@ RUN apt-get update && \
 
 FROM base AS coldb
 ARG TAGS
-RUN addgroup --gid 1000 coldb
-RUN adduser --gecos coldb --uid 1000 --gid 1000 --disabled-password coldb
-RUN usermod -aG sudo coldb
+RUN addgroup --gid 1000 s_lerg
+RUN adduser --gecos s_lerg --uid 1000 --gid 1000 --disabled-password s_lerg
+RUN usermod -aG sudo s_lerg
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER coldb
-WORKDIR /home/coldb
+USER s_lerg
+WORKDIR /home/s_lerg
 
 FROM coldb
-COPY --chown=coldb:coldb . ./ansible 
+COPY --chown=s_lerg:s_lerg . ./ansible 
 # COPY ansible-run ./ansible-run
 CMD ["sh", "-c", "anible-playbook $TAGS local.yml"]
