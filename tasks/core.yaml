@@ -71,3 +71,12 @@
   tags:
     - install
     - core
+
+- name: Install picom i3 compositor
+  become: true
+  apt:
+    name: "picom"
+  tags:
+    - install
+    - core
+
