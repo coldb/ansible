@@ -15,6 +15,11 @@
 - [ ] Add support to i3 to take screenshots
 
 - [x] Test if rdp configuration wrorks
+- [ ] Add documentation about the variables file
+```
+git_user: '<git_user>'
+git_email: '<git_email>'
+```
 
 **Allow RDP through firewall**
 

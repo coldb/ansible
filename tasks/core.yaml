@@ -104,3 +104,11 @@
     - install
     - core
 
+- name: Install arandr
+  become: true
+  apt:
+    name: "arandr"
+  tags:
+    - install
+    - core
+
