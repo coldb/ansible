@@ -71,3 +71,25 @@
     - install
     - productivity
     - git
+
+- name: Download Slack deb file
+  shell: page=$(curl -sL "https://slack.com/downloads/instructions/linux?ddl=1&build=deb") && download_url=$(echo "$page" | grep -oP '(?<=href=")[^"]*slack-desktop-[^"]*.deb') && curl -L "$download_url" -o ~/slack_install.deb
+  tags:
+    - install
+    - productivity
+
+- name: Install Slack
+  ansible.builtin.apt:
+    deb: "{{ lookup('env','HOME') }}/slack_install.deb"
+  become: true
+  tags:
+    - install
+    - productivity
+
+- name: Remove Slack install file
+  ansible.builtin.file:
+    path: "{{ lookup('env','HOME') }}/slack_install.deb"
+    state: absent
+  tags:
+    - install
+    - productivity
