@@ -21,3 +21,18 @@
   tags:
     - install
     - node
+
+- name: Create new npm global folder
+  ansible.builtin.file:
+    path: "{{ lookup('env', 'HOME') }}/.npm-global"
+    state: directory
+    mode: '0755'
+  tags:
+    - install
+    - node
+
+- name: Set npm global folder config
+  shell: "npm config set prefix '{{ lookup('env', 'HOME') }}/.npm-global'"
+  tags:
+    - install
+    - node

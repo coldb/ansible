@@ -18,8 +18,8 @@
   - import_tasks: tasks/ssh.yaml
   - import_tasks: tasks/core.yaml
   - import_tasks: tasks/zsh.yaml
-  - import_tasks: tasks/node.yaml
   - import_tasks: tasks/dotfiles.yaml
+  - import_tasks: tasks/node.yaml
   - import_tasks: tasks/productivity-tools.yaml
   - import_tasks: tasks/keyboard.yaml
   - import_tasks: tasks/rdp.yaml

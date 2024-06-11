@@ -14,6 +14,7 @@
 - [ ] Move personal data to personal repository
 - [ ] Add support to i3 to take screenshots
 - [ ] Move slack out of productivity tag?
+- [ ] Change n install to not require sudo access
 
 - [x] Test if rdp configuration wrorks
 - [ ] Add documentation about the variables file
