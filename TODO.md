@@ -15,6 +15,7 @@
 - [ ] Add support to i3 to take screenshots
 - [ ] Move slack out of productivity tag?
 - [ ] Change n install to not require sudo access
+- [ ] Add support for laptop monitor brigness changing? Can this work on regular monitors as well?
 
 - [x] Test if rdp configuration wrorks
 - [ ] Add documentation about the variables file

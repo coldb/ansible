@@ -26,3 +26,4 @@
   - import_tasks: tasks/neovim.yaml
   - import_tasks: tasks/fonts.yaml
   - import_tasks: tasks/work.yaml
+  - import_tasks: tasks/laptop.yaml

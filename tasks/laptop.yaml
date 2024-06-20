@@ -1,0 +1,6 @@
+- name: Install System Packages 1 (build-essential, cmake, pkg-config, pthread)
+  become: true
+  apt:
+    name: ["brightnessctl"]
+  tags:
+    - laptop
