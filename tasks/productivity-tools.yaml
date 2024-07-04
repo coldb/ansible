@@ -1,10 +1,11 @@
 - name: Install productivity packages
   become: true
   apt:
-    name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep" ]
+    name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" ]
   tags:
     - install
     - productivity
+    - testing
 
 - name: Cloning Tmux Plugin Manager
   ansible.builtin.git:
