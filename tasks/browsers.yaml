@@ -1,0 +1,76 @@
+- name: Download Brave browser's GPG key
+  ansible.builtin.get_url:
+    url: "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+    dest: "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
+  become: true
+  tags:
+    - install
+    - browsers
+
+- name: Check if Brave browsers repository has been added
+  lineinfile:
+    path: "/etc/apt/sources.list.d/brave-browser-release.list"
+    line: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+    create: yes
+  become: true
+  tags:
+    - install
+    - browers
+
+- name: Update APT package lists
+  apt:
+    update_cache: yes
+  become: true
+  tags:
+    - install
+    - browers
+
+- name: Install Brave Browser
+  apt:
+    name: brave-browser
+    state: present
+  become: true
+  tags:
+    - install
+    - browers
+
+- name: Download Firefox keyring
+  ansible.builtin.get_url:
+    url: "https://packages.mozilla.org/apt/repo-signing-key.gpg"
+    dest: "/etc/apt/keyrings/packages.mozilla.org.asc"
+    mode: 0755
+  become: true
+  tags:
+    - install
+    - browsers
+
+- name: Check if Firefox browsers repository has been added
+  lineinfile:
+    path: "/etc/apt/sources.list.d/mozilla.list"
+    line: "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main"
+    create: yes
+  become: true
+  tags:
+    - install
+    - browers
+
+- name: Update APT package lists
+  apt:
+    update_cache: yes
+  become: true
+  tags:
+    - install
+    - browers
+
+- name: Install Firefox Browser
+  apt:
+    name: firefox
+    state: present
+  become: true
+  tags:
+    - install
+    - browers
+
+
+
+
