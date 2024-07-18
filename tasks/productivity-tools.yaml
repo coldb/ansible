@@ -5,7 +5,6 @@
   tags:
     - install
     - productivity
-    - testing
 
 - name: Cloning Tmux Plugin Manager
   ansible.builtin.git:
