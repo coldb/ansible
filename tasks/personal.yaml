@@ -1,0 +1,56 @@
+- name: Include variables
+  include_vars: auth_codes/variables.yaml
+  tags:
+    - personal
+
+- name: Cloning personal .dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:coldb/.dotfiles-personal.git'
+    dest: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
+    update: true
+  tags:
+    - personal
+
+- name: Set personal .dotfiles user.name local configuration
+  community.general.git_config:
+    name: user.name
+    repo: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
+    scope: local
+    value: "{{ git_user }}"
+  tags:
+    - personal
+
+- name: Set personal .dotfiles user.email local configuration
+  community.general.git_config:
+    name: user.email
+    repo: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
+    scope: local
+    value: "{{ git_email }}"
+  tags:
+    - personal
+
+- name: Cloning personal ansible
+  ansible.builtin.git:
+    repo: 'git@github.com:coldb/ansible-personal.git'
+    dest: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
+    update: true
+  tags:
+    - personal
+
+- name: Set personal ansible user.name local configuration
+  community.general.git_config:
+    name: user.name
+    repo: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
+    scope: local
+    value: "{{ git_user }}"
+  tags:
+    - personal
+
+- name: Set personal ansible user.email local configuration
+  community.general.git_config:
+    name: user.email
+    repo: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
+    scope: local
+    value: "{{ git_email }}"
+  tags:
+    - personal
