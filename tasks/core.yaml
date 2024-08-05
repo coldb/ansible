@@ -32,21 +32,6 @@
     - install
     - core
 
-- name: Install System Packages 5 (docker.io)
-  become: true
-  apt:
-    name: ["docker.io", "docker-compose-plugin"]
-  tags:
-    - install
-    - core
-
-- name: Add permissions for docker command
-  shell: "usermod -aG docker {{ username }}"
-  become: true
-  tags:
-    - install
-    - core
-
 # Playerctl is used to enable the play, pause, next, prev media keys
 - name: Download playerctl for media controls
   ansible.builtin.get_url:

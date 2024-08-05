@@ -1,0 +1,25 @@
+- name: Gather Ubuntu codename
+  command: lsb_release -cs
+  register: ubuntu_codename
+  changed_when: false
+  tags:
+    - always
+
+- name: Set Ubuntu codename as a global variable "ubuntu_codename"
+  set_fact:
+    ubuntu_codename: "{{ ubuntu_codename.stdout }}"
+  tags:
+    - always
+
+- name: Gather architecture
+  command: dpkg --print-architecture
+  register: ubuntu_architecture
+  changed_when: false
+  tags:
+    - always
+
+- name: Set Ubuntu architecture as a global variable "ubuntu_architecture"
+  set_fact:
+    ubuntu_architecture: "{{ ubuntu_architecture.stdout }}"
+  tags:
+    - always

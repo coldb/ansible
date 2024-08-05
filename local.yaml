@@ -15,17 +15,19 @@
       - core
       - rdp
   tasks: 
-  - import_tasks: tasks/ssh.yaml
-  - import_tasks: tasks/core.yaml
-  - import_tasks: tasks/zsh.yaml
-  - import_tasks: tasks/dotfiles.yaml
-  - import_tasks: tasks/node.yaml
-  - import_tasks: tasks/productivity-tools.yaml
-  - import_tasks: tasks/keyboard.yaml
-  - import_tasks: tasks/rdp.yaml
-  - import_tasks: tasks/neovim.yaml
-  - import_tasks: tasks/fonts.yaml
-  - import_tasks: tasks/browsers.yaml
-  - import_tasks: tasks/work.yaml
-  - import_tasks: tasks/personal.yaml
-  - import_tasks: tasks/laptop.yaml
+    - import_tasks: tasks/setup.yaml
+    - import_tasks: tasks/ssh.yaml
+    - import_tasks: tasks/core.yaml
+    - import_tasks: tasks/zsh.yaml
+    - import_tasks: tasks/dotfiles.yaml
+    - import_tasks: tasks/node.yaml
+    - import_tasks: tasks/productivity-tools.yaml
+    - import_tasks: tasks/docker.yaml
+    - import_tasks: tasks/keyboard.yaml
+    - import_tasks: tasks/rdp.yaml
+    - import_tasks: tasks/neovim.yaml
+    - import_tasks: tasks/fonts.yaml
+    - import_tasks: tasks/browsers.yaml
+    - import_tasks: tasks/work.yaml
+    - import_tasks: tasks/personal.yaml
+    - import_tasks: tasks/laptop.yaml
