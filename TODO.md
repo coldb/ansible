@@ -3,6 +3,7 @@
 - [x] Add ssh support
 - [x] Add support for vim and neovim
 - [x] Add keyboard setup
+- [ ] Add logic to check if browsers exist before installing (chrome is using a check)
 - [ ] Add i3 configuration
 - [ ] Document all the install options
 - [x] Enable remote desktop with install

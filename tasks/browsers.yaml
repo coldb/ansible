@@ -1,3 +1,53 @@
+- name: Check if Google Chrome is installed
+  shell: dpkg -l | grep google-chrome-stable
+  register: chrome_installed
+  ignore_errors: true
+  tags:
+    - install
+    - browsers
+    - browser-chrome
+
+- name: Download Google Chrome .deb file
+  get_url:
+    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    dest: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
+  when: chrome_installed.rc != 0
+  tags:
+    - install
+    - browsers
+    - browser-chrome
+
+- name: Install Google Chrome
+  apt:
+    deb: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
+  when: chrome_installed.rc != 0
+  become: true
+  tags:
+    - install
+    - browsers
+    - browser-chrome
+
+# - name: Ensure dependencies are installed
+#   apt:
+#     name: -f
+#     state: present
+#   when: chrome_installed.rc != 0
+#   become: true
+#   tags:
+#     - install
+#     - browsers
+#     - browser-chrome
+
+- name: Clean up
+  file:
+    path: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
+    state: absent
+  when: chrome_installed.rc != 0
+  tags:
+    - install
+    - browsers
+    - browser-chrome
+
 - name: Download Brave browser's GPG key
   ansible.builtin.get_url:
     url: "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
