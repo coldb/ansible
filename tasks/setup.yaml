@@ -23,3 +23,11 @@
     ubuntu_architecture: "{{ ubuntu_architecture.stdout }}"
   tags:
     - always
+
+- name: Create temporary download directory
+  file:
+    path: "{{ lookup('env', 'HOME') }}/temp"
+    state: directory
+    mode: '0755'
+  tags:
+    - always
