@@ -35,7 +35,7 @@
 - name: Install System Packages 5 (docker.io)
   become: true
   apt:
-    name: "docker.io"
+    name: ["docker.io", "docker-compose-plugin"]
   tags:
     - install
     - core
