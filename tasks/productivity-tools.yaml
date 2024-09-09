@@ -93,3 +93,34 @@
   tags:
     - install
     - productivity
+
+- name: Download Bruno GPG key
+  command: >
+    gpg --no-default-keyring --keyring /etc/apt/keyrings/bruno.gpg
+    --keyserver keyserver.ubuntu.com --recv-keys 9FA6017ECABE0266
+  args:
+    creates: /etc/apt/keyrings/bruno.gpg
+  become: true
+  tags:
+    - install
+    - productivity
+
+- name: Check if Bruno repository has been added
+  lineinfile:
+    path: "/etc/apt/sources.list.d/bruno.list"
+    line: "deb [signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable"
+    create: yes
+  become: true
+  tags:
+    - install
+    - productivity
+
+- name: Update packages and install Bruno
+  ansible.builtin.apt:
+    name: "bruno"
+    update_cache: yes
+  become: true
+  tags:
+    - install
+    - productivity
+
