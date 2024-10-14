@@ -21,6 +21,7 @@
     - import_tasks: tasks/zsh.yaml
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/node.yaml
+    - import_tasks: tasks/deno.yaml
     - import_tasks: tasks/productivity-tools.yaml
     - import_tasks: tasks/docker.yaml
     - import_tasks: tasks/keyboard.yaml
