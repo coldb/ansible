@@ -27,17 +27,6 @@
     - browsers
     - browser-chrome
 
-# - name: Ensure dependencies are installed
-#   apt:
-#     name: -f
-#     state: present
-#   when: chrome_installed.rc != 0
-#   become: true
-#   tags:
-#     - install
-#     - browsers
-#     - browser-chrome
-
 - name: Clean up
   file:
     path: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
@@ -65,7 +54,7 @@
   become: true
   tags:
     - install
-    - browers
+    - browsers
 
 - name: Update APT package lists
   apt:
@@ -73,7 +62,7 @@
   become: true
   tags:
     - install
-    - browers
+    - browsers
 
 - name: Install Brave Browser
   apt:
@@ -82,7 +71,7 @@
   become: true
   tags:
     - install
-    - browers
+    - browsers
 
 - name: Download Firefox keyring
   ansible.builtin.get_url:
