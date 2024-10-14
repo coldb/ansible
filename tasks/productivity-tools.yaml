@@ -1,7 +1,7 @@
 - name: Install productivity packages
   become: true
   apt:
-    name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" ]
+    name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat"]
   tags:
     - install
     - productivity
