@@ -94,33 +94,37 @@
     - install
     - productivity
 
-- name: Download Bruno GPG key
-  command: >
-    gpg --no-default-keyring --keyring /etc/apt/keyrings/bruno.gpg
-    --keyserver keyserver.ubuntu.com --recv-keys 9FA6017ECABE0266
-  args:
-    creates: /etc/apt/keyrings/bruno.gpg
-  become: true
+- name: Get latest Bruno version
+  shell: "curl -s 'https://api.github.com/repos/usebruno/bruno/releases/latest' | grep -Po '\"tag_name\": \"v\\K[^\"]*'"
+  register: bruno_version
   tags:
     - install
     - productivity
+    - bruno
 
-- name: Check if Bruno repository has been added
-  lineinfile:
-    path: "/etc/apt/sources.list.d/bruno.list"
-    line: "deb [signed-by=/etc/apt/keyrings/bruno.gpg] http://debian.usebruno.com/ bruno stable"
-    create: yes
-  become: true
+- name: Download latest Bruno executable
+  ansible.builtin.get_url:
+    url: "https://github.com/usebruno/bruno/releases/download/v{{ bruno_version.stdout }}/bruno_{{ bruno_version.stdout }}_amd64_linux.deb"
+    dest: "{{ lookup('env', 'HOME') }}/temp/bruno.deb"
   tags:
     - install
     - productivity
+    - bruno
 
-- name: Update packages and install Bruno
+- name: Install Bruno
   ansible.builtin.apt:
-    name: "bruno"
-    update_cache: yes
+    deb: "{{ lookup('env','HOME') }}/temp/bruno.deb"
   become: true
   tags:
     - install
     - productivity
+    - bruno
 
+- name: Remove Bruno install file
+  ansible.builtin.file:
+    path: "{{ lookup('env','HOME') }}/temp/bruno.deb"
+    state: absent
+  tags:
+    - install
+    - productivity
+    - bruno
