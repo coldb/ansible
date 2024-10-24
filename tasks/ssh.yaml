@@ -1,84 +1,54 @@
-- name: Ensure .ssh directory exists 
-  file:
-    dest: "{{ dest_key | dirname }}"
-    mode: 0700
-    state: directory
-  tags:
-    - install
-    - dotfiles 
-    - ssh
+- block:
+  - name: Ensure .ssh directory exists 
+    file:
+      dest: "{{ destination_key | dirname }}"
+      mode: 0700
+      state: directory
 
-- name: Install ssh key
-  copy:
-    src: "{{ source_key }}"
-    dest: "{{ dest_key }}"
-    mode: 0600
-  tags:
-    - install
-    - dotfiles 
-    - ssh
+  - name: Install ssh key
+    copy:
+      src: "{{ source_key }}"
+      dest: "{{ destination_key }}"
+      mode: 0600
 
-- name: Install public ssh key
-  copy:
-    src: "{{ source_key }}.pub"
-    dest: "{{ dest_key }}.pub"
-    mode: 0644
-  tags:
-    - install
-    - dotfiles 
-    - ssh
+  - name: Install public ssh key
+    copy:
+      src: "{{ source_key }}.pub"
+      dest: "{{ destination_key }}.pub"
+      mode: 0644
 
-- name: Get current username
-  command: id -un
-  register: current_username
-  tags:
-    - install
-    - dotfiles 
-    - ssh
+  - name: Set authorized key from file
+    become: true
+    authorized_key:
+      user: "{{ username }}"
+      state: present
+      key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
 
-- name: Set authorized key from file
-  become: true
-  authorized_key:
-    user: "{{ current_username.stdout }}"
-    state: present
-    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
-  tags:
-    - install
-    - dotfiles 
-    - ssh
+  - name: Update ansible repository to ssh
+    shell: "cd {{ home_dir }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git"
 
-- name: Update ansible repository to ssh
-  shell: cd {{ lookup('env','HOME') }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git
+  - name: Include variables
+    include_vars: auth_codes/variables.yaml
+
+  - name: Set ansible user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ home_dir }}/ansible"
+      scope: local
+      value: "{{ git_user }}"
+
+  - name: Set ansible user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ home_dir }}/ansible"
+      scope: local
+      value: "{{ git_email }}"
+
+  vars:
+    source_key: "{{ home_dir }}/ansible/.ssh/id_ed25519"
+    destination_key: "{{ home_dir }}/.ssh/id_ed25519"
   tags:
     - install
     - dotfiles
-    - ssh
-
-- name: Include variables
-  include_vars: auth_codes/variables.yaml
-  tags:
-    - install
-    - dotfiles
-    - ssh
-
-- name: Set ansible user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/ansible"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - install
-    - dotfiles
-    - ssh
-
-- name: Set ansible user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/ansible"
-    scope: local
-    value: "{{ git_email }}"
-  tags:
-    - install
-    - dotfiles
+    - keyboard
     - ssh

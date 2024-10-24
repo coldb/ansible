@@ -1,4 +1,6 @@
-FROM ubuntu:focal AS base
+FROM ubuntu:noble AS base
+# Remove the default ubuntu user with uid 1000 - https://askubuntu.com/a/1515958
+RUN touch /var/mail/ubuntu && chown ubuntu /var/mail/ubuntu && userdel -r ubuntu
 WORKDIR /usr/local/bin
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
@@ -13,14 +15,14 @@ RUN apt-get update && \
 
 FROM base AS coldb
 ARG TAGS
-RUN addgroup --gid 1000 slerg
-RUN adduser --gecos slerg --uid 1000 --gid 1000 --disabled-password slerg
-RUN usermod -aG sudo slerg
+RUN addgroup --gid 1000 coldb
+RUN adduser --gecos coldb --uid 1000 --gid 1000 --disabled-password coldb
+RUN usermod -aG sudo coldb
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-USER slerg
-WORKDIR /home/slerg
+USER coldb
+WORKDIR /home/coldb
 
 FROM coldb
-COPY --chown=slerg:slerg . ./ansible 
+COPY --chown=coldb:coldb . ./ansible 
 # COPY ansible-run ./ansible-run
 CMD ["sh", "-c", "anible-playbook $TAGS local.yml"]

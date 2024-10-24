@@ -1,61 +1,51 @@
-- name: Installing stow
-  apt: name=stow
-  become: true
+- block:
+  - name: Installing stow
+    apt: name=stow
+    become: true
+    tags:
+      - stow
+      - keyboard
+
+  - name: Cloning .dotfiles
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/.dotfiles.git' 
+      dest: "{{ home_dir }}/.dotfiles"
+      recursive: yes
+      update: yes
+      accept_hostkey: yes
+      version: u24-refactor
+    tags:
+      - keyboard
+
+  - name: Stow dotfiles
+    shell: cd {{ home_dir }}/.dotfiles && ./ubuntu
+    tags:
+      - stow
+
+  - name: Include variables
+    include_vars: auth_codes/variables.yaml
+
+  - name: Set .dotfiles user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ home_dir }}/.dotfiles"
+      scope: local
+      value: "{{ git_user }}"
+
+  - name: Set .dotfiles user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ home_dir }}/.dotfiles"
+      scope: local
+      value: "{{ git_email }}"
+
+  # - name: Enable high resolution monitor support
+  #   shell: cd {{ home_dir }}/.dotfiles && ./ubuntu 
+  #   environment:
+  #     STOW_FOLDERS: "i3-scaling"
+  #   tags:
+  #     - i3-scaling
+
   tags:
     - install
     - dotfiles
-    - stow
-    - i3-scaling
-
-- name: Cloning .dotfiles
-  ansible.builtin.git:
-    repo: 'git@github.com:coldb/.dotfiles.git' 
-    dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    recursive: yes
-    update: yes
-    accept_hostkey: yes
-    version: main
-  tags:
-    - install
-    - dotfiles
-    - i3-scaling
-
-- name: Stow dotfiles
-  shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu
-  tags:
-    - install
-    - dotfiles
-    - stow
-
-- name: Include variables
-  include_vars: auth_codes/variables.yaml
-  tags:
-    - install
-    - dotfiles
-
-- name: Set .dotfiles user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - install
-    - dotfiles
-
-- name: Set .dotfiles user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/.dotfiles"
-    scope: local
-    value: "{{ git_email }}"
-  tags:
-    - install
-    - dotfiles
-
-- name: Enable high resolution monitor support
-  shell: cd {{ lookup('env', 'HOME') }}/.dotfiles && ./ubuntu 
-  environment:
-    STOW_FOLDERS: "i3-scaling"
-  tags:
-    - i3-scaling
