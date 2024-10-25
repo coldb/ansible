@@ -2,7 +2,7 @@
   - name: Download kanata_wintercept.exe from Git releases
     get_url:
       url: "https://github.com/jtroo/kanata/releases/download/v1.5.0/kanata"
-      dest: "{{ temp_dir }}/kanata"
+      dest: "/usr/bin/kanata"
       mode: '0755'
 
   - name: Create the /etc/kanata directory
