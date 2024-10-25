@@ -4,6 +4,7 @@
       url: "https://github.com/jtroo/kanata/releases/download/v1.5.0/kanata"
       dest: "/usr/bin/kanata"
       mode: '0755'
+    become: true
 
   - name: Create the /etc/kanata directory
     file:
