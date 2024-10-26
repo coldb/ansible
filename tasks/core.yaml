@@ -36,13 +36,14 @@
       state: present
     when: nvidia_check.rc == 0
 
-  - name: Get latest playerctl version from GitHub API
-    shell: "curl -s 'https://api.github.com/repos/altdesktop/playerctl/releases/latest' | grep -Po '\"tag_name\": \"v\\K[^\"]*'"
-    register: playerctl_version
+  - name: Get the latest playerctl version from GitHub
+    get_latest_git_release:
+      repo_slug: "altdesktop/playerctl"
+    register: playerctl
 
   - name: Download latest playerctl
     ansible.builtin.get_url:
-      url: "https://github.com/altdesktop/playerctl/releases/download/v{{ playerctl_version.stdout }}/playerctl-{{ playerctl_version.stdout }}_amd64.deb"
+      url: "https://github.com/altdesktop/playerctl/releases/download/v{{ playerctl.latest_version }}/playerctl-{{ playerctl.latest_version }}_amd64.deb"
       dest: "{{ temp_dir }}/playerctl.deb"
 
   - name: Install playerctl
