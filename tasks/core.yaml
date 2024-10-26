@@ -7,7 +7,7 @@
   - name: Install Utilities
     become: true
     apt:
-      name: [ "curl", "unzip", "htop", "lsof", "gettext", "python3-pip", "dconf-editor", "moreutils", "lua5.1"]
+      name: [ "python3-pip", "dconf-editor", "moreutils", "lua5.1"]
 
   - name: Install Audio control (pavucontrol)
     become: true

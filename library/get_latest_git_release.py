@@ -9,7 +9,8 @@ def get_latest_release(repo_slug):
 
     # Check if the request was successful
     if response.status_code == 200:
-        return response.json()['tag_name']
+        tag_name = response.json()['tag_name']
+        return tag_name.lstrip('v')
     else:
         return None
 
