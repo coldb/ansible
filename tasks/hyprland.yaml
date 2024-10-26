@@ -1,0 +1,26 @@
+# - name: Ensure "universe" repository is added
+#   apt_repository:
+#     repo: "deb http://archive.ubuntu.com/ubuntu/ {{ ubuntu_architecture }} universe"
+#     state: present
+#   become: true
+#   tags:
+#   - hyprland
+#   - testing
+#
+# - name: Update apt cache
+#   apt:
+#     update_cache: yes
+#   become: true
+#   tags:
+#   - hyprland
+#   - testing
+
+- name: Install hyprland
+  apt:
+    name: hyprland
+    state: present
+    update_cache: yes
+  become: true
+  tags:
+  - hyprland
+  - testing

@@ -3,7 +3,6 @@
     apt: name=stow
     become: true
     tags:
-      - stow
       - keyboard
 
   - name: Cloning .dotfiles
@@ -20,7 +19,7 @@
   - name: Stow dotfiles
     shell: cd {{ home_dir }}/.dotfiles && ./ubuntu
     tags:
-      - stow
+      - keyboard
 
   - name: Include variables
     include_vars: auth_codes/variables.yaml

@@ -13,9 +13,10 @@
   tasks: 
     - import_tasks: tasks/setup.yaml
     - import_tasks: tasks/ssh.yaml
-    # - import_tasks: tasks/core.yaml
-    # - import_tasks: tasks/zsh.yaml
     - import_tasks: tasks/dotfiles.yaml
+    - import_tasks: tasks/core.yaml
+    - import_tasks: tasks/window-manager.yaml
+    # - import_tasks: tasks/zsh.yaml
     # - import_tasks: tasks/hyprland.yaml
     # - import_tasks: tasks/node.yaml
     # - import_tasks: tasks/deno.yaml
