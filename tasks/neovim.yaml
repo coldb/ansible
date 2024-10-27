@@ -5,6 +5,7 @@
   tags:
     - install
     - neovim
+    - neovim-latest
 
 - name: Set neovim to latest version
   set_fact:
@@ -15,7 +16,7 @@
   - name: Install Fuse
     become: true
     apt:
-      name: ["libfuse2"]
+      name: ["libfuse2t64"]
     tags:
       - neovim-latest
 

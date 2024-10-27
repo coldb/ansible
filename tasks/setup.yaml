@@ -28,6 +28,17 @@
       state: directory
       mode: '0755'
 
+  - name: Add universe repository
+    become: true
+    apt_repository:
+      repo: "deb http://archive.ubuntu.com/ubuntu {{ ubuntu_codename }} universe"
+      state: present
+
+  - name: Update apt cache
+    become: true
+    apt:
+      update_cache: yes
+
   - name: Display all facts
     debug:
       msg: 
