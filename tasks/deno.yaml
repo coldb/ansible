@@ -1,16 +1,15 @@
-- name: Download Deno installer script
-  get_url:
-    url: https://deno.land/install.sh
-    dest: "{{ lookup('env', 'HOME') }}/temp/install-deno.sh"
-    mode: '+x'
-  tags:
-    - deno
-    - install
+- block:
+  - name: Download Deno installer script
+    get_url:
+      url: https://deno.land/install.sh
+      dest: "{{ temp_dir }}/install-deno.sh"
+      mode: '+x'
 
-- name: Run Deno installer script
-  command: "{{ lookup('env', 'HOME') }}/temp/install-deno.sh"
-  args:
-    creates: "{{ lookup('env', 'HOME') }}/.deno/bin/deno"
+  - name: Run Deno installer script
+    command: "{{ temp_dir }}/install-deno.sh"
+    args:
+      creates: "{{ home_dir }}/.deno/bin/deno"
+
   tags:
     - deno
     - install

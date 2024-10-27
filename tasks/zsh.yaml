@@ -1,4 +1,9 @@
 - block:
+  - name: Check if zsh is installed
+    is_program_installed:
+      name: zsh
+    register: zsh_check
+
   - name: Install zsh
     become: true
     apt:
@@ -14,6 +19,7 @@
     user:
       name: "{{ username }}"
       shell: "{{ zsh_path.stdout.strip() }}"
+    when: not zsh_check.exists
 
   - name: Check that the .oh-my-zsh exists
     stat:
@@ -24,11 +30,11 @@
     shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
     when: oh_my_stats.stat.exists == False
 
-  # Prevent conflic with stowed config
   - name: Remove .zshrc configuration
     ansible.builtin.file:
       path: ~/.zshrc
       state: absent
+    when: not zsh_check.exists
 
   - name: Install the zsh plugin autosuggestiongs
     ansible.builtin.git:
