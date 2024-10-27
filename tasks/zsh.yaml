@@ -23,23 +23,23 @@
 
   - name: Check that the .oh-my-zsh exists
     stat:
-      path: "/home/{{ username }}/.oh-my-zsh"
+      path: "{{ home_dir }}/.oh-my-zsh"
     register: oh_my_stats
 
   - name: Install ohmyzsh
-    shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
+    shell: "echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > {{ temp_dir }}/.oh-my-installer && chmod +x {{ temp_dir }}/.oh-my-installer && {{ temp_dir }}/.oh-my-installer"
     when: oh_my_stats.stat.exists == False
 
   - name: Remove .zshrc configuration
     ansible.builtin.file:
-      path: ~/.zshrc
+      path: "{{ home_dir }}/.zshrc"
       state: absent
     when: not zsh_check.exists
 
   - name: Install the zsh plugin autosuggestiongs
     ansible.builtin.git:
       repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-      dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+      dest: "{{ home_dir }}/.oh-my-zsh/plugins/zsh-autosuggestions"
 
   - name: Install terminal catppuccin profiles
     shell: curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.3.0/install.py | python3 -
