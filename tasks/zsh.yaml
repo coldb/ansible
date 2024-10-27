@@ -1,67 +1,46 @@
-- name: Install zsh
-  apt: name=zsh
-  become: true
-  tags:
-    - install
-    - zsh
+- block:
+  - name: Install zsh
+    become: true
+    apt:
+      name: zsh
 
-- name: Find the path of zsh
-  shell: which zsh
-  register: zsh_path
-  changed_when: False
-  tags:
-    - install
-    - zsh
+  - name: Find the path of zsh
+    shell: which zsh
+    register: zsh_path
+    changed_when: False
 
-- name: Change shell
-  become: true
-  user:
-    name: "{{ username }}"
-    shell: "{{ zsh_path.stdout.strip() }}"
-  tags:
-    - install
-    - zsh
+  - name: Change shell
+    become: true
+    user:
+      name: "{{ username }}"
+      shell: "{{ zsh_path.stdout.strip() }}"
 
-- name: Check that the .oh-my-zsh exists
-  stat:
-    path: "/home/{{ username }}/.oh-my-zsh"
-  register: oh_my_stats
-  tags:
-    - install
-    - zsh
+  - name: Check that the .oh-my-zsh exists
+    stat:
+      path: "/home/{{ username }}/.oh-my-zsh"
+    register: oh_my_stats
 
-- name: Install ohmyzsh
-  shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
-  when: oh_my_stats.stat.exists == False
-  tags:
-    - install
-    - zsh
+  - name: Install ohmyzsh
+    shell: echo $HOME && curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
+    when: oh_my_stats.stat.exists == False
 
-# Prevent conflic with stowed config
-- name: Remove .zshrc configuration
-  ansible.builtin.file:
-    path: ~/.zshrc
-    state: absent
-  tags:
-  - install
-  - zsh
+  # Prevent conflic with stowed config
+  - name: Remove .zshrc configuration
+    ansible.builtin.file:
+      path: ~/.zshrc
+      state: absent
 
-- name: Install the zsh plugin autosuggestiongs
-  ansible.builtin.git:
-    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-    dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
-  tags:
-    - install
-    - zsh
+  - name: Install the zsh plugin autosuggestiongs
+    ansible.builtin.git:
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+      dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
 
-- name: Install terminal catppuccin profiles
-  shell: curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.2.0/install.py | python3 -
-  tags:
-    - install
-    - zsh
+  - name: Install terminal catppuccin profiles
+    shell: curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.3.0/install.py | python3 -
 
-- name: Set terminal profile to catppuccin macchiato
-  shell: gsettings set org.gnome.Terminal.ProfilesList default 5083e06b-024e-46be-9cd2-892b814f1fc8
+  - name: Set terminal profile to catppuccin macchiato
+    shell: gsettings set org.gnome.Terminal.ProfilesList default 5083e06b-024e-46be-9cd2-892b814f1fc8
+
   tags:
     - install
     - zsh
