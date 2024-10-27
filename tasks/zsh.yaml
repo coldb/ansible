@@ -37,9 +37,11 @@
 
   - name: Install terminal catppuccin profiles
     shell: curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v0.3.0/install.py | python3 -
+    when:  docker_container == False
 
   - name: Set terminal profile to catppuccin macchiato
     shell: gsettings set org.gnome.Terminal.ProfilesList default 5083e06b-024e-46be-9cd2-892b814f1fc8
+    when:  docker_container == False
 
   tags:
     - install

@@ -20,6 +20,7 @@
       username: "{{ current_username.stdout }}"
       home_dir: "{{ lookup('env', 'HOME') }}"
       temp_dir: "{{ lookup('env', 'HOME') }}/temp"
+      docker_container: "{{ lookup('ansible.builtin.env', 'DOCKER_CONTAINER', default='false') }}"
 
   - name: Create temporary download directory
     file:
@@ -35,5 +36,7 @@
       - "temp_dir: {{ temp_dir }}"
       - "home_dir: {{ home_dir }}"
       - "username: {{ username }}"
+      - "docker_container: {{ docker_container }}"
+
   tags:
     - always

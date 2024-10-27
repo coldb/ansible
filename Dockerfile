@@ -3,6 +3,7 @@ FROM ubuntu:noble AS base
 RUN touch /var/mail/ubuntu && chown ubuntu /var/mail/ubuntu && userdel -r ubuntu
 WORKDIR /usr/local/bin
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DOCKER_CONTAINER=true
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y software-properties-common curl git build-essential && \
