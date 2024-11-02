@@ -1,6 +1,7 @@
 - block:
   - name: Installing stow
-    apt: name=stow
+    apt:
+      name: [ "stow" ]
     become: true
     tags:
       - keyboard
@@ -48,3 +49,4 @@
   tags:
     - install
     - dotfiles
+  # - personal # TODO: why is this needed for personal clone?
