@@ -1,27 +1,21 @@
-- name: Download latest Nerd Font CascadiaMono appimage
-  ansible.builtin.get_url:
-    url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip
-    dest: ~/CascadiaMono.zip
-  tags:
-    - install
-    - fonts
+- block:
+  - name: Download latest Nerd Font CascadiaMono files
+    ansible.builtin.get_url:
+      url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/CascadiaMono.zip
+      dest: "{{ temp_dir }}/CascadiaMono.zip"
 
-- name: Unzip Nerd Font zip file
-  shell: unzip ~/CascadiaMono.zip -d ~/.fonts
-  tags:
-    - install
-    - fonts
+  - name: Unzip Nerd Font zip file
+    shell: "unzip '{{ temp_dir }}/CascadiaMono.zip' -d '{{ home_dir }}/.fonts'"
 
-- name: Update fonts cache to add the new font
-  shell: fc-cache -fv
-  tags:
-    - install
-    - fonts
+  - name: Update fonts cache to add the new font
+    shell: fc-cache -fv
+    when: docker_container == False
 
-- name: Remove downloaded font zip file
-  ansible.builtin.file:
-    path: ~/CascadiaMono.zip
-    state: absent
+  - name: Remove downloaded font zip file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/CascadiaMono.zip"
+      state: absent
+
   tags:
     - install
     - fonts

@@ -1,35 +1,27 @@
-- name: Download Docker GPG key
-  ansible.builtin.get_url:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    dest: "/etc/apt/keyrings/docker.asc"
-  become: true
+- block:
+  - name: Download Docker GPG key
+    ansible.builtin.get_url:
+      url: "https://download.docker.com/linux/ubuntu/gpg"
+      dest: "/etc/apt/keyrings/docker.asc"
+    become: true
+
+  - name: Check if Dockers repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/docker.list"
+      line: "deb [arch={{ ubuntu_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ubuntu_codename }} stable"
+      create: yes
+    become: true
+
+  - name: Update packages and docker
+    ansible.builtin.apt:
+      name: ["docker-ce","docker-ce-cli","containerd.io","docker-buildx-plugin","docker-compose-plugin"]
+      update_cache: yes
+    become: true
+
+  - name: Add permissions for docker command
+    shell: "usermod -aG docker {{ username }}"
+    become: true
+
   tags:
     - install
     - docker
-
-- name: Check if Dockers repository has been added
-  lineinfile:
-    path: "/etc/apt/sources.list.d/docker.list"
-    line: "deb [arch={{ ubuntu_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ubuntu_codename }} stable"
-    create: yes
-  become: true
-  tags:
-    - install
-    - docker
-
-- name: Update packages and docker
-  ansible.builtin.apt:
-    name: ["docker-ce","docker-ce-cli","containerd.io","docker-buildx-plugin","docker-compose-plugin"]
-    update_cache: yes
-  become: true
-  tags:
-    - install
-    - docker
-
-- name: Add permissions for docker command
-  shell: "usermod -aG docker {{ username }}"
-  become: true
-  tags:
-    - install
-    - docker
-

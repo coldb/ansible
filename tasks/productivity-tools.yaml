@@ -1,8 +1,15 @@
 - block:
+  - name: Install unzip
+    become: true
+    apt:
+      name: [ "unzip"]
+    tags:
+      - fonts
+
   - name: Install productivity packages
     become: true
     apt:
-      name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat", "curl", "unzip", "htop", "lsof", "gettext"]
+      name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat", "curl", "htop", "lsof", "gettext"]
 
   - name: Cloning Tmux Plugin Manager
     ansible.builtin.git:
