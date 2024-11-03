@@ -6,7 +6,9 @@
     ansible.builtin.git:
       repo: 'git@github.com:coldb/.dotfiles-personal.git'
       dest: "{{ home_dir }}/personal/.dotfiles-personal"
+      recursive: true
       update: true
+      accept_hostkey: true
 
   - name: Set personal .dotfiles user.name local configuration
     community.general.git_config:
@@ -26,7 +28,9 @@
     ansible.builtin.git:
       repo: 'git@github.com:coldb/ansible-personal.git'
       dest: "{{ home_dir }}/personal/ansible-personal"
+      recursive: true
       update: true
+      accept_hostkey: true
 
   - name: Set personal ansible user.name local configuration
     community.general.git_config:
