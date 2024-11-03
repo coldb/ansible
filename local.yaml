@@ -20,12 +20,12 @@
     # - import_tasks: tasks/hyprland.yaml
     - import_tasks: tasks/node.yaml
     - import_tasks: tasks/deno.yaml
-    # - import_tasks: tasks/docker.yaml
+    - import_tasks: tasks/docker.yaml
     - import_tasks: tasks/keyboard.yaml
-    # - import_tasks: tasks/rdp.yaml
+    - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/neovim.yaml
-    # - import_tasks: tasks/fonts.yaml
-    # - import_tasks: tasks/browsers.yaml
-    # - import_tasks: tasks/work.yaml
-    # - import_tasks: tasks/personal.yaml
+    - import_tasks: tasks/fonts.yaml
+    - import_tasks: tasks/browsers.yaml
+    - import_tasks: tasks/work.yaml
+    - import_tasks: tasks/personal.yaml
     # - import_tasks: tasks/laptop.yaml
