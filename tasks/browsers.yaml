@@ -179,6 +179,7 @@
 
   - name: Remove Snap version of Firefox if present
     ansible.builtin.command: snap remove firefox
+    become: true
     ignore_errors: true
     register: snap_remove_result
     when: firefox_snap_check.rc == 0
@@ -190,6 +191,7 @@
       path: "{{ item }}"
       state: absent
     when: firefox_snap_check.rc == 0
+    become: true
     loop:
       - /etc/apparmor.d/usr.bin.firefox
       - /etc/apparmor.d/local/usr.bin.firefox
@@ -197,9 +199,8 @@
       - browser-firefox-install
 
   - name: Stop hunspell mount service if Firefox snap removal failed
-    ansible.builtin.systemd:
-      name: var-snap-firefox-common-host\\x2dhunspell.mount
-      state: stopped
+    command: "sudo systemctl stop var-snap-firefox-common-host\\x2dhunspell.mount" 
+    become: true
     when:
       - firefox_snap_check.rc == 0
       - snap_remove_result.failed
@@ -207,9 +208,8 @@
       - browser-firefox-install
 
   - name: Disable hunspell mount service if Firefox snap removal failed
-    ansible.builtin.systemd:
-      name: var-snap-firefox-common-host\\x2dhunspell.mount
-      enabled: true
+    command: "sudo systemctl disable var-snap-firefox-common-host\\x2dhunspell.mount"
+    become: true
     when:
       - firefox_snap_check.rc == 0
       - snap_remove_result.failed
@@ -218,6 +218,7 @@
 
   - name: Remove Snap version of Firefox again if previous attempt failed
     ansible.builtin.command: snap remove firefox
+    become: true
     when:
       - firefox_snap_check.rc == 0
       - snap_remove_result.failed
@@ -230,6 +231,7 @@
       dest: /etc/apt/apt.conf.d/51unattended-upgrades-firefox
       content: |
         Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
+    become: true
     when:
       - firefox_snap_check.rc == 0
       - snap_remove_result.failed
