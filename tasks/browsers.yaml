@@ -30,6 +30,7 @@
   - name: Remove Chrome if installed via snap
     command: snap remove google-chrome
     when: chrome_snap_check.rc == 0
+    become: true
     tags:
       - browser-chrome-install
 
@@ -109,6 +110,7 @@
   - name: Remove Brave if installed via snap
     command: snap remove brave
     when: brave_snap_check.rc == 0
+    become: true
     tags:
       - browser-brave-install
 
@@ -144,49 +146,126 @@
     tags:
       - browser-brave-install
 
-  - name: Check if Firefox is installed via snap
-    command: snap list firefox
-    register: firefox_snap_check
-    ignore_errors: true
-    tags:
-      - browser-firefox-install
+  # - name: Check if Firefox is installed via snap
+  #   command: snap list firefox
+  #   register: firefox_snap_check
+  #   ignore_errors: true
+  #   tags:
+  #     - browser-firefox-install
+  #
+  # - name: Remove Firefox if installed via snap
+  #   command: snap remove firefox
+  #   when: firefox_snap_check.rc == 0
+  #   become: true
+  #   tags:
+  #     - browser-firefox-install
+  #
+  # - name: Download Firefox keyring
+  #   ansible.builtin.get_url:
+  #     url: "https://packages.mozilla.org/apt/repo-signing-key.gpg"
+  #     dest: "/etc/apt/keyrings/packages.mozilla.org.asc"
+  #     mode: 0755
+  #   become: true
+  #   tags:
+  #     - browser-firefox-install
+  #
+  # - name: Check if Firefox browsers repository has been added
+  #   lineinfile:
+  #     path: "/etc/apt/sources.list.d/mozilla.list"
+  #     line: "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main"
+  #     create: yes
+  #   become: true
+  #   tags:
+  #     - browser-firefox-install
+  #
+  # - name: Update APT package lists
+  #   apt:
+  #     update_cache: yes
+  #   become: true
+  #   tags:
+  #     - browser-firefox-install
+  #
+  # - name: Install Firefox Browser
+  #   apt:
+  #     name: firefox
+  #     state: present
+  #   become: true
+  #   tags:
+  #     - browser-firefox-install
 
-  - name: Remove Firefox if installed via snap
-    command: snap remove firefox
-    when: firefox_snap_check.rc == 0
-    tags:
-      - browser-firefox-install
-
-  - name: Download Firefox keyring
-    ansible.builtin.get_url:
-      url: "https://packages.mozilla.org/apt/repo-signing-key.gpg"
-      dest: "/etc/apt/keyrings/packages.mozilla.org.asc"
-      mode: 0755
-    become: true
-    tags:
-      - browser-firefox-install
-
-  - name: Check if Firefox browsers repository has been added
-    lineinfile:
-      path: "/etc/apt/sources.list.d/mozilla.list"
-      line: "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main"
-      create: yes
-    become: true
-    tags:
-      - browser-firefox-install
-
-  - name: Update APT package lists
-    apt:
-      update_cache: yes
-    become: true
-    tags:
-      - browser-firefox-install
-
-  - name: Install Firefox Browser
-    apt:
-      name: firefox
+  - name: Add Mozilla PPA repository
+    ansible.builtin.apt_repository:
+      repo: ppa:mozillateam/ppa
       state: present
-    become: true
+    tags:
+      - browser-firefox-install
+
+  - name: Create APT preferences file for Mozilla Firefox
+    ansible.builtin.copy:
+      dest: /etc/apt/preferences.d/mozilla-firefox
+      content: |
+        Package: *
+        Pin: release o=LP-PPA-mozillateam
+        Pin-Priority: 1001
+
+        Package: firefox
+        Pin: version 1:1snap*
+        Pin-Priority: -1
+    tags:
+      - browser-firefox-install
+
+  - name: Remove Snap version of Firefox if present
+    ansible.builtin.command: snap remove firefox
+    ignore_errors: yes
+    register: snap_remove_result
+    tags:
+      - browser-firefox-install
+
+  - name: Remove AppArmor files for Firefox
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - /etc/apparmor.d/usr.bin.firefox
+      - /etc/apparmor.d/local/usr.bin.firefox
+    tags:
+      - browser-firefox-install
+
+  - name: Stop hunspell mount service if Firefox snap removal failed
+    ansible.builtin.systemd:
+      name: var-snap-firefox-common-host\\x2dhunspell.mount
+      state: stopped
+    when: snap_remove_result.failed
+    tags:
+      - browser-firefox-install
+
+  - name: Disable hunspell mount service if Firefox snap removal failed
+    ansible.builtin.systemd:
+      name: var-snap-firefox-common-host\\x2dhunspell.mount
+      enabled: true
+    when: snap_remove_result.failed
+    tags:
+      - browser-firefox-install
+
+  - name: Remove Snap version of Firefox again if previous attempt failed
+    ansible.builtin.command: snap remove firefox
+    when: snap_remove_result.failed
+    tags:
+      - browser-firefox-install
+
+  - name: Install Firefox via APT
+    ansible.builtin.apt:
+      name: firefox
+      state: latest
+      update_cache: true
+    tags:
+      - browser-firefox-install
+
+  - name: Ensure unattended upgrades do not reinstall Snap version of Firefox
+    ansible.builtin.copy:
+      dest: /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+      content: |
+        Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
     tags:
       - browser-firefox-install
 
