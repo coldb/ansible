@@ -153,88 +153,12 @@
     tags:
       - browser-firefox-install
 
-  # - name: Remove Firefox if installed via snap
-  #   command: snap remove firefox
-  #   when: firefox_snap_check.rc == 0
-  #   become: true
-  #   tags:
-  #     - browser-firefox-install
-
-
-  - name: Create APT preferences file for Mozilla Firefox
-    ansible.builtin.copy:
-      dest: /etc/apt/preferences.d/mozilla-firefox
-      content: |
-        Package: *
-        Pin: release o=LP-PPA-mozillateam
-        Pin-Priority: 1001
-
-        Package: firefox
-        Pin: version 1:1snap*
-        Pin-Priority: -1
-    when: firefox_snap_check.rc == 0
-    become: true
-    tags:
-      - browser-firefox-install
-
   - name: Remove Snap version of Firefox if present
     ansible.builtin.command: snap remove firefox
     become: true
     ignore_errors: true
     register: snap_remove_result
     when: firefox_snap_check.rc == 0
-    tags:
-      - browser-firefox-install
-
-  - name: Remove AppArmor files for Firefox
-    ansible.builtin.file:
-      path: "{{ item }}"
-      state: absent
-    when: firefox_snap_check.rc == 0
-    become: true
-    loop:
-      - /etc/apparmor.d/usr.bin.firefox
-      - /etc/apparmor.d/local/usr.bin.firefox
-    tags:
-      - browser-firefox-install
-
-  - name: Stop hunspell mount service if Firefox snap removal failed
-    command: "sudo systemctl stop var-snap-firefox-common-host\\x2dhunspell.mount" 
-    become: true
-    when:
-      - firefox_snap_check.rc == 0
-      - snap_remove_result.failed
-    tags:
-      - browser-firefox-install
-
-  - name: Disable hunspell mount service if Firefox snap removal failed
-    command: "sudo systemctl disable var-snap-firefox-common-host\\x2dhunspell.mount"
-    become: true
-    when:
-      - firefox_snap_check.rc == 0
-      - snap_remove_result.failed
-    tags:
-      - browser-firefox-install
-
-  - name: Remove Snap version of Firefox again if previous attempt failed
-    ansible.builtin.command: snap remove firefox
-    become: true
-    when:
-      - firefox_snap_check.rc == 0
-      - snap_remove_result.failed
-    tags:
-      - browser-firefox-install
-
-
-  - name: Ensure unattended upgrades do not reinstall Snap version of Firefox
-    ansible.builtin.copy:
-      dest: /etc/apt/apt.conf.d/51unattended-upgrades-firefox
-      content: |
-        Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";
-    become: true
-    when:
-      - firefox_snap_check.rc == 0
-      - snap_remove_result.failed
     tags:
       - browser-firefox-install
 
@@ -255,27 +179,42 @@
     become: true
     tags:
       - browser-firefox-install
-  #
-  # - name: Update APT package lists
-  #   apt:
-  #     update_cache: yes
-  #   become: true
-  #   tags:
-  #     - browser-firefox-install
-  #
-  # - name: Install Firefox Browser
-  #   apt:
-  #     name: firefox
-  #     state: present
-  #   become: true
-  #   tags:
-  #     - browser-firefox-install
 
-  - name: Install Firefox via APT
-    ansible.builtin.apt:
+  - name: Create APT preferences file for Mozilla Firefox
+    ansible.builtin.copy:
+      dest: /etc/apt/preferences.d/mozilla
+      content: |
+        Package: *
+        Pin: origin packages.mozilla.org
+        Pin-Priority: 1000
+
+        Package: firefox*
+        Pin: release o=Ubuntu
+        Pin-Priority: -1
+    when: firefox_snap_check.rc == 0
+    become: true
+    tags:
+      - browser-firefox-install
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+    tags:
+      - browser-firefox-install
+
+  - name: Uninstall Ubuntus pretend Firefox Browser
+    apt:
       name: firefox
-      state: latest
-      update_cache: true
+      state: absent
+    become: true
+    tags:
+      - browser-firefox-install
+
+  - name: Install Firefox Browser
+    apt:
+      name: firefox
+      state: present
     become: true
     tags:
       - browser-firefox-install
