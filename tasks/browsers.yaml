@@ -276,6 +276,7 @@
       name: firefox
       state: latest
       update_cache: true
+    become: true
     tags:
       - browser-firefox-install
 
