@@ -40,31 +40,64 @@
     tags:
       - browser-chrome-install
 
-  - name: Download Google Chrome .deb file
-    get_url:
-      url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-      dest: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-    when: chrome_installed.rc != 0
-    tags:
-      - browser-chrome-install
-
-  - name: Install Google Chrome
-    apt:
-      deb: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-    when:
-      - chrome_installed.rc != 0
-      - docker_container == False
+  - name: Add Google Chrome signing key
+    apt_key:
+      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
     become: true
     tags:
       - browser-chrome-install
 
-  - name: Remove Chrome .deb file
-    file:
-      path: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-      state: absent
-    when: chrome_installed.rc != 0
+  - name: Check if Google Chrome browser repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/google-chrome.list"
+      line: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+      create: yes
+    become: true
     tags:
       - browser-chrome-install
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+    tags:
+      - browser-chrome-install
+
+  - name: Install Google Chrome Browser
+    apt:
+      name: google-chrome-stable
+      state: present
+    become: true
+    tags:
+      - browser-chrome-install
+
+
+  # - name: Download Google Chrome .deb file
+  #   get_url:
+  #     url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  #     dest: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
+  #   when: chrome_installed.rc != 0
+  #   tags:
+  #     - browser-chrome-install
+  #
+  # - name: Install Google Chrome
+  #   apt:
+  #     deb: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
+  #   when:
+  #     - chrome_installed.rc != 0
+  #     - docker_container == False
+  #   become: true
+  #   tags:
+  #     - browser-chrome-install
+  #
+  # - name: Remove Chrome .deb file
+  #   file:
+  #     path: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
+  #     state: absent
+  #   when: chrome_installed.rc != 0
+  #   tags:
+  #     - browser-chrome-install
 
   - name: Check if Brave is installed via snap
     command: snap list brave
