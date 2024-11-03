@@ -9,6 +9,9 @@
     tags:
       - install
       - core
+      - browser-chrome-update
+      - browser-brave-update
+      - browser-firefox-update
   tasks: 
     - import_tasks: tasks/setup.yaml
     - import_tasks: tasks/ssh.yaml
