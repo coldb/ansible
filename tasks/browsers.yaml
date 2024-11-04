@@ -73,33 +73,6 @@
     tags:
       - browser-chrome-install
 
-
-  # - name: Download Google Chrome .deb file
-  #   get_url:
-  #     url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  #     dest: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-  #   when: chrome_installed.rc != 0
-  #   tags:
-  #     - browser-chrome-install
-  #
-  # - name: Install Google Chrome
-  #   apt:
-  #     deb: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-  #   when:
-  #     - chrome_installed.rc != 0
-  #     - docker_container == False
-  #   become: true
-  #   tags:
-  #     - browser-chrome-install
-  #
-  # - name: Remove Chrome .deb file
-  #   file:
-  #     path: "{{ temp_dir }}/google-chrome-stable_current_amd64.deb"
-  #     state: absent
-  #   when: chrome_installed.rc != 0
-  #   tags:
-  #     - browser-chrome-install
-
   - name: Check if Brave is installed via snap
     command: snap list brave
     register: brave_snap_check
