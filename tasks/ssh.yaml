@@ -22,7 +22,7 @@
     authorized_key:
       user: "{{ username }}"
       state: present
-      key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519.pub') }}"
+      key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519_gh.pub') }}"
 
   - name: Update ansible repository to ssh
     shell: "cd {{ home_dir }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git"
@@ -45,8 +45,8 @@
       value: "{{ git_email }}"
 
   vars:
-    source_key: "{{ home_dir }}/ansible/.ssh/id_ed25519"
-    destination_key: "{{ home_dir }}/.ssh/id_ed25519"
+    source_key: "{{ home_dir }}/ansible/.ssh/id_ed25519_gh"
+    destination_key: "{{ home_dir }}/.ssh/id_ed25519_gh"
   tags:
     - install
     - dotfiles
