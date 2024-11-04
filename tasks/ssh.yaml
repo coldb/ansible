@@ -24,6 +24,17 @@
       state: present
       key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519_gh.pub') }}"
 
+  - name: Write custom config for github to use custom ssh file
+    ansible.builtin.copy:
+      dest: "{{ home_dir }}/.ssh/config"
+      content: |
+        Host github.com
+          HostName github.com
+          User git
+          IdentityFile ~/.ssh/id_ed25519_gh
+          IdentitiesOnly yes
+    become: true
+
   - name: Update ansible repository to ssh
     shell: "cd {{ home_dir }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git"
 
