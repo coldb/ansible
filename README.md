@@ -27,6 +27,10 @@ Run `./build-dockers && docker run --rm -it new-computer bash`. This will start 
 
 Once in the terminal run `cd ~/ansible/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the install ansible install.
 
+### Running the personal ansible playbook
+
+Run `cd ~/personal/ansible-personal/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the ansible playbook inside the personal ansible repository.
+
 ### Install only relevant tags
 
 To install only the relevant tags use the `-t` flag with the name of the tag to install. Example `ansible-playbook -t node local.yaml`

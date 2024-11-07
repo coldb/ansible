@@ -20,6 +20,8 @@
       username: "{{ current_username.stdout }}"
       home_dir: "{{ lookup('env', 'HOME') }}"
       temp_dir: "{{ lookup('env', 'HOME') }}/temp"
+      personal_dir: "{{ lookup('env', 'HOME') }}/personal"
+      work_dir: "{{ lookup('env', 'HOME') }}/work"
       docker_container: "{{ lookup('ansible.builtin.env', 'DOCKER_CONTAINER', default='false') }}"
 
   - name: Create temporary download directory
@@ -46,6 +48,8 @@
       - "ubuntu_architecture: {{ ubuntu_architecture }}"
       - "temp_dir: {{ temp_dir }}"
       - "home_dir: {{ home_dir }}"
+      - "personal_dir: {{ personal_dir }}"
+      - "work_dir: {{ work_dir }}"
       - "username: {{ username }}"
       - "docker_container: {{ docker_container }}"
 

@@ -5,7 +5,7 @@
   - name: Cloning personal .dotfiles
     ansible.builtin.git:
       repo: 'git@github.com:coldb/.dotfiles-personal.git'
-      dest: "{{ home_dir }}/personal/.dotfiles-personal"
+      dest: "{{ personal_dir }}/.dotfiles-personal"
       recursive: true
       update: true
       accept_hostkey: true
@@ -14,21 +14,21 @@
   - name: Set personal .dotfiles user.name local configuration
     community.general.git_config:
       name: user.name
-      repo: "{{ home_dir }}/personal/.dotfiles-personal"
+      repo: "{{ personal_dir }}/.dotfiles-personal"
       scope: local
       value: "{{ git_user }}"
 
   - name: Set personal .dotfiles user.email local configuration
     community.general.git_config:
       name: user.email
-      repo: "{{ home_dir }}/personal/.dotfiles-personal"
+      repo: "{{ personal_dir }}/.dotfiles-personal"
       scope: local
       value: "{{ git_email }}"
 
   - name: Cloning personal ansible
     ansible.builtin.git:
       repo: 'git@github.com:coldb/ansible-personal.git'
-      dest: "{{ home_dir }}/personal/ansible-personal"
+      dest: "{{ personal_dir }}/ansible-personal"
       recursive: true
       update: true
       accept_hostkey: true
@@ -37,14 +37,14 @@
   - name: Set personal ansible user.name local configuration
     community.general.git_config:
       name: user.name
-      repo: "{{ home_dir }}/personal/ansible-personal"
+      repo: "{{ personal_dir }}/ansible-personal"
       scope: local
       value: "{{ git_user }}"
 
   - name: Set personal ansible user.email local configuration
     community.general.git_config:
       name: user.email
-      repo: "{{ home_dir }}/personal/ansible-personal"
+      repo: "{{ personal_dir }}/ansible-personal"
       scope: local
       value: "{{ git_email }}"
 

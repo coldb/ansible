@@ -5,7 +5,7 @@
   - name: Cloning work .dotfiles
     ansible.builtin.git:
       repo: 'git@github.com:coldb/.dotfiles-work.git'
-      dest: "{{ home_dir }}/work/.dotfiles-work"
+      dest: "{{ work_dir }}/.dotfiles-work"
       recursive: true
       update: true
       accept_hostkey: true
@@ -13,21 +13,21 @@
   - name: Set work .dotfiles user.name local configuration
     community.general.git_config:
       name: user.name
-      repo: "{{ home_dir }}/work/.dotfiles-work"
+      repo: "{{ work_dir }}/.dotfiles-work"
       scope: local
       value: "{{ git_user }}"
 
   - name: Set work .dotfiles user.email local configuration
     community.general.git_config:
       name: user.email
-      repo: "{{ home_dir }}/work/.dotfiles-work"
+      repo: "{{ work_dir }}/.dotfiles-work"
       scope: local
       value: "{{ git_email }}"
 
   - name: Cloning work ansible
     ansible.builtin.git:
       repo: 'git@github.com:coldb/ansible-work.git'
-      dest: "{{ home_dir }}/work/ansible-work"
+      dest: "{{ work_dir }}/ansible-work"
       recursive: true
       update: true
       accept_hostkey: true
@@ -35,14 +35,14 @@
   - name: Set work ansible user.name local configuration
     community.general.git_config:
       name: user.name
-      repo: "{{ home_dir }}/work/ansible-work"
+      repo: "{{ work_dir }}/ansible-work"
       scope: local
       value: "{{ git_user }}"
 
   - name: Set work ansible user.email local configuration
     community.general.git_config:
       name: user.email
-      repo: "{{ home_dir }}/work/ansible-work"
+      repo: "{{ work_dir }}/ansible-work"
       scope: local
       value: "{{ git_email }}"
 
