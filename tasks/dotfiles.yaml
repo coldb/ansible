@@ -39,12 +39,12 @@
       scope: local
       value: "{{ git_email }}"
 
-  # - name: Enable high resolution monitor support
-  #   shell: cd {{ home_dir }}/.dotfiles && ./ubuntu 
-  #   environment:
-  #     STOW_FOLDERS: "i3-scaling"
-  #   tags:
-  #     - i3-scaling
+  - name: Enable high resolution monitor support
+    shell: "cd {{ home_dir }}/.dotfiles && ./ubuntu" 
+    environment:
+      STOW_FOLDERS: "i3-scaling"
+    tags:
+      - i3-scaling
 
   tags:
     - install
