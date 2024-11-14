@@ -1,0 +1,16 @@
+- name: Upgrade Thunderbird to the latest version
+  command: "flatpak update org.mozilla.Thunderbird"
+  when: docker_container == False
+  tags:
+    - browser-thunderbird-update
+
+- block:
+  - name: Install Thunderbird via Flatpak
+    command: "flatpak install -y flathub org.mozilla.Thunderbird"
+    when: docker_container == False
+    tags:
+      - email-thunderbird-install
+
+  tags:
+    - install
+    - email

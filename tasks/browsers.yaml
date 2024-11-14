@@ -165,7 +165,6 @@
         Package: firefox*
         Pin: release o=Ubuntu
         Pin-Priority: -1
-    when: firefox_snap_check.rc == 0
     become: true
     tags:
       - browser-firefox-install
