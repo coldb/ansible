@@ -10,15 +10,16 @@
       name: [ "python3-pip", "dconf-editor", "moreutils", "lua5.1"]
 
   - name: Install flatpak
-    become: true
     apt:
       name: flatpak
+    become: true
     tags:
       - email
       - email-thunderbird-install
 
   - name: Enable Flathub repository
     command: "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
+    become: true
     tags:
       - email
       - email-thunderbird-install

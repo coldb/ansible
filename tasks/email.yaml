@@ -11,6 +11,13 @@
     tags:
       - email-thunderbird-install
 
+  - name: Create a symbolic link for Thunderbird
+    ansible.builtin.file:
+      src: /var/lib/flatpak/exports/bin/org.mozilla.Thunderbird
+      dest: /usr/bin/org.mozilla.Thunderbird
+    when: docker_container == False
+    become: true
+
   tags:
     - install
     - email
