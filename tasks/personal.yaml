@@ -48,5 +48,9 @@
       scope: local
       value: "{{ git_email }}"
 
+  - name: Stow all the personal dotfiles
+    shell: "ansible-playbook -t stow local.yaml"
+    chdir: "{{ personal_dir }}/.dotfiles-personal"
+
   tags:
     - personal
