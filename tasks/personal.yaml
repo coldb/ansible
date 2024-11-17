@@ -50,7 +50,8 @@
 
   - name: Stow all the personal dotfiles
     shell: "ansible-playbook -t stow local.yaml"
-    chdir: "{{ personal_dir }}/.dotfiles-personal"
+    args:
+      chdir: "{{ personal_dir }}/ansible-personal"
 
   tags:
     - personal
