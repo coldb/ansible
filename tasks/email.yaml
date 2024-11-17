@@ -2,14 +2,14 @@
   command: "flatpak update org.mozilla.Thunderbird"
   when: docker_container == False
   tags:
-    - browser-thunderbird-update
+    - email-thunderbird-update
 
 - block:
   - name: Install Thunderbird via Flatpak
     command: "flatpak install -y flathub org.mozilla.Thunderbird"
     when: docker_container == False
     tags:
-      - email-thunderbird-install
+      - email-thunderbird
 
   - name: Create a symbolic link for Thunderbird
     ansible.builtin.file:
@@ -17,6 +17,8 @@
       dest: /usr/bin/org.mozilla.Thunderbird
     when: docker_container == False
     become: true
+    tags:
+      - email-thunderbird
 
   tags:
     - install

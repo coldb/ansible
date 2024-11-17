@@ -5,7 +5,7 @@
       dest: "{{ temp_dir }}/CascadiaMono.zip"
 
   - name: Unzip Nerd Font zip file
-    shell: "unzip '{{ temp_dir }}/CascadiaMono.zip' -d '{{ home_dir }}/.fonts'"
+    shell: "unzip -o '{{ temp_dir }}/CascadiaMono.zip' -d '{{ home_dir }}/.fonts'"
 
   - name: Update fonts cache to add the new font
     shell: fc-cache -fv

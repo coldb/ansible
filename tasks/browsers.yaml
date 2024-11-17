@@ -2,22 +2,28 @@
   apt:
     name: google-chrome-stable
     state: latest
+  become: true
   tags:
     - browser-chrome-update
+    - browsers-update
 
 - name: Upgrade Brave to the latest version
   apt:
     name: brave-browser
     state: latest
+  become: true
   tags:
     - browser-brave-update
+    - browsers-update
 
 - name: Upgrade Firefox to the latest version
   apt:
     name: firefox
     state: latest
+  become: true
   tags:
     - browser-firefox-update
+    - browsers-update
 
 - block:
   - name: Check if Chrome is installed via snap
@@ -25,21 +31,21 @@
     register: chrome_snap_check
     ignore_errors: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Remove Chrome if installed via snap
     command: snap remove google-chrome
     when: chrome_snap_check.rc == 0
     become: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Check if Google Chrome is installed
     shell: dpkg -l | grep google-chrome-stable
     register: chrome_installed
     ignore_errors: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Add Google Chrome signing key
     apt_key:
@@ -47,7 +53,7 @@
       state: present
     become: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Check if Google Chrome browser repository has been added
     lineinfile:
@@ -56,14 +62,14 @@
       create: yes
     become: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Update APT package lists
     apt:
       update_cache: yes
     become: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Install Google Chrome Browser
     apt:
@@ -71,21 +77,21 @@
       state: present
     become: true
     tags:
-      - browser-chrome-install
+      - browser-chrome
 
   - name: Check if Brave is installed via snap
     command: snap list brave
     register: brave_snap_check
     ignore_errors: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   - name: Remove Brave if installed via snap
     command: snap remove brave
     when: brave_snap_check.rc == 0
     become: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   - name: Download Brave browser's GPG key
     ansible.builtin.get_url:
@@ -93,7 +99,7 @@
       dest: "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
     become: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   - name: Check if Brave browsers repository has been added
     lineinfile:
@@ -102,14 +108,14 @@
       create: yes
     become: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   - name: Update APT package lists
     apt:
       update_cache: yes
     become: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   - name: Install Brave Browser
     apt:
@@ -117,7 +123,7 @@
       state: present
     become: true
     tags:
-      - browser-brave-install
+      - browser-brave
 
   # https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
   - name: Check if Firefox is installed via snap
@@ -125,7 +131,7 @@
     register: firefox_snap_check
     ignore_errors: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Remove Snap version of Firefox if present
     ansible.builtin.command: snap remove firefox
@@ -134,7 +140,7 @@
     register: snap_remove_result
     when: firefox_snap_check.rc == 0
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Download Firefox keyring
     ansible.builtin.get_url:
@@ -143,7 +149,7 @@
       mode: 0755
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Check if Firefox browsers repository has been added
     lineinfile:
@@ -152,7 +158,7 @@
       create: yes
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Create APT preferences file for Mozilla Firefox
     ansible.builtin.copy:
@@ -167,14 +173,14 @@
         Pin-Priority: -1
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Update APT package lists
     apt:
       update_cache: yes
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Uninstall Ubuntus pretend Firefox Browser
     apt:
@@ -182,7 +188,7 @@
       state: absent
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   - name: Install Firefox Browser
     apt:
@@ -190,7 +196,7 @@
       state: present
     become: true
     tags:
-      - browser-firefox-install
+      - browser-firefox
 
   tags:
     - install
