@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+#TASK TAGS: , node, personal, productivity, rdp, slack, ssh, work, zsh]
+
+declare -A options=(
+  ["browser-brave"]="--ask-become-pass"
+  ["browser-brave-update"]="--ask-become-pass"
+  ["browser-chrome"]="--ask-become-pass"
+  ["browser-chrome-update"]="--ask-become-pass"
+  ["browser-firefox"]="--ask-become-pass"
+  ["browser-firefox-update"]="--ask-become-pass"
+  ["browsers"]="--ask-become-pass"
+  ["browsers-update"]="--ask-become-pass"
+  ["bruno"]="--ask-become-pass"
+  ["core"]="--ask-become-pass"
+  ["deno"]="--ask-become-pass"
+  ["docker"]="--ask-become-pass"
+  ["dotfiles"]="--ask-become-pass --ask-vault-pass"
+  ["email"]="--ask-become-pass"
+  ["email-thunderbird"]="--ask-become-pass"
+  ["email-thunderbird-update"]="--ask-become-pass"
+  ["fonts"]="--ask-become-pass"
+  ["i3-scaling"]="--ask-become-pass"
+  ["i3wm"]="--ask-become-pass"
+  ["install"]="--ask-become-pass --ask-vault-pass"
+  ["keyboard"]="--ask-become-pass"
+  ["laptop"]="--ask-become-pass"
+  ["lazygit"]="--ask-become-pass"
+  ["neovim"]="--ask-become-pass"
+  ["neovim-latest"]="--ask-become-pass"
+  ["node"]="--ask-become-pass"
+  ["personal"]="--ask-become-pass --ask-vault-pass"
+  ["productivity"]="--ask-become-pass"
+  ["rdp"]="--ask-become-pass"
+  ["slack"]="--ask-become-pass"
+  ["ssh"]="--ask-become-pass --ask-vault-pass"
+  ["work"]="--ask-become-pass --ask-vault-pass"
+  ["zsh"]="--ask-become-pass"
+)
+
+selected_tags=$(printf "%s\n" "${!options[@]}" | fzf --multi --prompt="Select tags: " --header="Use Tab to select multiple tags")
+
+if [ -z "$selected_tags" ]; then
+  echo "No tags selected. Exiting."
+  exit 1
+fi
+
+tag_list=""
+extra_flags=""
+
+for tag in $selected_tags; do
+  tag_list+="$tag,"
+  for flag in ${options[$tag]}; do
+    if [[ -n "$flag" && ! "$extra_flags" =~ $flag ]]; then
+      extra_flags+=" $flag"
+    fi
+  done
+done
+
+tag_list=${tag_list%,}
+
+ansible_command="ansible-playbook local.yaml --tags \"$tag_list\"$extra_flags"
+
+echo "Executing: $ansible_command"
+eval $ansible_command

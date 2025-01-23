@@ -1,115 +1,203 @@
-- name: Check if Google Chrome is installed
-  shell: dpkg -l | grep google-chrome-stable
-  register: chrome_installed
-  ignore_errors: true
-  tags:
-    - install
-    - browsers
-    - browser-chrome
-
-- name: Download Google Chrome .deb file
-  get_url:
-    url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-    dest: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
-  when: chrome_installed.rc != 0
-  tags:
-    - install
-    - browsers
-    - browser-chrome
-
-- name: Install Google Chrome
+- name: Upgrade Google Chrome to the latest version
   apt:
-    deb: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
-  when: chrome_installed.rc != 0
+    name: google-chrome-stable
+    state: latest
   become: true
   tags:
-    - install
-    - browsers
-    - browser-chrome
+    - browser-chrome-update
+    - browsers-update
 
-- name: Clean up
-  file:
-    path: "{{ lookup('env', 'HOME') }}/temp/google-chrome-stable_current_amd64.deb"
-    state: absent
-  when: chrome_installed.rc != 0
-  tags:
-    - install
-    - browsers
-    - browser-chrome
-
-- name: Download Brave browser's GPG key
-  ansible.builtin.get_url:
-    url: "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
-    dest: "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
-  become: true
-  tags:
-    - install
-    - browsers
-
-- name: Check if Brave browsers repository has been added
-  lineinfile:
-    path: "/etc/apt/sources.list.d/brave-browser-release.list"
-    line: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
-    create: yes
-  become: true
-  tags:
-    - install
-    - browsers
-
-- name: Update APT package lists
-  apt:
-    update_cache: yes
-  become: true
-  tags:
-    - install
-    - browsers
-
-- name: Install Brave Browser
+- name: Upgrade Brave to the latest version
   apt:
     name: brave-browser
-    state: present
+    state: latest
   become: true
   tags:
-    - install
-    - browsers
+    - browser-brave-update
+    - browsers-update
 
-- name: Download Firefox keyring
-  ansible.builtin.get_url:
-    url: "https://packages.mozilla.org/apt/repo-signing-key.gpg"
-    dest: "/etc/apt/keyrings/packages.mozilla.org.asc"
-    mode: 0755
-  become: true
-  tags:
-    - install
-    - browsers
-
-- name: Check if Firefox browsers repository has been added
-  lineinfile:
-    path: "/etc/apt/sources.list.d/mozilla.list"
-    line: "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main"
-    create: yes
-  become: true
-  tags:
-    - install
-    - browers
-
-- name: Update APT package lists
-  apt:
-    update_cache: yes
-  become: true
-  tags:
-    - install
-    - browers
-
-- name: Install Firefox Browser
+- name: Upgrade Firefox to the latest version
   apt:
     name: firefox
-    state: present
+    state: latest
   become: true
   tags:
+    - browser-firefox-update
+    - browsers-update
+
+- block:
+  - name: Check if Chrome is installed via snap
+    command: snap list google-chrome
+    register: chrome_snap_check
+    ignore_errors: true
+    tags:
+      - browser-chrome
+
+  - name: Remove Chrome if installed via snap
+    command: snap remove google-chrome
+    when: chrome_snap_check.rc == 0
+    become: true
+    tags:
+      - browser-chrome
+
+  - name: Check if Google Chrome is installed
+    shell: dpkg -l | grep google-chrome-stable
+    register: chrome_installed
+    ignore_errors: true
+    tags:
+      - browser-chrome
+
+  - name: Add Google Chrome signing key
+    apt_key:
+      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
+    become: true
+    tags:
+      - browser-chrome
+
+  - name: Check if Google Chrome browser repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/google-chrome.list"
+      line: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+      create: yes
+    become: true
+    tags:
+      - browser-chrome
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+    tags:
+      - browser-chrome
+
+  - name: Install Google Chrome Browser
+    apt:
+      name: google-chrome-stable
+      state: present
+    become: true
+    tags:
+      - browser-chrome
+
+  - name: Check if Brave is installed via snap
+    command: snap list brave
+    register: brave_snap_check
+    ignore_errors: true
+    tags:
+      - browser-brave
+
+  - name: Remove Brave if installed via snap
+    command: snap remove brave
+    when: brave_snap_check.rc == 0
+    become: true
+    tags:
+      - browser-brave
+
+  - name: Download Brave browser's GPG key
+    ansible.builtin.get_url:
+      url: "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
+      dest: "/usr/share/keyrings/brave-browser-archive-keyring.gpg"
+    become: true
+    tags:
+      - browser-brave
+
+  - name: Check if Brave browsers repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/brave-browser-release.list"
+      line: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+      create: yes
+    become: true
+    tags:
+      - browser-brave
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+    tags:
+      - browser-brave
+
+  - name: Install Brave Browser
+    apt:
+      name: brave-browser
+      state: present
+    become: true
+    tags:
+      - browser-brave
+
+  # https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
+  - name: Check if Firefox is installed via snap
+    command: snap list firefox
+    register: firefox_snap_check
+    ignore_errors: true
+    tags:
+      - browser-firefox
+
+  - name: Remove Snap version of Firefox if present
+    ansible.builtin.command: snap remove firefox
+    become: true
+    ignore_errors: true
+    register: snap_remove_result
+    when: firefox_snap_check.rc == 0
+    tags:
+      - browser-firefox
+
+  - name: Download Firefox keyring
+    ansible.builtin.get_url:
+      url: "https://packages.mozilla.org/apt/repo-signing-key.gpg"
+      dest: "/etc/apt/keyrings/packages.mozilla.org.asc"
+      mode: 0755
+    become: true
+    tags:
+      - browser-firefox
+
+  - name: Check if Firefox browsers repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/mozilla.list"
+      line: "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main"
+      create: yes
+    become: true
+    tags:
+      - browser-firefox
+
+  - name: Create APT preferences file for Mozilla Firefox
+    ansible.builtin.copy:
+      dest: /etc/apt/preferences.d/mozilla
+      content: |
+        Package: *
+        Pin: origin packages.mozilla.org
+        Pin-Priority: 1000
+
+        Package: firefox*
+        Pin: release o=Ubuntu
+        Pin-Priority: -1
+    become: true
+    tags:
+      - browser-firefox
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+    tags:
+      - browser-firefox
+
+  - name: Uninstall Ubuntus pretend Firefox Browser
+    apt:
+      name: firefox
+      state: absent
+    become: true
+    tags:
+      - browser-firefox
+
+  - name: Install Firefox Browser
+    apt:
+      name: firefox
+      state: present
+    become: true
+    tags:
+      - browser-firefox
+
+  tags:
     - install
-    - browers
-
-
-
-
+    - browsers

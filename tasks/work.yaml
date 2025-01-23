@@ -1,56 +1,50 @@
-- name: Include variables
-  include_vars: auth_codes/variables.yaml
-  tags:
-    - work
+- block:
+  - name: Include variables
+    include_vars: auth_codes/variables.yaml
 
-- name: Cloning work .dotfiles
-  ansible.builtin.git:
-    repo: 'git@github.com:coldb/.dotfiles-work.git'
-    dest: "{{ lookup('env', 'HOME') }}/work/.dotfiles-work"
-    update: true
-  tags:
-    - work
+  - name: Cloning work .dotfiles
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/.dotfiles-work.git'
+      dest: "{{ work_dir }}/.dotfiles-work"
+      recursive: true
+      update: true
+      accept_hostkey: true
 
-- name: Set work .dotfiles user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/work/.dotfiles-work"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - work
+  - name: Set work .dotfiles user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ work_dir }}/.dotfiles-work"
+      scope: local
+      value: "{{ git_user }}"
 
-- name: Set work .dotfiles user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/work/.dotfiles-work"
-    scope: local
-    value: "{{ git_email }}"
-  tags:
-    - work
+  - name: Set work .dotfiles user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ work_dir }}/.dotfiles-work"
+      scope: local
+      value: "{{ git_email }}"
 
-- name: Cloning work ansible
-  ansible.builtin.git:
-    repo: 'git@github.com:coldb/ansible-work.git'
-    dest: "{{ lookup('env', 'HOME') }}/work/ansible-work"
-    update: true
-  tags:
-    - work
+  - name: Cloning work ansible
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/ansible-work.git'
+      dest: "{{ work_dir }}/ansible-work"
+      recursive: true
+      update: true
+      accept_hostkey: true
 
-- name: Set work ansible user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/work/ansible-work"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - work
+  - name: Set work ansible user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ work_dir }}/ansible-work"
+      scope: local
+      value: "{{ git_user }}"
 
-- name: Set work ansible user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/work/ansible-work"
-    scope: local
-    value: "{{ git_email }}"
+  - name: Set work ansible user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ work_dir }}/ansible-work"
+      scope: local
+      value: "{{ git_email }}"
+
   tags:
     - work

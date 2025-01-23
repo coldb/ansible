@@ -1,56 +1,55 @@
-- name: Include variables
-  include_vars: auth_codes/variables.yaml
-  tags:
-    - personal
+- block:
+  - name: Include variables
+    include_vars: auth_codes/variables.yaml
 
-- name: Cloning personal .dotfiles
-  ansible.builtin.git:
-    repo: 'git@github.com:coldb/.dotfiles-personal.git'
-    dest: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
-    update: true
-  tags:
-    - personal
+  - name: Cloning personal .dotfiles
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/.dotfiles-personal.git'
+      dest: "{{ personal_dir }}/.dotfiles-personal"
+      recursive: true
+      update: true
+      accept_hostkey: true
 
-- name: Set personal .dotfiles user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - personal
+  - name: Set personal .dotfiles user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ personal_dir }}/.dotfiles-personal"
+      scope: local
+      value: "{{ git_user }}"
 
-- name: Set personal .dotfiles user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/personal/.dotfiles-personal"
-    scope: local
-    value: "{{ git_email }}"
-  tags:
-    - personal
+  - name: Set personal .dotfiles user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ personal_dir }}/.dotfiles-personal"
+      scope: local
+      value: "{{ git_email }}"
 
-- name: Cloning personal ansible
-  ansible.builtin.git:
-    repo: 'git@github.com:coldb/ansible-personal.git'
-    dest: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
-    update: true
-  tags:
-    - personal
+  - name: Cloning personal ansible
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/ansible-personal.git'
+      dest: "{{ personal_dir }}/ansible-personal"
+      recursive: true
+      update: true
+      accept_hostkey: true
 
-- name: Set personal ansible user.name local configuration
-  community.general.git_config:
-    name: user.name
-    repo: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
-    scope: local
-    value: "{{ git_user }}"
-  tags:
-    - personal
+  - name: Set personal ansible user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ personal_dir }}/ansible-personal"
+      scope: local
+      value: "{{ git_user }}"
 
-- name: Set personal ansible user.email local configuration
-  community.general.git_config:
-    name: user.email
-    repo: "{{ lookup('env', 'HOME') }}/personal/ansible-personal"
-    scope: local
-    value: "{{ git_email }}"
+  - name: Set personal ansible user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ personal_dir }}/ansible-personal"
+      scope: local
+      value: "{{ git_email }}"
+
+  - name: Stow all the personal dotfiles
+    shell: "ansible-playbook -t stow local.yaml"
+    args:
+      chdir: "{{ personal_dir }}/ansible-personal"
+
   tags:
     - personal

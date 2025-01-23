@@ -1,33 +1,64 @@
-- name: Gather Ubuntu codename
-  command: lsb_release -cs
-  register: ubuntu_codename
-  changed_when: false
-  tags:
-    - always
+- block:
+  - name: Gather Ubuntu codename
+    command: lsb_release -cs
+    register: ubuntu_codename
+    changed_when: false
 
-- name: Set Ubuntu codename as a global variable "ubuntu_codename"
-  set_fact:
-    ubuntu_codename: "{{ ubuntu_codename.stdout }}"
-  tags:
-    - always
+  - name: Gather Ubuntu version number
+    command: lsb_release -rs
+    register: ubuntu_version
+    changed_when: false
 
-- name: Gather architecture
-  command: dpkg --print-architecture
-  register: ubuntu_architecture
-  changed_when: false
-  tags:
-    - always
+  - name: Gather architecture
+    command: dpkg --print-architecture
+    register: ubuntu_architecture
+    changed_when: false
 
-- name: Set Ubuntu architecture as a global variable "ubuntu_architecture"
-  set_fact:
-    ubuntu_architecture: "{{ ubuntu_architecture.stdout }}"
-  tags:
-    - always
+  - name: Get current username
+    command: id -un
+    register: current_username
 
-- name: Create temporary download directory
-  file:
-    path: "{{ lookup('env', 'HOME') }}/temp"
-    state: directory
-    mode: '0755'
+  - name: Set global facts
+    set_fact:
+      ubuntu_codename: "{{ ubuntu_codename.stdout }}"
+      ubuntu_version: "{{ ubuntu_version.stdout }}"
+      ubuntu_architecture: "{{ ubuntu_architecture.stdout }}"
+      username: "{{ current_username.stdout }}"
+      home_dir: "{{ lookup('env', 'HOME') }}"
+      temp_dir: "{{ lookup('env', 'HOME') }}/temp"
+      personal_dir: "{{ lookup('env', 'HOME') }}/personal"
+      work_dir: "{{ lookup('env', 'HOME') }}/work"
+      docker_container: "{{ lookup('ansible.builtin.env', 'DOCKER_CONTAINER', default='false') }}"
+
+  - name: Create temporary download directory
+    file:
+      path: "{{ temp_dir }}"
+      state: directory
+      mode: '0755'
+
+  - name: Add universe repository
+    become: true
+    apt_repository:
+      repo: "deb http://archive.ubuntu.com/ubuntu {{ ubuntu_codename }} universe"
+      state: present
+
+  - name: Update apt cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Display all facts
+    debug:
+      msg: 
+      - "ubuntu_codename: {{ ubuntu_codename }}"
+      - "ubuntu_version: {{ ubuntu_version }}"
+      - "ubuntu_architecture: {{ ubuntu_architecture }}"
+      - "temp_dir: {{ temp_dir }}"
+      - "home_dir: {{ home_dir }}"
+      - "personal_dir: {{ personal_dir }}"
+      - "work_dir: {{ work_dir }}"
+      - "username: {{ username }}"
+      - "docker_container: {{ docker_container }}"
+
   tags:
     - always

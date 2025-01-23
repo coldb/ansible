@@ -20,7 +20,11 @@ When making updates to the files then the docker image needs to be rebuilt.
 
 Run `./build-dockers && docker run --rm -it new-computer bash`. This will start the container and open the terminal.
 
-Once in the terminal run `cd ansible/ && ansible-playbook -t keyboard local.yaml`. This will trigger the install ansible install.
+Once in the terminal run `cd ~/ansible/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the install ansible install.
+
+### Running the personal ansible playbook
+
+Run `cd ~/personal/ansible-personal/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the ansible playbook inside the personal ansible repository.
 
 ### Install only relevant tags
 

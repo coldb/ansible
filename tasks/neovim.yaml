@@ -1,79 +1,135 @@
-- name: Install Fuse
-  become: true
-  apt:
-    name: ["libfuse2"]
+- name: Get the latest neovim version from GitHub
+  get_latest_git_release:
+    repo_slug: "neovim/neovim"
+  register: neovim
   tags:
     - install
     - neovim
+    - neovim-latest
 
-- name: Download latest neovim appimage
-  ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage
-    dest: ~/nvim.appimage
-  tags:
-    - install
-    - neovim
+- name: Set neovim to latest version
+  set_fact:
+    neovim_version: "{{ neovim.latest_version }}"
+  tags: [never, neovim-latest ]
 
-- name: Download latest neovim appimage checksum
-  ansible.builtin.get_url:
-    url: https://github.com/neovim/neovim/releases/download/v0.10.1/nvim.appimage.sha256sum
-    dest: ~/nvim.appimage.sha256sum
-  tags:
-    - install
-    - neovim
+- block:
+  - name: Set neovim version to local stable
+    set_fact:
+      neovim_version: 0.10.1
 
-- name: Read the expected neovim checksum from the file
-  shell: cat ~/nvim.appimage.sha256sum | awk '{print $1}' 
-  register: expected_checksum
-  tags:
-    - install
-    - neovim
+  - name: Neovim version
+    debug:
+      msg: "Neovim version {{ neovim_version }}"
+    tags:
+      - neovim-latest
 
-- name: Compute the actual neovim checksum of the downloaded file
-  shell: sha256sum ~/nvim.appimage | awk '{print $1}'
-  register: actual_checksum
-  tags:
-    - install
-    - neovim
+  - name: Download neovim appimage
+    ansible.builtin.get_url:
+      url: https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim.appimage
+      dest: "{{ temp_dir }}/nvim.appimage"
+      mode: "0755"
+    tags:
+      - neovim-latest
 
-- name: Verify the neovim checksums match
-  fail:
-    msg: "Checksum mismatch! Downloaded neovim file may be corrupted."
-  when: expected_checksum.stdout not in actual_checksum.stdout
-  tags:
-    - install
-    - neovim
+  - name: Download latest neovim appimage checksum
+    ansible.builtin.get_url:
+      url: https://github.com/neovim/neovim/releases/download/v{{ neovim_version }}/nvim.appimage.sha256sum
+      dest: "{{ temp_dir }}/nvim.appimage.sha256sum"
+    tags:
+      - neovim-latest
 
-- name: Success message if neovim checksums match
-  debug:
-    msg: "Neovim checksum verification successful!"
-  when: expected_checksum.stdout in actual_checksum.stdout
-  tags:
-    - install
-    - neovim
+  - name: Read the expected neovim checksum from the file
+    shell: "cat {{ temp_dir }}/nvim.appimage.sha256sum | awk '{print $1}'"
+    register: expected_checksum
+    tags:
+      - neovim-latest
 
-- name: Copy imagefile to /usr/local/bin/
-  ansible.builtin.copy:
-    src: ~/nvim.appimage
-    dest: /usr/local/bin/nvim
-    mode: '0755'
-  become: true
-  tags:
-    - install
-    - neovim
+  - name: Compute the actual neovim checksum of the downloaded file
+    shell: "sha256sum {{ temp_dir }}/nvim.appimage | awk '{print $1}'"
+    register: actual_checksum
+    tags:
+      - neovim-latest
 
-- name: Remove neovim image file
-  ansible.builtin.file:
-    path: ~/nvim.appimage
-    state: absent
-  tags:
-    - install
-    - neovim
+  - name: Verify the neovim checksums match
+    fail:
+      msg: "Checksum mismatch! Downloaded neovim file may be corrupted."
+    when: expected_checksum.stdout not in actual_checksum.stdout
+    tags:
+      - neovim-latest
 
-- name: Remove neovim checksum file
-  ansible.builtin.file:
-    path: ~/nvim.appimage.sha256sum
-    state: absent
+  - name: Success message if neovim checksums match
+    debug:
+      msg: "Neovim checksum verification successful!"
+    when: expected_checksum.stdout in actual_checksum.stdout
+    tags:
+      - neovim-latest
+
+  - name: Extract the contents of Neovim AppImage
+    ansible.builtin.command:
+      cmd: "{{ temp_dir }}/nvim.appimage --appimage-extract"
+      chdir: "{{ temp_dir }}"
+    args:
+      creates: "{{ temp_dir }}/squashfs-root"
+    tags:
+      - neovim-latest
+
+  - name: Remove the symbolic link to Neovim
+    ansible.builtin.file:
+      path: "/usr/local/bin/nvim"
+      state: "absent"
+    become: true
+    tags:
+      - neovim-latest
+
+  - name: Clean up the existing /opt Neovim directory
+    ansible.builtin.file:
+      path: "/opt/neovim"
+      state: "absent"
+    become: true
+    tags:
+      - neovim-latest
+
+  - name: Move extracted Neovim to /opt/neovim
+    ansible.builtin.copy:
+      src: "{{ temp_dir }}/squashfs-root/"
+      dest: "/opt/neovim"
+      remote_src: true
+    become: true
+    tags:
+      - neovim-latest
+
+  - name: Create a symbolic link to Neovim
+    ansible.builtin.file:
+      src: "/opt/neovim/AppRun"
+      dest: "/usr/local/bin/nvim"
+      state: "link"
+      force: true
+    become: true
+    tags:
+      - neovim-latest
+
+  - name: Clean up the existing Neovim directory
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/squashfs-root/"
+      state: "absent"
+    become: true
+    tags:
+      - neovim-latest
+
+  - name: Remove neovim image file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/nvim.appimage"
+      state: absent
+    tags:
+      - neovim-latest
+
+  - name: Remove neovim checksum file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/nvim.appimage.sha256sum"
+      state: absent
+    tags:
+      - neovim-latest
+
   tags:
     - install
     - neovim

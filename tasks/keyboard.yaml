@@ -1,110 +1,54 @@
-- name: Create tools directory
-  ansible.builtin.file:
-    path: "{{ lookup('env', 'HOME') }}/tools"
-    state: directory
-    mode: '0755'
-  tags:
-    - install
-    - dotfiles
-    - keyboard
-    
-- name: Download kanata_wintercept.exe from Git releases
-  get_url:
-    url: "https://github.com/jtroo/kanata/releases/download/v1.5.0/kanata"
-    dest: "{{ lookup('env', 'HOME') }}/tools/kanata"
-    mode: '0755'
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+- block:
+  - name: Get the latest playerctl version from GitHub
+    get_latest_git_release:
+      repo_slug: "jtroo/kanata"
+    register: kanata
 
-# https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md
+  - name: Download latest kanata from Git releases
+    get_url:
+      url: "https://github.com/jtroo/kanata/releases/download/v{{ kanata.latest_version }}/kanata"
+      dest: "/usr/bin/kanata"
+      mode: '0755'
+    become: true
 
-- name: Make sure uinput group exists
-  ansible.builtin.group:
-    name: uinput
-    state: present
-  become: true
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Create the /etc/kanata directory
+    file:
+      path: /etc/kanata
+      state: directory
+      mode: '0755'
+    become: true
 
-- name: Add the user to input and uinput groups
-  ansible.builtin.user:
-    name: "{{ username }}"
-    groups: input,uinput
-    append: true
-  become: true
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Copy the Kanata configuration file to /etc/kanata/kanata.kbd
+    copy:
+      src: "{{ home_dir }}/.dotfiles/keyboard/kanata/eng-us.kbd"
+      dest: /etc/kanata/eng-us.kbd
+      mode: '0644'
+    become: true
 
-- name: Add udev rule for uinput group
-  ansible.builtin.copy:
-    content: 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"'
-    dest: /etc/udev/rules.d/99-input.rules
-  become: true
-  tags:
-    - install
-    - dotfiles
-    - keyboard
-    
-- name: Reload udev and apply rules
-  shell: udevadm control --reload-rules && udevadm trigger 
-  become: true
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Install the Kanata systemd service file
+    copy:
+      src: "{{ home_dir }}/.dotfiles/keyboard/kanata.service"
+      dest: /lib/systemd/system/kanata.service
+      mode: '0644'
+    become: true
 
-- name: Get information about /dev/uinput
-  ansible.builtin.stat:
-    path: /dev/uinput
-  register: uinput_stats
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Reload systemd to apply Kanata new service file
+    systemd:
+      daemon_reload: yes
+    become: true
 
-- name: Verify /dev/uinput settings
-  ansible.builtin.assert:
-    that:
-      - uinput_stats.stat.exists
-      - uinput_stats.stat.mode == '0660'
-      - uinput_stats.stat.pw_name == 'root'
-      - uinput_stats.stat.gr_name == 'uinput'
-    fail_msg: "/dev/uinput does not have the correct permissions"
-    success_msg: "/dev/uinput permissions are correct"
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Start the Kanata service
+    systemd:
+      name: kanata
+      state: started
+    become: true
 
-- name: Load the uinput module into the kernel
-  shell: modprobe uinput
-  become: true
-  tags:
-    - install
-    - dotfiles
-    - keyboard
+  - name: Enable the Kanata service to start at boot
+    systemd:
+      name: kanata
+      enabled: yes
+    become: true
 
-- name: Reload systemd
-  ansible.builtin.systemd_service:
-    daemon_reload: true
-    scope: user
-  tags:
-    - install
-    - dotfiles
-    - keyboard
-
-- name: Enable kanata systemd service and start it
-  ansible.builtin.systemd_service:
-    name: kanata
-    state: started
-    enabled: true
-    scope: user
   tags:
     - install
     - dotfiles

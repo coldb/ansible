@@ -1,130 +1,113 @@
-- name: Install productivity packages
-  become: true
-  apt:
-    name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat"]
-  tags:
-    - install
-    - productivity
+- block:
+  - name: Install unzip
+    become: true
+    apt:
+      name: [ "unzip"]
+    tags:
+      - fonts
 
-- name: Cloning Tmux Plugin Manager
-  ansible.builtin.git:
-    repo: 'https://github.com/tmux-plugins/tpm.git' 
-    dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
-  tags:
-    - install
-    - productivity
+  - name: Install productivity packages
+    become: true
+    apt:
+      name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat", "curl", "htop", "lsof", "gettext"]
 
-- name: Cloning Tmux Plugin Tmuxifier
-  ansible.builtin.git:
-    repo: 'https://github.com/jimeh/tmuxifier.git'
-    dest: "{{ lookup('env', 'HOME') }}/.tmuxifier"
-  tags:
-    - install
-    - productivity
+  - name: Cloning Tmux Plugin Manager
+    ansible.builtin.git:
+      repo: 'https://github.com/tmux-plugins/tpm.git' 
+      dest: "{{ home_dir }}/.tmux/plugins/tpm"
 
-- name: Get latest Lazygit version from GitHub API
-  shell: "curl -s 'https://api.github.com/repos/jesseduffield/lazygit/releases/latest' | grep -Po '\"tag_name\": \"v\\K[^\"]*'"
-  register: lazygit_version
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Cloning Tmux Plugin Tmuxifier
+    ansible.builtin.git:
+      repo: 'https://github.com/jimeh/tmuxifier.git'
+      dest: "{{ home_dir }}/.tmuxifier"
 
-- name: Download latest Lazy Git
-  ansible.builtin.get_url:
-    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version.stdout }}_Linux_x86_64.tar.gz"
-    dest: ~/lazygit.tar.gz
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Get the latest lazygit version from GitHub
+    get_latest_git_release:
+      repo_slug: "jesseduffield/lazygit"
+    register: lazygit
+    tags:
+      - lazygit
 
-- name: Extract Lazygit tar.gz
-  shell: "tar xf ~/lazygit.tar.gz -C ~/"
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Download latest Lazy Git
+    ansible.builtin.get_url:
+      url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit.latest_version }}_Linux_x86_64.tar.gz"
+      dest: "{{ temp_dir }}/lazygit.tar.gz"
+    tags:
+      - lazygit
 
-- name: Install Lazygit
-  shell: "install {{ lookup('env','HOME') }}/lazygit /usr/local/bin"
-  become: true
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Extract Lazygit tar.gz
+    shell: "tar xf {{ temp_dir }}/lazygit.tar.gz -C {{ temp_dir }}"
+    tags:
+      - lazygit
 
-- name: Remove Lazy Git zip file
-  ansible.builtin.file:
-    path: ~/lazygit.tar.gz
-    state: absent
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Install Lazygit
+    shell: "install {{ temp_dir }}/lazygit /usr/local/bin"
+    become: true
+    tags:
+      - lazygit
 
-- name: Remove Lazy Git unzipped file
-  ansible.builtin.file:
-    path: ~/lazygit
-    state: absent
-  tags:
-    - install
-    - productivity
-    - git
+  - name: Remove Lazy Git zip file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/lazygit.tar.gz"
+      state: absent
+    tags:
+      - lazygit
 
-- name: Download Slack deb file
-  shell: page=$(curl -sL "https://slack.com/downloads/instructions/linux?ddl=1&build=deb") && download_url=$(echo "$page" | grep -oP '(?<=href=")[^"]*slack-desktop-[^"]*.deb') && curl -L "$download_url" -o ~/slack_install.deb
-  tags:
-    - install
-    - productivity
+  - name: Remove Lazy Git unzipped file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/lazygit"
+      state: absent
+    tags:
+      - lazygit
 
-- name: Install Slack
-  ansible.builtin.apt:
-    deb: "{{ lookup('env','HOME') }}/slack_install.deb"
-  become: true
-  tags:
-    - install
-    - productivity
+  - name: Download Slack deb file
+    shell: "page=$(curl -sL \"https://slack.com/downloads/instructions/linux?ddl=1&build=deb\") && download_url=$(echo \"$page\" | grep -oP '(?<=href=\")[^\"]*slack-desktop-[^\"]*.deb') && curl -L \"$download_url\" -o {{ temp_dir }}/slack_install.deb"
+    tags:
+      - slack
 
-- name: Remove Slack install file
-  ansible.builtin.file:
-    path: "{{ lookup('env','HOME') }}/slack_install.deb"
-    state: absent
-  tags:
-    - install
-    - productivity
+  - name: Install Slack
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/slack_install.deb"
+    become: true
+    tags:
+      - slack
 
-- name: Get latest Bruno version
-  shell: "curl -s 'https://api.github.com/repos/usebruno/bruno/releases/latest' | grep -Po '\"tag_name\": \"v\\K[^\"]*'"
-  register: bruno_version
-  tags:
-    - install
-    - productivity
-    - bruno
+  - name: Remove Slack install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/slack_install.deb"
+      state: absent
+    tags:
+      - slack
 
-- name: Download latest Bruno executable
-  ansible.builtin.get_url:
-    url: "https://github.com/usebruno/bruno/releases/download/v{{ bruno_version.stdout }}/bruno_{{ bruno_version.stdout }}_amd64_linux.deb"
-    dest: "{{ lookup('env', 'HOME') }}/temp/bruno.deb"
-  tags:
-    - install
-    - productivity
-    - bruno
+  - name: Get the latest Bruno version from GitHub
+    get_latest_git_release:
+      repo_slug: "usebruno/bruno"
+    register: bruno
+    tags:
+      - bruno
 
-- name: Install Bruno
-  ansible.builtin.apt:
-    deb: "{{ lookup('env','HOME') }}/temp/bruno.deb"
-  become: true
-  tags:
-    - install
-    - productivity
-    - bruno
 
-- name: Remove Bruno install file
-  ansible.builtin.file:
-    path: "{{ lookup('env','HOME') }}/temp/bruno.deb"
-    state: absent
+  - name: Download latest Bruno executable
+    ansible.builtin.get_url:
+      url: "https://github.com/usebruno/bruno/releases/download/v{{ bruno.latest_version }}/bruno_{{ bruno.latest_version }}_amd64_linux.deb"
+      dest: "{{ temp_dir }}/bruno.deb"
+    tags:
+      - bruno
+
+  - name: Install Bruno
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/bruno.deb"
+    become: true
+    tags:
+      - bruno
+
+  - name: Remove Bruno install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/bruno.deb"
+      state: absent
+    tags:
+      - bruno
+
   tags:
     - install
     - productivity
-    - bruno
