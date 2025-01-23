@@ -4,6 +4,11 @@
     register: ubuntu_codename
     changed_when: false
 
+  - name: Gather Ubuntu version number
+    command: lsb_release -rs
+    register: ubuntu_version
+    changed_when: false
+
   - name: Gather architecture
     command: dpkg --print-architecture
     register: ubuntu_architecture
@@ -16,6 +21,7 @@
   - name: Set global facts
     set_fact:
       ubuntu_codename: "{{ ubuntu_codename.stdout }}"
+      ubuntu_version: "{{ ubuntu_version.stdout }}"
       ubuntu_architecture: "{{ ubuntu_architecture.stdout }}"
       username: "{{ current_username.stdout }}"
       home_dir: "{{ lookup('env', 'HOME') }}"
@@ -45,6 +51,7 @@
     debug:
       msg: 
       - "ubuntu_codename: {{ ubuntu_codename }}"
+      - "ubuntu_version: {{ ubuntu_version }}"
       - "ubuntu_architecture: {{ ubuntu_architecture }}"
       - "temp_dir: {{ temp_dir }}"
       - "home_dir: {{ home_dir }}"

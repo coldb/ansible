@@ -1,0 +1,32 @@
+- block:
+  - name: Get the latest version of Ghostty terminal ubuntu release
+    get_latest_git_release:
+      repo_slug: "mkasberg/ghostty-ubuntu"
+    register: ghostty
+
+  - name: Display all facts
+    debug:
+      msg: 
+      - "ghostty: {{ ghostty.latest_version }}"
+      - "https://github.com/mkasberg/ghostty-ubuntu/releases/download/{{ ghostty.latest_version }}/ghostty_{{ ghostty.latest_version }}_amd64_{{ ubuntu_version }}.deb"
+
+  - name: Download latest Ghostty ubuntu executable
+    ansible.builtin.get_url:
+      url: "https://github.com/mkasberg/ghostty-ubuntu/releases/download/{{ ghostty.latest_version }}/ghostty_{{ ghostty.latest_version | regex_replace('-ppa', '.ppa') }}_amd64_{{ ubuntu_version }}.deb"
+      dest: "{{ temp_dir }}/ghostty.deb"
+
+  - name: Install Ghostty
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/ghostty.deb"
+    become: true
+
+  - name: Remove Ghostty install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/ghostty.deb"
+      state: absent
+
+  tags:
+    - install
+    - ghostty
+    - terminal
+    - testing

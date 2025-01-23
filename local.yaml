@@ -16,6 +16,7 @@
     - import_tasks: tasks/setup.yaml
     - import_tasks: tasks/ssh.yaml
     - import_tasks: tasks/core.yaml
+    - import_tasks: tasks/terminal.yaml
     - import_tasks: tasks/zsh.yaml
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/productivity-tools.yaml
