@@ -8,11 +8,6 @@ To trigger the script without first cloning the repository run the following
 curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run | sh
 ```
 
-**Refactoring**
-```bash
-curl -sSL https://github.com/coldb/ansible/blob/u24-refactoring/ansible-run | sh
-```
-
 ## Building docker images
 
 If this is the first time building the script run `chmod +x build-dockers`. This will make the docker build file executable.

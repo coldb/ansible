@@ -13,7 +13,6 @@
       recursive: true
       update: true
       accept_hostkey: true
-      version: u24-refactor
     tags:
       - keyboard
 

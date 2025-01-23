@@ -9,10 +9,6 @@ sudo apt-get install -y curl git software-properties-common ansible
 git clone https://github.com/coldb/ansible.git
 cd ansible
 
-## TODO: Remove before merge
-git fetch
-git switch u24-refactoring
-
 if [ -n "$1" ]; then
     ansible-playbook local.yaml -t $1 --ask-become-pass --ask-vault-pass
 else
