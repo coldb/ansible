@@ -1,0 +1,32 @@
+
+- name: Install fonts
+  vars:
+    fonts:
+      - UbuntuMono
+      - CascadiaMono
+  block:
+  - name: Download latest Nerd Font files
+    ansible.builtin.get_url:
+      url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip"
+      dest: "{{ temp_dir }}/{{ item }}.zip"
+    loop: "{{ fonts }}"
+
+  - name: Unzip Nerd Font zip files
+    shell: "unzip -o '{{ temp_dir }}/{{ item }}.zip' -d '{{ home_dir }}/.fonts'"
+    loop: "{{ fonts }}"
+
+  - name: Update fonts cache to add the new font
+    shell: fc-cache -fv
+    when: docker_container == False
+
+  - name: Remove downloaded font zip files
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/{{ item }}.zip"
+      state: absent
+    loop: "{{ fonts }}"
+
+  tags:
+    - install
+    - update
+    - fonts
+
