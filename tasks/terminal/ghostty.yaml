@@ -1,14 +1,9 @@
-- block:
+- name: Install Ghostty block
+  block:
   - name: Get the latest version of Ghostty terminal ubuntu release
     get_latest_git_release:
       repo_slug: "mkasberg/ghostty-ubuntu"
     register: ghostty
-
-  - name: Display all facts
-    debug:
-      msg: 
-      - "ghostty: {{ ghostty.latest_version }}"
-      - "https://github.com/mkasberg/ghostty-ubuntu/releases/download/{{ ghostty.latest_version }}/ghostty_{{ ghostty.latest_version }}_amd64_{{ ubuntu_version }}.deb"
 
   - name: Download latest Ghostty ubuntu executable
     ansible.builtin.get_url:
@@ -26,13 +21,14 @@
       state: absent
 
   - name: Setup the ghostty dotfiles
-    shell: "cd {{ home_dir }}/.dotfiles && ./ubuntu" 
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
     environment:
-      STOW_FOLDERS: "i3-scaling"
-    tags:
-      - i3-scaling
+      STOW_FOLDERS: "ghostty"
 
   tags:
     - install
-    - ghostty
-    - terminal
+    - install-ghostty
+    - update
+    - update-ghostty
