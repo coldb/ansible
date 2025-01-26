@@ -1,0 +1,54 @@
+- name: Upgrade Google Chrome to the latest version
+  apt:
+    name: google-chrome-stable
+    state: latest
+  become: true
+  tags:
+    - update
+    - update-chrome
+    - update-browsers
+
+- block:
+  - name: Check if Chrome is installed via snap
+    command: snap list google-chrome
+    register: chrome_snap_check
+    ignore_errors: true
+
+  - name: Remove Chrome if installed via snap
+    command: snap remove google-chrome
+    when: chrome_snap_check.rc == 0
+    become: true
+
+  - name: Check if Google Chrome is installed
+    shell: dpkg -l | grep google-chrome-stable
+    register: chrome_installed
+    ignore_errors: true
+
+  - name: Add Google Chrome signing key
+    apt_key:
+      url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+      state: present
+    become: true
+
+  - name: Check if Google Chrome browser repository has been added
+    lineinfile:
+      path: "/etc/apt/sources.list.d/google-chrome.list"
+      line: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+      create: yes
+    become: true
+
+  - name: Update APT package lists
+    apt:
+      update_cache: yes
+    become: true
+
+  - name: Install Google Chrome Browser
+    apt:
+      name: google-chrome-stable
+      state: present
+    become: true
+
+  tags:
+    - install
+    - install-chrome
+    - install-browsers

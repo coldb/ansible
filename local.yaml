@@ -28,7 +28,9 @@
     - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/neovim.yaml
     - import_tasks: tasks/fonts/nerdfonts.yaml
-    - import_tasks: tasks/browsers.yaml
+    - import_tasks: tasks/browser/brave.yaml
+    - import_tasks: tasks/browser/chrome.yaml
+    - import_tasks: tasks/browser/firefox.yaml
     - import_tasks: tasks/email.yaml
     - import_tasks: tasks/work.yaml
     - import_tasks: tasks/personal.yaml

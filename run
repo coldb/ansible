@@ -3,6 +3,16 @@
 #TASK TAGS: , node, personal, productivity, rdp, slack, ssh, work, zsh]
 
 declare -A options=(
+  ["install"]="--ask-become-pass --ask-vault-pass"
+  ["install-browsers"]="--ask-become-pass"
+  ["install-brave"]="--ask-become-pass"
+  ["install-chrome"]="--ask-become-pass"
+  ["install-firefox"]="--ask-become-pass"
+  ["update"]="--ask-become-pass"
+  ["update-browsers"]="--ask-become-pass"
+  ["update-brave"]="--ask-become-pass"
+  ["update-chrome"]="--ask-become-pass"
+  ["update-firefox"]="--ask-become-pass"
   ["browser-brave"]="--ask-become-pass"
   ["browser-brave-update"]="--ask-become-pass"
   ["browser-chrome"]="--ask-become-pass"
@@ -22,7 +32,6 @@ declare -A options=(
   ["fonts"]="--ask-become-pass"
   ["i3-scaling"]="--ask-become-pass"
   ["i3wm"]="--ask-become-pass"
-  ["install"]="--ask-become-pass --ask-vault-pass"
   ["keyboard"]="--ask-become-pass"
   ["laptop"]="--ask-become-pass"
   ["lazygit"]="--ask-become-pass"
