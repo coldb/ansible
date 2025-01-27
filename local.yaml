@@ -23,12 +23,11 @@
     - import_tasks: tasks/productivity-tools.yaml
     - import_tasks: tasks/window-manager.yaml
     - import_tasks: tasks/node.yaml
-    - import_tasks: tasks/deno.yaml
     - import_tasks: tasks/docker.yaml
     - import_tasks: tasks/keyboard.yaml
     - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/neovim.yaml
-    - import_tasks: tasks/fonts/nerdfonts.yaml
+    - import_tasks: tasks/fonts/_index.yaml
     - import_tasks: tasks/application/_index.yaml
     - import_tasks: tasks/work.yaml
     - import_tasks: tasks/personal.yaml

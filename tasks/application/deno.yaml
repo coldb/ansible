@@ -10,6 +10,13 @@
     args:
       creates: "{{ home_dir }}/.deno/bin/deno"
 
+  - name: Remove Deno installer script
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/install-deno.sh"
+      state: absent
+
   tags:
-    - deno
     - install
+    - install-deno
+    - update
+    - update-deno
