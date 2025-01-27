@@ -14,9 +14,10 @@
       - browser-firefox-update
   tasks: 
     - import_tasks: tasks/setup.yaml
+    - import_tasks: tasks/tools/_index.yaml
     - import_tasks: tasks/ssh.yaml
     - import_tasks: tasks/core.yaml
-    - import_tasks: tasks/terminal/ghostty.yaml
+    - import_tasks: tasks/terminals/_index.yaml
     - import_tasks: tasks/zsh.yaml
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/productivity-tools.yaml
@@ -28,10 +29,7 @@
     - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/neovim.yaml
     - import_tasks: tasks/fonts/nerdfonts.yaml
-    - import_tasks: tasks/browser/brave.yaml
-    - import_tasks: tasks/browser/chrome.yaml
-    - import_tasks: tasks/browser/firefox.yaml
-    - import_tasks: tasks/email.yaml
+    - import_tasks: tasks/application/_index.yaml
     - import_tasks: tasks/work.yaml
     - import_tasks: tasks/personal.yaml
     - import_tasks: tasks/laptop.yaml

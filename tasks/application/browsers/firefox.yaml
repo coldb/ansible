@@ -1,4 +1,4 @@
-- name: Upgrade Firefox to the latest version
+- name: Update Firefox
   apt:
     name: firefox
     state: latest
@@ -8,7 +8,8 @@
     - update-firefox
     - update-browsers
 
-- block:
+- name: Install Firefox block
+  block:
   # https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04
   - name: Check if Firefox is installed via snap
     command: snap list firefox

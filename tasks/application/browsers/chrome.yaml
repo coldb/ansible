@@ -1,4 +1,4 @@
-- name: Upgrade Google Chrome to the latest version
+- name: Update Google Chrome
   apt:
     name: google-chrome-stable
     state: latest
@@ -8,7 +8,8 @@
     - update-chrome
     - update-browsers
 
-- block:
+- name: Install Chrome block
+  block:
   - name: Check if Chrome is installed via snap
     command: snap list google-chrome
     register: chrome_snap_check

@@ -1,0 +1,14 @@
+- name: Install flatpak block
+  block:
+  - name: Install flatpak
+    apt:
+      name: flatpak
+    become: true
+
+  - name: Enable Flathub repository
+    command: "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
+    become: true
+
+  tags:
+    - always
+

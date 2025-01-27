@@ -1,4 +1,4 @@
-- name: Upgrade Brave to the latest version
+- name: Update Brave
   apt:
     name: brave-browser
     state: latest
@@ -8,7 +8,8 @@
     - update-brave
     - update-browsers
 
-- block:
+- name: Install Brave block
+  block:
   - name: Check if Brave is installed via snap
     command: snap list brave
     register: brave_snap_check

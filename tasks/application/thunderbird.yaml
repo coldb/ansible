@@ -1,0 +1,25 @@
+- name: Update Thunderbird
+  command: "flatpak update org.mozilla.Thunderbird"
+  when: docker_container == False
+  tags:
+    - update
+    - update-thunderbird
+
+- name: Install Thunderbird block
+  block:
+  - name: Install Thunderbird via Flatpak
+    command: "flatpak install -y flathub org.mozilla.Thunderbird"
+    when: docker_container == False
+
+  # This is needed to have the applications in launchers
+  - name: Create a symbolic link for Thunderbird
+    ansible.builtin.file:
+      src: /var/lib/flatpak/exports/bin/org.mozilla.Thunderbird
+      dest: /usr/bin/org.mozilla.Thunderbird
+      state: link
+    when: docker_container == False
+    become: true
+
+  tags:
+    - install
+    - install-thunderbird

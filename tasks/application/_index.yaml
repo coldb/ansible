@@ -1,0 +1,2 @@
+- import_tasks: browsers/_index.yaml
+- import_tasks: thunderbird.yaml
