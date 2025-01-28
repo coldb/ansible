@@ -1,3 +1,4 @@
 - import_tasks: browsers/_index.yaml
 - import_tasks: deno.yaml
+- import_tasks: docker.yaml
 - import_tasks: thunderbird.yaml
