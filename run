@@ -11,6 +11,7 @@ declare -A options=(
   ["install-firefox"]=""
   ["install-fonts"]=""
   ["install-ghostty"]=""
+  ["install-node"]=""
   ["install-thunderbird"]=""
   ["update"]=""
   ["update-brave"]=""

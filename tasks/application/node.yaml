@@ -4,16 +4,6 @@
     apt:
       name: ["nodejs", "npm"]
 
-  - name: Install N
-    become: true
-    npm:
-      name: n
-      global: yes
-
-  - name: Install correct version of Node
-    become: true
-    shell: n 20
-
   - name: Create new npm global folder
     ansible.builtin.file:
       path: "{{ home_dir }}/.npm-global"
@@ -23,6 +13,16 @@
   - name: Set npm global folder config
     shell: "npm config set prefix '{{ home_dir }}/.npm-global'"
 
+  - name: Install N
+    become: true
+    npm:
+      name: n
+      global: yes
+
+  - name: Install correct version of Node
+    become: true
+    shell: n 22
+
   tags:
     - install
-    - node
+    - install-node
