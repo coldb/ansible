@@ -1,0 +1,28 @@
+- block:
+  - name: Check if lspci command is available
+    command: which lspci
+    register: lspci_check
+    ignore_errors: true
+
+  - name: Install tooling for nvidia check
+    become: true
+    apt:
+      name: "pciutils"
+    when: lspci_check.rc != 0
+
+  - name: Check if NVIDIA hardware is present
+    ansible.builtin.shell: "lspci | grep -i nvidia"
+    register: nvidia_check
+    ignore_errors: true
+
+  - name: Install nvidia-settings if NVIDIA hardware is found
+    ansible.builtin.package:
+      name: "nvidia-settings"
+      state: present
+    when: nvidia_check.rc == 0
+
+  tags:
+    - install
+    - install-video
+    - update
+    - update-video

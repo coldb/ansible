@@ -1,0 +1,31 @@
+- block:
+  - name: Install Audio control (pavucontrol)
+    become: true
+    apt:
+      name: "pavucontrol"
+
+  - name: Get the latest playerctl version from GitHub
+    get_latest_git_release:
+      repo_slug: "altdesktop/playerctl"
+    register: playerctl
+
+  - name: Download latest playerctl
+    ansible.builtin.get_url:
+      url: "https://github.com/altdesktop/playerctl/releases/download/v{{ playerctl.latest_version }}/playerctl-{{ playerctl.latest_version }}_amd64.deb"
+      dest: "{{ temp_dir }}/playerctl.deb"
+
+  - name: Install playerctl
+    become: true
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/playerctl.deb"
+
+  - name: Remove playerctl install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/playerctl.deb"
+      state: absent
+
+  tags:
+    - install
+    - install-audio
+    - update
+    - update-audio

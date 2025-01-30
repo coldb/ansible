@@ -1,76 +1,20 @@
 - block:
-  - name: Install System Packages
+  - name: Install Core packages
     become: true
     apt:
-      name: ["build-essential", "cmake", "pkg-config", "libpthread-stubs0-dev"]
-
-  - name: Install Utilities
-    become: true
-    apt:
-      name: [ "python3-pip", "dconf-editor", "moreutils", "lua5.1"]
-
-  - name: Install flatpak
-    apt:
-      name: flatpak
-    become: true
-    tags:
-      - email
-      - email-thunderbird-install
-
-  - name: Enable Flathub repository
-    command: "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo"
-    become: true
-    tags:
-      - email
-      - email-thunderbird-install
-
-  - name: Install Audio control (pavucontrol)
-    become: true
-    apt:
-      name: "pavucontrol"
-
-  - name: Check if lspci command is available
-    command: which lspci
-    register: lspci_check
-    ignore_errors: true
-
-  - name: Install tooling for nvidia check
-    become: true
-    apt:
-      name: "pciutils"
-    when: lspci_check.rc != 0
-
-  - name: Check if NVIDIA hardware is present
-    ansible.builtin.shell: "lspci | grep -i nvidia"
-    register: nvidia_check
-    ignore_errors: true
-
-  - name: Install nvidia-settings if NVIDIA hardware is found
-    ansible.builtin.package:
-      name: "nvidia-settings"
-      state: present
-    when: nvidia_check.rc == 0
-
-  - name: Get the latest playerctl version from GitHub
-    get_latest_git_release:
-      repo_slug: "altdesktop/playerctl"
-    register: playerctl
-
-  - name: Download latest playerctl
-    ansible.builtin.get_url:
-      url: "https://github.com/altdesktop/playerctl/releases/download/v{{ playerctl.latest_version }}/playerctl-{{ playerctl.latest_version }}_amd64.deb"
-      dest: "{{ temp_dir }}/playerctl.deb"
-
-  - name: Install playerctl
-    become: true
-    ansible.builtin.apt:
-      deb: "{{ temp_dir }}/playerctl.deb"
-
-  - name: Remove playerctl install file
-    ansible.builtin.file:
-      path: "{{ temp_dir }}/playerctl.deb"
-      state: absent
+      name: "{{ item }}"
+    with_items:
+      - "build-essential"
+      - "cmake"
+      - "pkg-config"
+      - "libpthread-stubs0-dev"
+      - "python3-pip"
+      - "dconf-editor"
+      - "moreutils"
+      - "lua5.1"
 
   tags:
     - install
-    - core
+    - install-core
+    - update
+    - update-core

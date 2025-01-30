@@ -14,11 +14,12 @@
     - import_tasks: tasks/tools/_index.yaml
     - import_tasks: tasks/ssh.yaml
     - import_tasks: tasks/core.yaml
-    - import_tasks: tasks/terminals/_index.yaml
-    - import_tasks: tasks/zsh.yaml
+    - import_tasks: tasks/audio.yaml
+    - import_tasks: tasks/video.yaml
     - import_tasks: tasks/dotfiles.yaml
+    - import_tasks: tasks/shell/_index.yaml
+    - import_tasks: tasks/terminals/_index.yaml
     - import_tasks: tasks/productivity-tools.yaml
-    - import_tasks: tasks/window-manager.yaml
     - import_tasks: tasks/keyboard.yaml
     - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/fonts/_index.yaml

@@ -8,6 +8,9 @@
     become: true
     apt:
       name: zsh
+    tags:
+      - update
+      - update-zsh
 
   - name: Find the path of zsh
     shell: which zsh
@@ -51,4 +54,4 @@
 
   tags:
     - install
-    - zsh
+    - install-zsh
