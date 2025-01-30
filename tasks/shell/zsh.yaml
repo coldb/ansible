@@ -52,6 +52,13 @@
     shell: gsettings set org.gnome.Terminal.ProfilesList default 5083e06b-024e-46be-9cd2-892b814f1fc8
     when:  docker_container == False
 
+  - name: Setup the zsh dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "zsh"
+
   tags:
     - install
     - install-zsh

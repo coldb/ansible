@@ -1,0 +1,28 @@
+- block:
+  - name: Install productivity packages
+    become: true
+    apt:
+      name: "tmux"
+
+  - name: Cloning Tmux Plugin Manager
+    ansible.builtin.git:
+      repo: 'https://github.com/tmux-plugins/tpm.git' 
+      dest: "{{ home_dir }}/.tmux/plugins/tpm"
+
+  - name: Cloning Tmux Plugin Tmuxifier
+    ansible.builtin.git:
+      repo: 'https://github.com/jimeh/tmuxifier.git'
+      dest: "{{ home_dir }}/.tmuxifier"
+
+  - name: Setup the tmux dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "tmux"
+
+  tags:
+    - install
+    - install-tmux
+    - update
+    - update-tmux

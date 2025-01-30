@@ -1,26 +1,4 @@
 - block:
-  - name: Install unzip
-    become: true
-    apt:
-      name: [ "unzip"]
-    tags:
-      - fonts
-
-  - name: Install productivity packages
-    become: true
-    apt:
-      name: [ "tmux", "wireshark", "fzf", "gimp", "xclip", "tldr", "ripgrep", "ksnip" , "bat", "curl", "htop", "lsof", "gettext"]
-
-  - name: Cloning Tmux Plugin Manager
-    ansible.builtin.git:
-      repo: 'https://github.com/tmux-plugins/tpm.git' 
-      dest: "{{ home_dir }}/.tmux/plugins/tpm"
-
-  - name: Cloning Tmux Plugin Tmuxifier
-    ansible.builtin.git:
-      repo: 'https://github.com/jimeh/tmuxifier.git'
-      dest: "{{ home_dir }}/.tmuxifier"
-
   - name: Get the latest lazygit version from GitHub
     get_latest_git_release:
       repo_slug: "jesseduffield/lazygit"

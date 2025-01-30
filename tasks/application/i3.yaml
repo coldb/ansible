@@ -11,18 +11,25 @@
       - "feh"
       - "arandr"
 
-  - name: Setup the i3 scaling files
+  - name: Setup the tmux dotfiles
     command: "./ubuntu"
     args:
       chdir: "{{ dotfiles_dir }}"
     environment:
-      STOW_FOLDERS: "i3-scaling"
-    tags:
-      - install-i3-scaling
-      - update-i3-scaling
+      STOW_FOLDERS: "i3,picom,polybar,rofi,backgrounds"
 
   tags:
     - install
     - install-i3
     - update
     - update-i3
+
+- name: Setup the i3 scaling files
+  command: "./ubuntu"
+  args:
+    chdir: "{{ dotfiles_dir }}"
+  environment:
+    STOW_FOLDERS: "i3-scaling"
+  tags:
+    - install-i3-scaling
+    - update-i3-scaling

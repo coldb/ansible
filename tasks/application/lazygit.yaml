@@ -1,0 +1,33 @@
+- block:
+  - name: Get the latest lazygit version from GitHub
+    get_latest_git_release:
+      repo_slug: "jesseduffield/lazygit"
+    register: lazygit
+
+  - name: Download latest Lazy Git
+    ansible.builtin.get_url:
+      url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit.latest_version }}_Linux_x86_64.tar.gz"
+      dest: "{{ temp_dir }}/lazygit.tar.gz"
+
+  - name: Extract Lazygit tar.gz
+    shell: "tar xf {{ temp_dir }}/lazygit.tar.gz -C {{ temp_dir }}"
+
+  - name: Install Lazygit
+    shell: "install {{ temp_dir }}/lazygit /usr/local/bin"
+    become: true
+
+  - name: Remove Lazy Git zip file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/lazygit.tar.gz"
+      state: absent
+
+  - name: Remove Lazy Git unzipped file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/lazygit"
+      state: absent
+
+  tags:
+    - install
+    - install-lazygit
+    - update
+    - update-lazygit

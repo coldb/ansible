@@ -2,6 +2,8 @@
 - import_tasks: deno.yaml
 - import_tasks: docker.yaml
 - import_tasks: i3.yaml
+- import_tasks: lazygit.yaml
 - import_tasks: neovim.yaml
 - import_tasks: node.yaml
 - import_tasks: thunderbird.yaml
+- import_tasks: tmux.yaml
