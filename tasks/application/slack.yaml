@@ -1,0 +1,17 @@
+- block:
+  - name: Download Slack deb file
+    shell: "page=$(curl -sL \"https://slack.com/downloads/instructions/linux?ddl=1&build=deb\") && download_url=$(echo \"$page\" | grep -oP '(?<=href=\")[^\"]*slack-desktop-[^\"]*.deb') && curl -L \"$download_url\" -o {{ temp_dir }}/slack_install.deb"
+
+  - name: Install Slack
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/slack_install.deb"
+    become: true
+
+  - name: Remove Slack install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/slack_install.deb"
+      state: absent
+
+  tags:
+    - install-slack
+    - update-slack

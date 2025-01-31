@@ -1,0 +1,26 @@
+- block:
+  - name: Get the latest Bruno version from GitHub
+    get_latest_git_release:
+      repo_slug: "usebruno/bruno"
+    register: bruno
+
+  - name: Download latest Bruno executable
+    ansible.builtin.get_url:
+      url: "https://github.com/usebruno/bruno/releases/download/v{{ bruno.latest_version }}/bruno_{{ bruno.latest_version }}_amd64_linux.deb"
+      dest: "{{ temp_dir }}/bruno.deb"
+
+  - name: Install Bruno
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/bruno.deb"
+    become: true
+
+  - name: Remove Bruno install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/bruno.deb"
+      state: absent
+
+  tags:
+    - install
+    - install-bruno
+    - update
+    - update-bruno

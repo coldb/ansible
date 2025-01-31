@@ -1,11 +1,4 @@
 - block:
-  - name: Installing stow
-    apt:
-      name: [ "stow" ]
-    become: true
-    tags:
-      - keyboard
-
   - name: Cloning .dotfiles
     ansible.builtin.git:
       repo: 'git@github.com:coldb/.dotfiles.git' 

@@ -19,7 +19,6 @@
     - import_tasks: tasks/dotfiles.yaml
     - import_tasks: tasks/shell/_index.yaml
     - import_tasks: tasks/terminals/_index.yaml
-    - import_tasks: tasks/productivity-tools.yaml
     - import_tasks: tasks/keyboard.yaml
     - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/fonts/_index.yaml
