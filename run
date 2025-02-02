@@ -57,7 +57,43 @@ declare -A options=(
   ["update-zsh"]=""
 )
 
-selected_tags=$(printf "%s\n" "${!options[@]}" | fzf --multi --prompt="Select tags: " --header="Use Tab to select multiple tags")
+sections="general"
+
+if [ -f "$HOME/work/ansible-work/run" ]; then
+  sections="$sections\nwork"
+fi
+
+if [ -f "$HOME/personal/ansible-personal/run" ]; then
+  sections="$sections\npersonal"
+fi
+
+sections_count=$(echo -e "$sections" | wc -l)
+selected_section=""
+
+if (( sections_count > 1 )); then
+  selected_section=$(echo -e "$sections" | fzf);
+
+  if [[ "$selected_section" == "personal" ]]; then
+    cd "$HOME/personal/ansible-personal"
+    ./run
+    exit 0;
+  elif [[ "$selected_section" == "work" ]]; then 
+    cd "$HOME/work/ansible-work"
+    ./run
+    exit 0;
+  fi
+else
+  selected_section="general"
+fi
+
+
+if [[ "$selected_section" != "general" ]]; then
+  echo "No section selected. Exiting"
+  exit 1;
+fi
+
+selected_tags=$(printf "%s\n" "${!options[@]}" | sort -r | fzf --multi --prompt="Select tags: " --header="Use Tab to select multiple tags")
+selected_tags_count=$(echo "$selected_tags" | wc -l)
 
 if [ -z "$selected_tags" ]; then
   echo "No tags selected. Exiting."
