@@ -20,7 +20,6 @@
     - import_tasks: tasks/shell/_index.yaml
     - import_tasks: tasks/terminals/_index.yaml
     - import_tasks: tasks/keyboard.yaml
-    - import_tasks: tasks/rdp.yaml
     - import_tasks: tasks/fonts/_index.yaml
     - import_tasks: tasks/application/_index.yaml
     - import_tasks: tasks/work.yaml

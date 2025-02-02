@@ -25,6 +25,7 @@ declare -A options=(
   ["install-thunderbird"]=""
   ["install-tmux"]=""
   ["install-video"]=""
+  ["install-xrdp"]=""
   ["install-zsh"]=""
   ["update"]=""
   ["update-audio"]=""
@@ -48,14 +49,9 @@ declare -A options=(
   ["update-thunderbird"]=""
   ["update-tmux"]=""
   ["update-video"]=""
+  ["update-xrdp"]=""
   ["update-zsh"]=""
-  ["dotfiles"]="--ask-vault-pass"
-  ["keyboard"]=""
-  ["laptop"]=""
   ["personal"]="--ask-vault-pass"
-  ["rdp"]=""
-  ["slack"]=""
-  ["ssh"]="--ask-vault-pass"
   ["work"]="--ask-vault-pass"
 )
 
