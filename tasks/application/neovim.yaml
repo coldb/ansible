@@ -142,6 +142,13 @@
       - install-neovim-latest
       - update-neovim-latest
 
+  - name: Setup the neovim dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "neovim"
+
   tags:
     - install
     - install-neovim

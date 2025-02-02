@@ -26,6 +26,14 @@
       path: "{{ temp_dir }}/lazygit"
       state: absent
 
+  - name: Setup the neovim dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "lazygit"
+
+
   tags:
     - install
     - install-lazygit

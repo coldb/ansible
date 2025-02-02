@@ -44,8 +44,16 @@
       scope: local
       value: "{{ git_email }}"
 
+  - name: Setup the bin dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "bin"
+
   tags:
     - install
     - install-github
     - update
     - update-github
+

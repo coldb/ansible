@@ -25,4 +25,3 @@
     - import_tasks: tasks/application/_index.yaml
     - import_tasks: tasks/work.yaml
     - import_tasks: tasks/personal.yaml
-    - import_tasks: tasks/laptop.yaml

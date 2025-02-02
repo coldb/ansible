@@ -1,8 +1,0 @@
-- block:
-  - name: Install brightnessctl for a laptop
-    become: true
-    apt:
-      name: ["brightnessctl"]
-
-  tags:
-    - laptop

@@ -18,18 +18,18 @@
       mode: '0755'
     become: true
 
-  - name: Copy the Kanata configuration file to /etc/kanata/kanata.kbd
-    copy:
+  - name: Create link for the Kanata configuration file
+    ansible.builtin.file:
       src: "{{ home_dir }}/.dotfiles/keyboard/kanata/eng-us.kbd"
       dest: /etc/kanata/eng-us.kbd
-      mode: '0644'
+      state: link
     become: true
 
-  - name: Install the Kanata systemd service file
-    copy:
+  - name: Create link for Kanata systemd service file
+    ansible.builtin.file:
       src: "{{ home_dir }}/.dotfiles/keyboard/kanata.service"
       dest: /lib/systemd/system/kanata.service
-      mode: '0644'
+      state: link
     become: true
 
   - name: Reload systemd to apply Kanata new service file
@@ -49,9 +49,8 @@
       enabled: yes
     become: true
 
-  # stow keyboard dotfiles
-
   tags:
     - install
-    - dotfiles
-    - keyboard
+    - install-keyboard
+    - update
+    - update-keyboard
