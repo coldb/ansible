@@ -32,16 +32,22 @@
       - "lsof"
       - "gettext"
 
+  - name: Check for backlight directory
+    stat:
+      path: /sys/class/backlight
+    register: backlight_path
+
   - name: Check if backlight control exists
     command: ls /sys/class/backlight
-    register: backlight_dir
+    when: backlight_path.stat.exists
+    register: backlight_dirs
     ignore_errors: true
 
   - name: Install brightnessctl
-    become: true
     apt:
       name: ["brightnessctl"]
-    when: backlight_dir.stat.exists
+    become: true
+    when: backlight_dirs.stdout != ""
 
   tags:
     - install

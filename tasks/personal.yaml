@@ -47,7 +47,7 @@
       value: "{{ git_email }}"
 
   - name: Stow all the personal dotfiles
-    shell: "ansible-playbook -t stow local.yaml"
+    shell: "ansible-playbook -t install-dotfiles-stow local.yaml"
     args:
       chdir: "{{ personal_dir }}/ansible-personal"
 
