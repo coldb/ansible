@@ -47,4 +47,5 @@
       value: "{{ git_email }}"
 
   tags:
-    - work
+    - install-work
+    - update-work

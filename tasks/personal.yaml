@@ -52,4 +52,5 @@
       chdir: "{{ personal_dir }}/ansible-personal"
 
   tags:
-    - personal
+    - install-personal
+    - update-personal
