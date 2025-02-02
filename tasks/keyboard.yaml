@@ -49,6 +49,8 @@
       enabled: yes
     become: true
 
+  # stow keyboard dotfiles
+
   tags:
     - install
     - dotfiles

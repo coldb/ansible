@@ -1,67 +1,55 @@
-- block:
-  - name: Ensure .ssh directory exists 
+- name: Setup SSH
+  block:
+  - name: Set global facts
+    set_fact:
+      key_files: 
+        - { source: "{{ home_dir }}/ansible/.ssh/id_ed25519_gh", target: "{{ home_dir }}/.ssh/id_ed25519_gh" }
+
+  - name: Ensure GitHub .ssh directory exists 
     file:
-      dest: "{{ destination_key | dirname }}"
+      dest: "{{ item.target | dirname }}"
       mode: 0700
       state: directory
+    loop: "{{ key_files }}"
 
-  - name: Install ssh key
+  - name: Install GitHub SSH key
     copy:
-      src: "{{ source_key }}"
-      dest: "{{ destination_key }}"
+      src: "{{ item.source }}"
+      dest: "{{ item.target }}"
       mode: 0600
+    loop: "{{ key_files }}"
 
-  - name: Install public ssh key
+  - name: Install GitHub public SSH key
     copy:
-      src: "{{ source_key }}.pub"
-      dest: "{{ destination_key }}.pub"
+      src: "{{ item.source }}.pub"
+      dest: "{{ item.target }}.pub"
       mode: 0644
+    loop: "{{ key_files }}"
 
-  - name: Set authorized key from file
+  - name: Authorize GitHub SSH key
     become: true
     authorized_key:
       user: "{{ username }}"
       state: present
-      key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519_gh.pub') }}"
+      key: "{{ lookup('file', item.target + '.pub') }}"
+    loop: "{{ key_files }}"
 
-  - name: Write custom config for github to use custom ssh file
-    ansible.builtin.copy:
-      dest: "{{ home_dir }}/.ssh/config"
-      content: |
+  - name: Ensure custom GitHub SSH config is present
+    ansible.builtin.blockinfile:
+      path: "{{ home_dir }}/.ssh/config"
+      block: |
         Host github.com
           HostName github.com
           User git
           IdentityFile ~/.ssh/id_ed25519_gh
           IdentitiesOnly yes
-    become: true
+      append_newline: true
+      prepend_newline: true
+      create: true
+      marker: "# {mark} ANSIBLE MANAGED GITHUB CONFIG"
 
-  - name: Update ansible repository to ssh
-    shell: "cd {{ home_dir }}/ansible && git remote set-url origin git@github.com:coldb/ansible.git"
-
-  - name: Include variables
-    include_vars: auth_codes/variables.yaml
-
-  - name: Set ansible user.name local configuration
-    community.general.git_config:
-      name: user.name
-      repo: "{{ home_dir }}/ansible"
-      scope: local
-      value: "{{ git_user }}"
-
-  - name: Set ansible user.email local configuration
-    community.general.git_config:
-      name: user.email
-      repo: "{{ home_dir }}/ansible"
-      scope: local
-      value: "{{ git_email }}"
-
-  vars:
-    source_key: "{{ home_dir }}/ansible/.ssh/id_ed25519_gh"
-    destination_key: "{{ home_dir }}/.ssh/id_ed25519_gh"
   tags:
     - install
-    - dotfiles
-    - keyboard
-    - work
-    - personal
-    - ssh
+    - install-ssh
+    - update
+    - update-ssh

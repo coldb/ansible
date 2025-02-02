@@ -30,6 +30,7 @@
     chdir: "{{ dotfiles_dir }}"
   environment:
     STOW_FOLDERS: "i3-scaling"
+
   tags:
     - install-i3-scaling
     - update-i3-scaling

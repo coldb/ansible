@@ -1,9 +1,11 @@
 - name: Install fonts
-  vars:
-    fonts:
-      - UbuntuMono
-      - CascadiaMono
   block:
+  - name: Set fonts to download
+    set_fact:
+      fonts: 
+        - UbuntuMono
+        - CascadiaMono
+
   - name: Download latest Nerd Font files
     ansible.builtin.get_url:
       url: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip"

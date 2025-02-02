@@ -33,7 +33,6 @@
       - "gettext"
 
   tags:
-    - testing
     - install
     - install-core
     - update

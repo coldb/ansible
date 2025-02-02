@@ -1,0 +1,51 @@
+- name: Configure ansible and .dotfiles repositories
+  block:
+  - name: Include variables
+    include_vars: auth_codes/variables.yaml
+
+  - name: Update ansible repository to ssh
+    shell: "git remote set-url origin git@github.com:coldb/ansible.git"
+    args:
+      chdir: "{{ home_dir }}/ansible"
+
+  - name: Set ansible user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ home_dir }}/ansible"
+      scope: local
+      value: "{{ git_user }}"
+
+  - name: Set ansible user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ home_dir }}/ansible"
+      scope: local
+      value: "{{ git_email }}"
+
+  - name: Cloning .dotfiles repository
+    ansible.builtin.git:
+      repo: 'git@github.com:coldb/.dotfiles.git' 
+      dest: "{{ home_dir }}/.dotfiles"
+      recursive: true
+      update: true
+      accept_hostkey: true
+
+  - name: Set .dotfiles user.name local configuration
+    community.general.git_config:
+      name: user.name
+      repo: "{{ home_dir }}/.dotfiles"
+      scope: local
+      value: "{{ git_user }}"
+
+  - name: Set .dotfiles user.email local configuration
+    community.general.git_config:
+      name: user.email
+      repo: "{{ home_dir }}/.dotfiles"
+      scope: local
+      value: "{{ git_email }}"
+
+  tags:
+    - install
+    - install-github
+    - update
+    - update-github
