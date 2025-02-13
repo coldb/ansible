@@ -20,6 +20,7 @@
       name: "nvidia-settings"
       state: present
     when: nvidia_check.rc == 0
+    become: true
 
   tags:
     - install
