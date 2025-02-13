@@ -15,10 +15,10 @@
     register: nvidia_check
     ignore_errors: true
 
-  - name: Install nvidia-settings if NVIDIA hardware is found
-    ansible.builtin.package:
-      name: "nvidia-settings"
-      state: present
+  - name: Install NVIDIA driver package
+    apt:
+      name: "nvidia-driver-550"
+      state: present 
     when: nvidia_check.rc == 0
     become: true
 
