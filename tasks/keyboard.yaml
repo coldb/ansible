@@ -1,5 +1,5 @@
 - block:
-  - name: Get the latest playerctl version from GitHub
+  - name: Get the latest kanata version from GitHub
     get_latest_git_release:
       repo_slug: "jtroo/kanata"
     register: kanata
