@@ -3,6 +3,7 @@
 declare -A options=(
   ["debug"]=""
   ["install"]="--ask-vault-pass"
+  ["install-appimagelauncher"]=""
   ["install-audio"]=""
   ["install-keyboard"]=""
   ["install-brave"]=""
@@ -32,6 +33,7 @@ declare -A options=(
   ["install-xrdp"]=""
   ["install-zsh"]=""
   ["update"]=""
+  ["update-appimagelauncher"]=""
   ["update-audio"]=""
   ["update-brave"]=""
   ["update-keyboard"]=""

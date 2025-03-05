@@ -1,0 +1,44 @@
+- block:
+  - name: Get the latest version of App Image Launcher
+    get_latest_git_release:
+      repo_slug: "TheAssassin/AppImageLauncher"
+    register: appimagelauncher
+
+  - name: Debug
+    debug:
+      msg: "{{ appimagelauncher.assets  }}, {{ appimagelauncher.latest_version }}"
+
+  - name: "Find the App Image Launcher latest version"
+    set_fact:
+      appimagelauncher_deb: >-
+        {{ appimagelauncher.assets
+           | selectattr('name', 'match', '.*bionic_amd64\.deb$')
+           | list
+           | first }}
+
+  - name: "Ensure a App Image Launcher asset was found"
+    fail:
+      msg: "No App Image Launcher asset matching the expected pattern was found!"
+    when: appimagelauncher_deb is not defined
+
+  - name: "Download the App Image Launcher deb"
+    get_url:
+      url: "{{ appimagelauncher_deb.url }}"
+      dest: "{{ temp_dir }}/appimagelauncher.deb"
+    when: appimagelauncher_deb.url is defined
+
+  - name: Install App Image Launcher
+    ansible.builtin.apt:
+      deb: "{{ temp_dir }}/appimagelauncher.deb"
+    become: true
+
+  - name: Remove App Image Launcher install file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/appimagelauncher.deb"
+      state: absent
+
+  tags:
+    - install
+    - install-appimagelauncher
+    - update
+    - update-appimagelauncher
