@@ -1,4 +1,10 @@
 - block:
+  # Needed for running AppImages
+  - name: Install Fuse
+    apt:
+      name: libfuse2t64
+    become: true
+
   - name: Get the latest version of App Image Launcher
     get_latest_git_release:
       repo_slug: "TheAssassin/AppImageLauncher"
@@ -36,6 +42,13 @@
     ansible.builtin.file:
       path: "{{ temp_dir }}/appimagelauncher.deb"
       state: absent
+
+  - name: Setup the AppImageLauncher dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "appimagelauncher"
 
   tags:
     - install
