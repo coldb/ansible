@@ -1,5 +1,4 @@
 - import_tasks: appimage.yaml
 - import_tasks: stow.yaml
 - import_tasks: flatpak.yaml
-- import_tasks: app_image_launcher.yaml
 

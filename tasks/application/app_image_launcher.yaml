@@ -1,18 +1,8 @@
 - block:
-  # Needed for running AppImages
-  - name: Install Fuse
-    apt:
-      name: libfuse2t64
-    become: true
-
   - name: Get the latest version of App Image Launcher
     get_latest_git_release:
       repo_slug: "TheAssassin/AppImageLauncher"
     register: appimagelauncher
-
-  - name: Debug
-    debug:
-      msg: "{{ appimagelauncher.assets  }}, {{ appimagelauncher.latest_version }}"
 
   - name: "Find the App Image Launcher latest version"
     set_fact:
