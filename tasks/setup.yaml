@@ -26,6 +26,7 @@
       username: "{{ current_username.stdout }}"
       home_dir: "{{ lookup('env', 'HOME') }}"
       temp_dir: "{{ lookup('env', 'HOME') }}/temp"
+      application_dir: "{{ lookup('env', 'HOME') }}/applications"
       personal_dir: "{{ lookup('env', 'HOME') }}/personal"
       work_dir: "{{ lookup('env', 'HOME') }}/work"
       docker_container: "{{ lookup('ansible.builtin.env', 'DOCKER_CONTAINER', default='false') }}"
@@ -34,6 +35,12 @@
   - name: Create temporary download directory
     file:
       path: "{{ temp_dir }}"
+      state: directory
+      mode: '0755'
+
+  - name: Create application directory
+    file:
+      path: "{{ application_dir }}"
       state: directory
       mode: '0755'
 
