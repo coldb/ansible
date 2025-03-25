@@ -7,6 +7,7 @@
 - import_tasks: lazygit.yaml
 - import_tasks: neovim.yaml
 - import_tasks: node.yaml
+- import_tasks: pgcli.yaml
 - import_tasks: slack.yaml
 - import_tasks: thunderbird.yaml
 - import_tasks: tmux.yaml

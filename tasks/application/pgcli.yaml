@@ -1,0 +1,13 @@
+- block:
+  - name: Install pgcli
+    become: true
+    apt:
+      name: "{{ item }}"
+    with_items:
+      - "pgcli"
+
+  tags:
+    - install
+    - install-pgcli
+    - update
+    - update-pgcli
