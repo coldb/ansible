@@ -31,6 +31,9 @@
       - "htop"
       - "lsof"
       - "gettext"
+      - "jq"
+      - "direnv"
+      - "ondir"
 
   - name: Check for backlight directory
     stat:

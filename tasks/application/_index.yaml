@@ -13,3 +13,4 @@
 - import_tasks: tmux.yaml
 - import_tasks: visual-studio-code.yaml
 - import_tasks: xrdp.yaml
+- import_tasks: yq.yaml
