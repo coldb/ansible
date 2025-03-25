@@ -9,7 +9,7 @@
       url: "https://github.com/mikefarah/yq/releases/download/v{{ yq.latest_version }}/yq_linux_amd64"
       dest: "{{ temp_dir }}/yq"
 
-  - name: Move extracted yq to /usr/local/bin
+  - name: Move yq to /usr/local/bin
     ansible.builtin.copy:
       src: "{{ temp_dir }}/yq"
       dest: "/usr/local/bin/yq"
