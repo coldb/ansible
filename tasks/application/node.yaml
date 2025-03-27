@@ -23,6 +23,19 @@
     become: true
     shell: n 22
 
+  - name: Install Core packages
+    npm:
+      name: "{{ item }}"
+      global: true
+    with_items:
+      - "yarn"
+      - "yalc"
+      - "typescript"
+      - "ts-node"
+    tags:
+      - install-npm-packages
+      - update-npm-packages
+
   tags:
     - install
     - install-node
