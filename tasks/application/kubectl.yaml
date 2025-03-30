@@ -4,22 +4,12 @@
       kubectl_version: "1.28.6"
 
   - name: Download latest kubectl
-    ansible.builtin.get_url:
+    get_url:
       url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
-      dest: "{{ temp_dir }}/kubectl"
-
-  - name: Move kubectl to /usr/local/bin
-    ansible.builtin.copy:
-      src: "{{ temp_dir }}/kubectl"
-      dest: "/usr/local/bin/kubectl"
+      dest: "{{ user_bin }}/kubectl"
       mode: '0755'
-      remote_src: true
+      force: true
     become: true
-
-  - name: Remove kubectl downloaded file
-    ansible.builtin.file:
-      path: "{{ temp_dir }}/kubectl"
-      state: absent
 
   tags:
     - install

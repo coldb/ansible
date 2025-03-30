@@ -31,6 +31,7 @@
       work_dir: "{{ lookup('env', 'HOME') }}/work"
       docker_container: "{{ lookup('ansible.builtin.env', 'DOCKER_CONTAINER', default='false') }}"
       dotfiles_dir: "{{ lookup('env', 'HOME') }}/.dotfiles"
+      user_bin: "/usr/local/bin"
 
   - name: Create temporary download directory
     file:

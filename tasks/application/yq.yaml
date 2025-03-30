@@ -5,22 +5,12 @@
     register: yq
 
   - name: Download latest yq
-    ansible.builtin.get_url:
+    get_url:
       url: "https://github.com/mikefarah/yq/releases/download/v{{ yq.latest_version }}/yq_linux_amd64"
-      dest: "{{ temp_dir }}/yq"
-
-  - name: Move yq to /usr/local/bin
-    ansible.builtin.copy:
-      src: "{{ temp_dir }}/yq"
-      dest: "/usr/local/bin/yq"
+      dest: "{{ user_bin }}/yq"
       mode: '0755'
-      remote_src: true
+      force: true
     become: true
-
-  - name: Remove yq downloaded file
-    ansible.builtin.file:
-      path: "{{ temp_dir }}/yq"
-      state: absent
 
   tags:
     - install

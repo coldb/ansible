@@ -80,7 +80,7 @@
 
   - name: Remove the symbolic link to Neovim
     ansible.builtin.file:
-      path: "/usr/local/bin/nvim"
+      path: "{{ user_bin }}/nvim"
       state: "absent"
     become: true
     tags:
@@ -109,7 +109,7 @@
   - name: Create a symbolic link to Neovim
     ansible.builtin.file:
       src: "/opt/neovim/AppRun"
-      dest: "/usr/local/bin/nvim"
+      dest: "{{ user_bin }}/nvim"
       state: "link"
       force: true
     become: true

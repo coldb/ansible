@@ -13,7 +13,7 @@
     shell: "tar xf {{ temp_dir }}/lazygit.tar.gz -C {{ temp_dir }}"
 
   - name: Install Lazygit
-    shell: "install {{ temp_dir }}/lazygit /usr/local/bin"
+    shell: "install {{ temp_dir }}/lazygit {{ user_bin }}"
     become: true
 
   - name: Remove Lazy Git zip file
