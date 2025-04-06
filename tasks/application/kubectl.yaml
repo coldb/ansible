@@ -14,5 +14,7 @@
   tags:
     - install
     - install-kubectl
+    - install-work-configuration
     - update
     - update-kubectl
+    - update-work-configuration

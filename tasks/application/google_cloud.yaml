@@ -25,5 +25,7 @@
   tags:
     - install
     - install-google-cloud
+    - install-work-configuration
     - update
     - update-google-cloud
+    - update-work-configuration
