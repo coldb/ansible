@@ -10,7 +10,24 @@ git clone https://github.com/coldb/ansible.git
 cd ansible
 
 if [ -n "$1" ]; then
-    ansible-playbook local.yaml -t $1 --ask-become-pass --ask-vault-pass
+  ansible-playbook local.yaml -t $1 --ask-become-pass --ask-vault-pass
 else
-    ansible-playbook local.yaml -t install --ask-become-pass --ask-vault-pass
+  optional_tags=(
+    "install"
+    "install-personal"
+    "install-work"
+  )
+
+  selected_tags=$(printf "%s\n" "${optional_tags[@]}" | sort -r | fzf --prompt="What tags to run: " --multi --header="Use tab to multi-select")
+
+  if [ -n "$selected_tags" ]; then
+    tag_list=$(echo "$selected_tags" | tr '\n' ',')
+    tag_list=${tag_list%,}
+
+    ansible-playbook local.yaml -t $tag_list --ask-become-pass --ask-vault-pass
+  else
+    echo "No tags selected"
+  fi
 fi
+
+
