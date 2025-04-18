@@ -1,11 +1,13 @@
 - block:
-  - name: Set kubectl version
-    set_fact:
-      kubectl_version: "1.28.6"
+  - name: Get application version from URL
+    ansible.builtin.uri:
+      url: https://dl.k8s.io/release/stable.txt
+      return_content: yes
+    register: kubectl_latest_version
 
   - name: Download latest kubectl
     get_url:
-      url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
+      url: "https://dl.k8s.io/release/{{ kubectl_latest_version.content | trim }}/bin/linux/amd64/kubectl"
       dest: "{{ user_bin }}/kubectl"
       mode: '0755'
       force: true
@@ -14,7 +16,6 @@
   tags:
     - install
     - install-kubectl
-    - install-work-configuration
     - update
     - update-kubectl
-    - update-work-configuration
+
