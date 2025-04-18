@@ -1,4 +1,5 @@
 - import_tasks: app_image_launcher.yaml
+- import_tasks: homebrew.yaml
 - import_tasks: browsers/_index.yaml
 - import_tasks: bruno.yaml
 - import_tasks: deno.yaml
