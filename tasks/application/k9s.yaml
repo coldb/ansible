@@ -1,0 +1,11 @@
+- block:
+  - name: Install k9s
+    community.general.homebrew:
+      name: k9s
+      state: present
+
+  tags:
+    - install
+    - install-k9s
+    - update
+    - update-k9s
