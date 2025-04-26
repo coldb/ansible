@@ -24,6 +24,16 @@
       update_cache: true
     become: true
 
+  - name: Setup the bin dotfiles
+    command: "./ubuntu"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "rancher-desktop"
+    tags:
+      - debug
+      - update-rancher
+
   - name: Install Rancher desktop
     apt:
       name: "rancher-desktop"
