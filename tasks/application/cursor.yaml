@@ -1,0 +1,61 @@
+- block:
+  - name: Set repository names
+    set_fact:
+      cursor_download_url: https://downloads.cursor.com/production/0781e811de386a0c5bcb07ceb259df8ff8246a52/linux/x64/Cursor-0.49.6-x86_64.AppImage
+
+  - name: Download Cursor appimage
+    ansible.builtin.get_url:
+      url: "{{ cursor_download_url }}"
+      dest: "{{ temp_dir }}/cursor.appimage"
+      mode: "0755"
+
+  - name: Extract the contents of Cursor AppImage
+    ansible.builtin.command:
+      cmd: "{{ temp_dir }}/cursor.appimage --appimage-extract"
+      chdir: "{{ temp_dir }}"
+    args:
+      creates: "{{ temp_dir }}/squashfs-root"
+
+  - name: Remove the symbolic link to Cursor
+    ansible.builtin.file:
+      path: "{{ user_bin }}/cursor"
+      state: "absent"
+    become: true
+
+  - name: Clean up the existing /opt Cursor directory
+    ansible.builtin.file:
+      path: "/opt/cursor"
+      state: "absent"
+    become: true
+    tags:
+      - debug
+
+  - name: Move extracted Cursor to /opt/neovim
+    ansible.builtin.copy:
+      src: "{{ temp_dir }}/squashfs-root/"
+      dest: "/opt/cursor"
+      remote_src: true
+    become: true
+
+  - name: Create a symbolic link to Cursor
+    ansible.builtin.file:
+      src: "/opt/cursor/AppRun"
+      dest: "{{ user_bin }}/cursor"
+      state: "link"
+      force: true
+    become: true
+
+  - name: Clean up the existing Cursor directory
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/squashfs-root/"
+      state: "absent"
+    become: true
+
+  - name: Remove neovim image file
+    ansible.builtin.file:
+      path: "{{ temp_dir }}/cursor.appimage"
+      state: absent
+
+  tags:
+    - install-cursor
+    - update-cursor
