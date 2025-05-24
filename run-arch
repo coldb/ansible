@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+
+declare -A options=(
+  ["debug"]=""
+  ["install"]="--ask-vault-pass"
+  # ["install-appimage"]=""
+  # ["install-appimagelauncher"]=""
+  # ["install-audio"]=""
+  # ["install-brave"]=""
+  # ["install-browsers"]=""
+  # ["install-bruno"]=""
+  # ["install-chrome"]=""
+  # ["install-core"]=""
+  # ["install-deno"]=""
+  # ["install-docker"]=""
+  # ["install-firefox"]=""
+  # ["install-fonts"]=""
+  # ["install-ghostty"]=""
+  ["install-dotfiles"]="--ask-vault-pass"
+  # ["install-i3"]=""
+  # ["install-i3-scaling"]=""
+  # ["install-keyboard"]=""
+  # ["install-kubectl"]=""
+  # ["install-lazygit"]=""
+  ["install-neovim"]=""
+  ["install-neovim-latest"]=""
+  ["install-node"]=""
+  # ["install-npm-packages"]=""
+  # ["install-personal"]="--ask-vault-pass"
+  # ["install-pgcli"]=""
+  # ["install-rancher"]=""
+  # ["install-slack"]=""
+  ["install-ssh"]="--ask-vault-pass"
+  # ["install-thunderbird"]=""
+  ["install-tmux"]=""
+  # ["install-video"]=""
+  # ["install-vscode"]=""
+  # ["install-work"]="--ask-vault-pass"
+  # ["install-xrdp"]=""
+  # ["install-yq"]=""
+  ["install-zsh"]=""
+  ["update"]=""
+  # ["update-appimage"]=""
+  # ["update-appimagelauncher"]=""
+  # ["update-audio"]=""
+  # ["update-brave"]=""
+  # ["update-browsers"]=""
+  # ["update-bruno"]=""
+  # ["update-chrome"]=""
+  # ["update-core"]=""
+  # ["update-deno"]=""
+  # ["update-docker"]=""
+  # ["update-firefox"]=""
+  # ["update-fonts"]=""
+  # ["update-ghostty"]=""
+  ["update-dotfiles"]="--ask-vault-pass"
+  # ["update-i3"]=""
+  # ["update-i3-scaling"]=""
+  # ["update-keyboard"]=""
+  # ["update-kubectl"]=""
+  # ["update-lazygit"]=""
+  ["update-neovim"]=""
+  ["update-neovim-latest"]=""
+  # ["update-npm-packages"]=""
+  # ["update-personal"]="--ask-vault-pass"
+  # ["update-pgcli"]=""
+  # ["update-rancher"]=""
+  # ["update-slack"]=""
+  ["update-ssh"]="--ask-vault-pass"
+  # ["update-thunderbird"]=""
+  ["update-tmux"]=""
+  # ["update-video"]=""
+  # ["update-vscode"]=""
+  # ["update-work"]="--ask-vault-pass"
+  # ["update-xrdp"]=""
+  # ["update-yq"]=""
+  ["update-zsh"]=""
+)
+
+sections="general"
+
+# if [ -f "$HOME/work/ansible-work/run" ]; then
+#   sections="$sections\nwork"
+# fi
+#
+# if [ -f "$HOME/personal/ansible-personal/run" ]; then
+#   sections="$sections\npersonal"
+# fi
+
+sections_count=$(echo -e "$sections" | wc -l)
+selected_section=""
+
+if (( sections_count > 1 )); then
+  selected_section=$(echo -e "$sections" | fzf);
+
+  if [[ "$selected_section" == "personal" ]]; then
+    cd "$HOME/personal/ansible-personal"
+    ./run
+    exit 0;
+  elif [[ "$selected_section" == "work" ]]; then 
+    cd "$HOME/work/ansible-work"
+    ./run
+    exit 0;
+  fi
+else
+  selected_section="general"
+fi
+
+
+if [[ "$selected_section" != "general" ]]; then
+  echo "No section selected. Exiting"
+  exit 1;
+fi
+
+selected_tags=$(printf "%s\n" "${!options[@]}" | sort -r | fzf --multi --prompt="Select tags: " --header="Use Tab to select multiple tags")
+selected_tags_count=$(echo "$selected_tags" | wc -l)
+
+if [ -z "$selected_tags" ]; then
+  echo "No tags selected. Exiting."
+  exit 1
+fi
+
+tag_list=""
+extra_flags="--ask-become-pass"
+
+for tag in $selected_tags; do
+  tag_list+="$tag,"
+  for flag in ${options[$tag]}; do
+    if [[ -n "$flag" && ! "$extra_flags" =~ $flag ]]; then
+      extra_flags+=" $flag"
+    fi
+  done
+done
+
+tag_list=${tag_list%,}
+
+ansible_command="ansible-playbook local-arch.yaml --tags \"$tag_list\" $extra_flags"
+
+echo "Executing: $ansible_command"
+eval $ansible_command

@@ -1,0 +1,34 @@
+# TODO: Cleanup
+# - import_tasks: appimage.yaml
+# - import_tasks: flatpak.yaml
+
+- name: Installing stow
+  package:
+    name: "stow"
+  become: true
+  tags:
+    - always
+
+- block:
+  - name: Install basic tools
+    become: true
+    package:
+      name: "{{ item }}"
+    with_items:
+      - "base-devel" # software building tools
+      - "go" # go compiler and dev tools
+      - "rust" # rust compiler and cargo
+      - "composer" # dependency manager for PHP
+      - "jdk-openjdk" # Java JDK
+      - "luarocks" # Lua package manager
+      - "ruby" # Lua package manager
+      - "julia" # Julia programming language
+      - "python-pip" # Python package manager
+      - "htop"
+      - "openssh"
+      - "unzip"
+      - "wget"
+
+  tags:
+    - install
+    - update

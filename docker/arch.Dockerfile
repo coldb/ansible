@@ -13,7 +13,16 @@ ENV DOCKER_CONTAINER=true
 #     apt-get clean autoclean && \
 #     apt-get autoremove --yes
 
-RUN pacman -Syu sudo which git ansible fzf --noconfirm
+RUN pacman -Syu \
+    sudo which git ansible fzf \
+    python-requests openssh base-devel \
+    --noconfirm
+RUN pacman -Syu \
+    go rust composer jdk-openjdk luarocks ruby \
+    --noconfirm
+RUN pacman -Syu \
+    python-pip julia \
+    --noconfirm
 
 FROM base AS coldb
 ARG TAGS
@@ -25,6 +34,8 @@ WORKDIR /home/coldb
 
 FROM coldb
 COPY --chown=coldb:coldb . ./ansible 
+COPY --chown=coldb:coldb ./execute-ansible .
+
 
 # COPY ansible-run-arch ./run-arch
 

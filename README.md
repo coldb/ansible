@@ -37,3 +37,9 @@ Run `cd ~/personal/ansible-personal/ && ansible-playbook -t install local.yaml -
 ## Setup high resolution screen support
 
 When the computer screen has a very high resolution the i3 interface needs to be scaled to match. Use the `install-i3-scaling` or `update-i3-scaling` tags to install or update the nessesary setups.
+
+## Build arch image and connect to shell
+
+```
+docker build -f ./docker/arch.Dockerfile . -t new-computer-arch && docker run --rm -it new-computer-arch bash
+```

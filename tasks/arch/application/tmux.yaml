@@ -1,0 +1,32 @@
+- block:
+  - name: Install Tmux
+    package:
+      name: "tmux"
+    become: true
+
+  # TODO: Install the tmux-bash-completion-git using AUR https://wiki.archlinux.org/title/Tmux#Installation
+
+  # TODO: https://aur.archlinux.org/packages/tmux-plugin-manager
+  # - name: Cloning Tmux Plugin Manager
+  #   ansible.builtin.git:
+  #     repo: 'https://github.com/tmux-plugins/tpm.git' 
+  #     dest: "{{ home_dir }}/.tmux/plugins/tpm"
+
+  # TODO: Is this needed?
+  # - name: Cloning Tmux Plugin Tmuxifier
+  #   ansible.builtin.git:
+  #     repo: 'https://github.com/jimeh/tmuxifier.git'
+  #     dest: "{{ home_dir }}/.tmuxifier"
+
+  - name: Setup the tmux dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "tmux"
+
+  tags:
+    - install
+    - install-tmux
+    - update
+    - update-tmux
