@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker build . -t new-computer
+docker build -f ./docker/ubuntu.Dockerfile . -t new-computer-ubuntu
+docker build -f ./docker/arch.Dockerfile . -t new-computer-arch

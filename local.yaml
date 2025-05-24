@@ -9,7 +9,7 @@
     tags:
       - install
       - core
-  tasks: 
+  tasks:
     - import_tasks: tasks/setup.yaml
     - import_tasks: tasks/tools/_index.yaml
     - import_tasks: tasks/ssh.yaml
