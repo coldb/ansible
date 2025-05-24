@@ -10,7 +10,7 @@ git clone https://github.com/coldb/ansible.git
 cd ansible
 
 if [ -n "$1" ]; then
-  ansible-playbook local.yaml -t $1 --ask-become-pass --ask-vault-pass
+  ansible-playbook local-ubuntu.yaml -t $1 --ask-become-pass --ask-vault-pass
 else
   optional_tags="install install-personal install-work"
 
@@ -20,7 +20,7 @@ else
     tag_list=$(echo "$selected_tags" | tr '\n' ',')
     tag_list=${tag_list%,}
 
-    ansible-playbook local.yaml -t $tag_list --ask-become-pass --ask-vault-pass
+    ansible-playbook local-ubuntu.yaml -t $tag_list --ask-become-pass --ask-vault-pass
   else
     echo "No tags selected"
   fi

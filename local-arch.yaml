@@ -10,7 +10,7 @@
       - install
       - core
   tasks:
-    - import_tasks: tasks/setup.yaml
+    - import_tasks: tasks/arch/setup.yaml
     # - import_tasks: tasks/tools/_index.yaml
     # - import_tasks: tasks/ssh.yaml
     # - import_tasks: tasks/github.yaml
