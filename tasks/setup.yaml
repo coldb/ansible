@@ -1,4 +1,9 @@
 - block:
+  - name: Testing
+    debug:
+      msg: "{{ ansible_distribution }}"
+
+
   - name: Gather Ubuntu codename
     command: lsb_release -cs
     register: ubuntu_codename

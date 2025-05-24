@@ -31,7 +31,6 @@
     environment:
       STOW_FOLDERS: "rancher-desktop"
     tags:
-      - debug
       - update-rancher
 
   - name: Install Rancher desktop

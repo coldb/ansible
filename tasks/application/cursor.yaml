@@ -27,8 +27,6 @@
       path: "/opt/cursor"
       state: "absent"
     become: true
-    tags:
-      - debug
 
   - name: Move extracted Cursor to /opt/neovim
     ansible.builtin.copy:
