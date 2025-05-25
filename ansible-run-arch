@@ -7,6 +7,8 @@ sudo pacman -S ansible git python-requests openssh base-devel --noconfirm
 git clone https://github.com/coldb/ansible.git
 cd ansible
 
+ansible-galaxy collection install -r collections/requirements.yaml
+
 if [ -n "$1" ]; then
   ansible-playbook local-arch.yaml -t $1 --ask-become-pass --ask-vault-pass
 else

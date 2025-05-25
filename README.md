@@ -15,6 +15,11 @@ curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run-ubunt
 ```bash
 curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run-arch | sh
 ```
+## Adding the required collections
+
+```bash
+ansible-galaxy collection install -r collections/requirements.yaml
+```
 
 ## Building docker images
 

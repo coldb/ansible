@@ -1,9 +1,9 @@
 # - import_tasks: app_image_launcher.yaml
 # - import_tasks: homebrew.yaml
-# - import_tasks: browsers/_index.yaml
-# - import_tasks: bruno.yaml
-# - import_tasks: deno.yaml
-# - import_tasks: docker.yaml
+- import_tasks: browser/_index.yaml
+- import_tasks: bruno.yaml
+- import_tasks: deno.yaml
+- import_tasks: docker.yaml
 # - import_tasks: i3.yaml
 # - import_tasks: k9s.yaml
 # - import_tasks: kubectl.yaml
@@ -17,4 +17,3 @@
 - import_tasks: tmux.yaml
 # - import_tasks: visual-studio-code.yaml
 # - import_tasks: xrdp.yaml
-# - import_tasks: yq.yaml

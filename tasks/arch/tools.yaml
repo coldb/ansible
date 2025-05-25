@@ -28,6 +28,15 @@
       - "openssh"
       - "unzip"
       - "wget"
+      - "bat" # pretty print file content
+      - "ksnip" # screenshot capturing
+      - "tldr" # community maintained cheatsheets for command line commands
+      - "ripgrep" # faster greping
+      - "lsof" # List open files
+      - "jq" # JSON navigation
+      - "yq" # Yaml navigation
+      - "direnv"
+      # - "ondir" Only available as AUR package
 
   tags:
     - install

@@ -24,6 +24,7 @@ RUN pacman -Syu \
     python-pip julia \
     --noconfirm
 
+
 FROM base AS coldb
 ARG TAGS
 RUN useradd -m coldb
@@ -36,6 +37,7 @@ FROM coldb
 COPY --chown=coldb:coldb . ./ansible 
 COPY --chown=coldb:coldb ./execute-ansible .
 
+RUN ansible-galaxy collection install -r ./ansible/collections/requirements.yaml
 
 # COPY ansible-run-arch ./run-arch
 

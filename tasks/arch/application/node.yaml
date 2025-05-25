@@ -4,11 +4,10 @@
       name: "nvm"
     become: true
 
-  # - name: Install different node versions
-  #   shell: "source /usr/share/nvm/init-nvm.sh"
-
-  - name: Install different node versions
-    shell: "source /usr/share/nvm/init-nvm.sh && nvm install 22.16.0"
+  - name: Install node versions
+    shell: "source /usr/share/nvm/init-nvm.sh && nvm install {{ item }}"
+    with_items:
+      - "22.16.0"
 
   tags:
     - install

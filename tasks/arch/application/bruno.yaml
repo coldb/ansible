@@ -1,0 +1,12 @@
+- block:
+  - name: Install Bruno
+    kewlfft.aur.aur:
+      name: bruno-bin
+      state: present
+      use: yay
+
+  tags:
+    - install
+    - install-bruno
+    - update
+    - update-bruno

@@ -1,0 +1,25 @@
+- name: Install Docker block
+  block:
+  - name: Install docker
+    become: true
+    package:
+      name: "{{ item }}"
+    with_items:
+      - "docker"
+      - "docker-compose"
+
+  - name: Enable a docker socket
+    ansible.builtin.systemd_service:
+      name: docker.socket
+      state: started
+      enabled: true
+    become: true
+    when: docker_container == False
+
+  - name: Add permissions for docker command
+    shell: "usermod -aG docker {{ username }}"
+    become: true
+
+  tags:
+    - install
+    - install-docker

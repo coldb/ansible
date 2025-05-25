@@ -42,5 +42,34 @@
       - "user_bin: {{ user_bin }}"
       - "docker_container: {{ docker_container }}"
 
+  - name: Check if yay is installed
+    ansible.builtin.command: "which yay"
+    register: yay_check
+    changed_when: false
+    failed_when: false # Don't fail if yay is not found, we'll install it
+
+  - name: Install yay (AUR Helper) if not present
+    when: yay_check.rc != 0
+    block:
+      - name: Clone yay repository
+        ansible.builtin.git:
+          repo: "https://aur.archlinux.org/yay.git"
+          dest: "{{ temp_dir }}/yay"
+          clone: yes
+          update: no # We just need to clone it once to build
+        become: no # Explicitly run this task without sudo
+
+      - name: Build and install yay
+        ansible.builtin.command: "makepkg -si --noconfirm"
+        args:
+          chdir: "{{ temp_dir }}/yay"
+        become: no # Explicitly run this task without sudo
+
+      - name: Clean up yay build directory
+        ansible.builtin.file:
+          path: "{{ temp_dir }}/yay"
+          state: absent
+        become: no # No sudo needed to remove a temp dir owned by the user  tags
+
   tags:
     - always

@@ -4,19 +4,17 @@
       name: "tmux"
     become: true
 
-  # TODO: Install the tmux-bash-completion-git using AUR https://wiki.archlinux.org/title/Tmux#Installation
+  - name: Install Tmux bash completion
+    kewlfft.aur.aur:
+      name: tmux-bash-completion-git
+      state: present
+      use: yay
 
-  # TODO: https://aur.archlinux.org/packages/tmux-plugin-manager
-  # - name: Cloning Tmux Plugin Manager
-  #   ansible.builtin.git:
-  #     repo: 'https://github.com/tmux-plugins/tpm.git' 
-  #     dest: "{{ home_dir }}/.tmux/plugins/tpm"
-
-  # TODO: Is this needed?
-  # - name: Cloning Tmux Plugin Tmuxifier
-  #   ansible.builtin.git:
-  #     repo: 'https://github.com/jimeh/tmuxifier.git'
-  #     dest: "{{ home_dir }}/.tmuxifier"
+  - name: Install Tmux plugin manager
+    kewlfft.aur.aur:
+      name: tmux-plugin-manager
+      state: present
+      use: yay
 
   - name: Setup the tmux dotfiles
     command: "./arch"
