@@ -12,7 +12,7 @@
 - import_tasks: pgcli.yaml
 # - import_tasks: rancher.yaml
 # - import_tasks: slack.yaml
-# - import_tasks: thunderbird.yaml
+- import_tasks: thunderbird.yaml
 - import_tasks: tmux.yaml
 - import_tasks: visual-studio-code.yaml
 - import_tasks: cursor.yaml
