@@ -4,16 +4,16 @@
 - import_tasks: bruno.yaml
 - import_tasks: deno.yaml
 - import_tasks: docker.yaml
-# - import_tasks: i3.yaml
-# - import_tasks: k9s.yaml
+- import_tasks: k9s.yaml
 # - import_tasks: kubectl.yaml
-# - import_tasks: lazygit.yaml
+- import_tasks: lazygit.yaml
 - import_tasks: neovim.yaml
 - import_tasks: node.yaml
-# - import_tasks: pgcli.yaml
+- import_tasks: pgcli.yaml
 # - import_tasks: rancher.yaml
 # - import_tasks: slack.yaml
 # - import_tasks: thunderbird.yaml
 - import_tasks: tmux.yaml
-# - import_tasks: visual-studio-code.yaml
+- import_tasks: visual-studio-code.yaml
+- import_tasks: cursor.yaml
 # - import_tasks: xrdp.yaml

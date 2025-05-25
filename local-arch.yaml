@@ -9,8 +9,8 @@
     # - import_tasks: tasks/video.yaml
     - import_tasks: tasks/arch/shell/_index.yaml
     - import_tasks: tasks/arch/terminal/_index.yaml
-    # - import_tasks: tasks/keyboard.yaml
-    # - import_tasks: tasks/fonts/_index.yaml
+    - import_tasks: tasks/arch/keyboard.yaml
+    - import_tasks: tasks/arch/font/_index.yaml
     - import_tasks: tasks/arch/application/_index.yaml
     # - import_tasks: tasks/work.yaml
     # - import_tasks: tasks/personal.yaml

@@ -1,0 +1,53 @@
+- block:
+  - name: Install kanata
+    kewlfft.aur.aur:
+      name: kanata-bin
+      state: present
+      use: yay
+
+  - name: Create the /etc/kanata directory
+    file:
+      path: /etc/kanata
+      state: directory
+      mode: '0755'
+    become: true
+
+  - name: Create link for the Kanata configuration file
+    ansible.builtin.file:
+      src: "{{ dotfiles_dir }}/keyboard/kanata/eng-us.kbd"
+      dest: /etc/kanata/eng-us.kbd
+      state: link
+    become: true
+
+  - name: Create link for Kanata systemd service file
+    ansible.builtin.file:
+      src: "{{ dotfiles_dir }}/keyboard/kanata.service"
+      dest: /lib/systemd/system/kanata.service
+      state: link
+    become: true
+
+  - name: Reload systemd to apply Kanata new service file
+    systemd:
+      daemon_reload: yes
+    become: true
+    when: docker_container == False
+
+  - name: Start the Kanata service
+    systemd:
+      name: kanata
+      state: started
+    become: true
+    when: docker_container == False
+
+  - name: Enable the Kanata service to start at boot
+    systemd:
+      name: kanata
+      enabled: yes
+    become: true
+    when: docker_container == False
+
+  tags:
+    - install
+    - install-keyboard
+    - update
+    - update-keyboard
