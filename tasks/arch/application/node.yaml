@@ -9,6 +9,17 @@
     with_items:
       - "22.16.0"
 
+  - name: Set default node version
+    shell: "source /usr/share/nvm/init-nvm.sh && nvm alias default 22"
+
+  - name: Install Core NPM packages
+    shell: "source /usr/share/nvm/init-nvm.sh && npm install -g {{ item }}"
+    with_items:
+      - "yarn"
+      - "yalc"
+      - "typescript"
+      - "ts-node"
+
   tags:
     - install
     - install-node
