@@ -2,6 +2,7 @@
 - import_tasks: bruno.yaml
 - import_tasks: deno.yaml
 - import_tasks: docker.yaml
+- import_tasks: hyprland.yaml
 - import_tasks: k9s.yaml
 - import_tasks: kubectl.yaml
 - import_tasks: lazygit.yaml

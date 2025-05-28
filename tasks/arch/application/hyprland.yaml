@@ -1,0 +1,54 @@
+- block:
+  - name: Install hyprland
+    become: true
+    package:
+      name: "hyprland"
+
+  - name: Install hyprland must have tools 
+    become: true
+    package:
+      name: "{{ item }}"
+    with_items:
+      - "pipewire"
+      - "wireplumber"
+      - "wofi"
+      - "linux-headers"
+
+  - name: Check if lspci command is available
+    command: which lspci
+    register: lspci_check
+    ignore_errors: true
+
+  - name: Install tooling for nvidia check
+    become: true
+    package:
+      name: "pciutils"
+    when: lspci_check.rc != 0
+
+  - name: Check if NVIDIA hardware is present
+    ansible.builtin.shell: "lspci | grep -i nvidia"
+    register: nvidia_check
+    ignore_errors: true
+
+  # - name: Install NVIDIA driver package
+  #   apt:
+  #     name: "nvidia-driver-550"
+  #     state: present 
+  #   when: nvidia_check.rc == 0
+  #   become: true
+
+  - name: Install NVidia packages 
+    become: true
+    when: nvidia_check.rc == 0
+    package:
+      name: "{{ item }}"
+    with_items:
+      - "nvidia-dkms"
+      - "nvidia-utils"
+      - "egl-wayland"
+
+  tags:
+    - install
+    - install-hyprland
+    - update
+    - update-hyprland
