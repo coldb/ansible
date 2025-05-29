@@ -1,0 +1,12 @@
+- block:
+  - name: Install kubectl
+    become: true
+    package:
+      name: "kubectl"
+
+  tags:
+    - install
+    - install-kubectl
+    - update
+    - update-kubectl
+

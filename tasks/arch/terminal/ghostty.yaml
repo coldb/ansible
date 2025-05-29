@@ -1,0 +1,19 @@
+- name: Install Ghostty block
+  block:
+  - name: Install ghostty
+    become: true
+    package:
+      name: ghostty
+
+  - name: Setup the ghostty dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "ghostty"
+
+  tags:
+    - install
+    - install-ghostty
+    - update
+    - update-ghostty

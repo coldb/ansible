@@ -1,0 +1,17 @@
+- hosts: localhost
+  tasks:
+    - import_tasks: tasks/arch/setup.yaml
+    - import_tasks: tasks/arch/tools.yaml
+    - import_tasks: tasks/arch/ssh.yaml
+    - import_tasks: tasks/arch/dotfiles.yaml
+    - import_tasks: tasks/arch/bluetooth.yaml
+    # - import_tasks: tasks/core.yaml
+    # - import_tasks: tasks/audio.yaml
+    # - import_tasks: tasks/video.yaml
+    - import_tasks: tasks/arch/shell/_index.yaml
+    - import_tasks: tasks/arch/terminal/_index.yaml
+    - import_tasks: tasks/arch/keyboard.yaml
+    - import_tasks: tasks/arch/font/_index.yaml
+    - import_tasks: tasks/arch/application/_index.yaml
+    # - import_tasks: tasks/work.yaml
+    # - import_tasks: tasks/personal.yaml

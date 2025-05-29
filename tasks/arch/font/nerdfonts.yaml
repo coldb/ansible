@@ -1,0 +1,15 @@
+- block:
+  - name: Install nerd fonts
+    become: true
+    package:
+      name: "{{ item }}"
+    with_items:
+      - "ttf-ubuntu-mono-nerd"
+      - "ttf-cascadia-mono-nerd"
+
+  tags:
+    - install
+    - install-fonts
+    - update
+    - update-fonts
+

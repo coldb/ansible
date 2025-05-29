@@ -1,0 +1,14 @@
+- block:
+  - name: Install Brave
+    kewlfft.aur.aur:
+      name: brave-bin
+      state: present
+      use: yay
+
+  tags:
+    - install
+    - install-brave
+    - install-browsers
+    - update
+    - update-brave
+    - update-browsers

@@ -8,7 +8,7 @@
   # https://github.com/electron/electron/issues/42510#issuecomment-2171583086
   - name: Remove Ubuntu 24.04 appimage restrictions
     shell: sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-    when: ubuntu_codename == "noble"
+    when: docker_container == False and ubuntu_codename == "noble"
     become: true
 
   tags:

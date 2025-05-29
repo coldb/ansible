@@ -4,8 +4,21 @@
 
 To trigger the script without first cloning the repository run the following. This will install the required dependencies and clone the coldb/ansible repository. And trigger the ansible-runbook with the `install` tag. 
 
+**Ubuntu:**
+
 ```bash
-curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run | sh
+curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run-ubuntu | sh
+```
+
+**Arch Linux:**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/coldb/ansible/main/ansible-run-arch | sh
+```
+## Adding the required collections
+
+```bash
+ansible-galaxy collection install -r collections/requirements.yaml
 ```
 
 ## Building docker images
@@ -18,14 +31,20 @@ When making updates to the files then the docker image needs to be rebuilt.
 
 Run `./build-dockers && docker run --rm -it new-computer bash`. This will build and start the container and open the terminal.
 
-Once in the terminal run `cd ~/ansible/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the install ansible install.
+Once in the terminal run `cd ~/ansible/ && ansible-playbook -t install local-ubuntu.yaml --ask-vault-pass`. This will trigger the install ansible install.
 
 Modify the `-t` value to trigger other tags to be run (coma separated list) or run the `./run` script to use fuzzy find to find possible tags to trigger.
 
 ### Running the personal ansible playbook
 
-Run `cd ~/personal/ansible-personal/ && ansible-playbook -t install local.yaml --ask-vault-pass`. This will trigger the ansible playbook inside the personal ansible repository.
+Run `cd ~/personal/ansible-personal/ && ansible-playbook -t install local-ubuntu.yaml --ask-vault-pass`. This will trigger the ansible playbook inside the personal ansible repository.
 
 ## Setup high resolution screen support
 
 When the computer screen has a very high resolution the i3 interface needs to be scaled to match. Use the `install-i3-scaling` or `update-i3-scaling` tags to install or update the nessesary setups.
+
+## Build arch image and connect to shell
+
+```
+docker build -f ./docker/arch.Dockerfile . -t new-computer-arch && docker run --rm -it new-computer-arch bash
+```

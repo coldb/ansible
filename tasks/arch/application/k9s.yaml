@@ -1,0 +1,11 @@
+- block:
+  - name: Install k9s
+    become: true
+    package:
+      name: "k9s"
+
+  tags:
+    - install
+    - install-k9s
+    - update
+    - update-k9s

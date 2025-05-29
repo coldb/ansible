@@ -1,0 +1,11 @@
+- block:
+  - name: Install deno
+    become: true
+    package:
+      name: "deno"
+
+  tags:
+    - install
+    - install-deno
+    - update
+    - update-deno

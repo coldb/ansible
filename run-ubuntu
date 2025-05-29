@@ -134,7 +134,7 @@ done
 
 tag_list=${tag_list%,}
 
-ansible_command="ansible-playbook local.yaml --tags \"$tag_list\" $extra_flags"
+ansible_command="ansible-playbook local-ubuntu.yaml --tags \"$tag_list\" $extra_flags"
 
 echo "Executing: $ansible_command"
 eval $ansible_command

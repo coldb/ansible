@@ -50,7 +50,7 @@
     apt:
       name: ["brightnessctl"]
     become: true
-    when: backlight_dirs.stdout != ""
+    when: docker_container == False and backlight_dirs.stdout != ""
 
   tags:
     - install

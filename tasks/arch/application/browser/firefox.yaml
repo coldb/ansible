@@ -1,0 +1,13 @@
+- block:
+  - name: Install Firefox
+    become: true
+    package:
+      name: "firefox"
+
+  tags:
+    - install
+    - install-firefox
+    - install-browsers
+    - update
+    - update-firefox
+    - update-browsers

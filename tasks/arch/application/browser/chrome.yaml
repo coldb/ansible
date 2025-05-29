@@ -1,0 +1,14 @@
+- block:
+  - name: Install Chrome
+    kewlfft.aur.aur:
+      name: google-chrome
+      state: present
+      use: yay
+
+  tags:
+    - install
+    - install-chrome
+    - install-browsers
+    - update
+    - update-chrome
+    - update-browsers

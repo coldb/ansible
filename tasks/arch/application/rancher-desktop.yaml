@@ -1,0 +1,17 @@
+- block:
+  - name: Install Rancher Desktop
+    kewlfft.aur.aur:
+      name: rancher-desktop
+      state: present
+      use: yay
+    when:  docker_container == False
+
+  - name: Setup the rancher-desktop dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "rancher-desktop"
+
+  tags:
+    - install-rancher-desktop

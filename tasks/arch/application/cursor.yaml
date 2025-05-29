@@ -1,0 +1,12 @@
+- block:
+  - name: Install Cursor
+    kewlfft.aur.aur:
+      name: cursor-bin
+      state: present
+      use: yay
+
+  tags:
+    - install
+    - install-cursor
+    - update
+    - update-cursor

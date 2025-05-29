@@ -1,0 +1,12 @@
+- block:
+  - name: Install Slack
+    kewlfft.aur.aur:
+      name: slack-desktop
+      state: present
+      use: yay
+
+  tags:
+    - install
+    - install-slack
+    - update
+    - update-slack

@@ -1,0 +1,30 @@
+- block:
+  - name: Install Tmux
+    package:
+      name: "tmux"
+    become: true
+
+  - name: Install Tmux bash completion
+    kewlfft.aur.aur:
+      name: tmux-bash-completion-git
+      state: present
+      use: yay
+
+  - name: Install Tmux plugin manager
+    kewlfft.aur.aur:
+      name: tmux-plugin-manager
+      state: present
+      use: yay
+
+  - name: Setup the tmux dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "tmux"
+
+  tags:
+    - install
+    - install-tmux
+    - update
+    - update-tmux

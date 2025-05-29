@@ -1,0 +1,11 @@
+- block:
+  - name: Install Visual Studio Code
+    become: true
+    package:
+      name: "code"
+
+  tags:
+    - install
+    - install-vscode
+    - update
+    - update-vscode

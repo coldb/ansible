@@ -1,0 +1,55 @@
+- name: Setup SSH
+  block:
+  - name: Set global facts
+    set_fact:
+      key_files: 
+        - { source: "{{ home_dir }}/ansible/.ssh/id_ed25519_gh", target: "{{ home_dir }}/.ssh/id_ed25519_gh" }
+
+  - name: Ensure GitHub .ssh directory exists 
+    file:
+      dest: "{{ item.target | dirname }}"
+      mode: 0700
+      state: directory
+    loop: "{{ key_files }}"
+
+  - name: Install GitHub SSH key
+    copy:
+      src: "{{ item.source }}"
+      dest: "{{ item.target }}"
+      mode: 0600
+    loop: "{{ key_files }}"
+
+  - name: Install GitHub public SSH key
+    copy:
+      src: "{{ item.source }}.pub"
+      dest: "{{ item.target }}.pub"
+      mode: 0644
+    loop: "{{ key_files }}"
+
+  - name: Authorize GitHub SSH key
+    become: true
+    authorized_key:
+      user: "{{ username }}"
+      state: present
+      key: "{{ lookup('file', item.target + '.pub') }}"
+    loop: "{{ key_files }}"
+
+  - name: Ensure custom GitHub SSH config is present
+    ansible.builtin.blockinfile:
+      path: "{{ home_dir }}/.ssh/config"
+      block: |
+        Host github.com
+          HostName github.com
+          User git
+          IdentityFile ~/.ssh/id_ed25519_gh
+          IdentitiesOnly yes
+      append_newline: true
+      prepend_newline: true
+      create: true
+      marker: "# {mark} ANSIBLE MANAGED GITHUB CONFIG"
+
+  tags:
+    - install
+    - install-ssh
+    - update
+    - update-ssh

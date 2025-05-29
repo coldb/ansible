@@ -1,0 +1,18 @@
+- block:
+  - name: Install Lazygit
+    become: true
+    package:
+      name: "lazygit"
+
+  - name: Setup the lazygit dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "lazygit"
+
+  tags:
+    - install
+    - install-lazygit
+    - update
+    - update-lazygit

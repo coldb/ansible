@@ -26,7 +26,7 @@
       path: "{{ temp_dir }}/lazygit"
       state: absent
 
-  - name: Setup the neovim dotfiles
+  - name: Setup the lazygit dotfiles
     command: "./ubuntu"
     args:
       chdir: "{{ dotfiles_dir }}"
