@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 
 declare -A options=(
-  # ["install-audio"]=""
-  # ["install-personal"]="--ask-vault-pass"
-  # ["install-video"]=""
-  # ["install-work"]="--ask-vault-pass"
-  # ["update-audio"]=""
-  # ["update-personal"]="--ask-vault-pass"
-  # ["update-video"]=""
-  # ["update-work"]="--ask-vault-pass"
   ["debug"]=""
   ["install"]="--ask-vault-pass"
   ["install-bluetooth"]=""

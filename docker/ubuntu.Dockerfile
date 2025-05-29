@@ -25,5 +25,5 @@ WORKDIR /home/coldb
 
 FROM coldb
 COPY --chown=coldb:coldb . ./ansible 
-# COPY ansible-run ./ansible-run
+COPY ansible-run-ubuntu ./ansible-run-ubuntu
 CMD ["sh", "-c", "anible-playbook $TAGS local.yml"]

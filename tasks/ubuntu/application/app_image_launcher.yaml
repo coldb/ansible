@@ -26,6 +26,7 @@
   - name: Install App Image Launcher
     ansible.builtin.apt:
       deb: "{{ temp_dir }}/appimagelauncher.deb"
+    when: docker_container == False
     become: true
 
   - name: Remove App Image Launcher install file

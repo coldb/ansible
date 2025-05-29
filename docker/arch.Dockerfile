@@ -14,7 +14,6 @@ RUN pacman -Syu \
     python-pip julia \
     --noconfirm
 
-
 FROM base AS coldb
 ARG TAGS
 RUN useradd -m coldb
