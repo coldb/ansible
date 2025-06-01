@@ -5,6 +5,12 @@
     package:
       name: ghostty
 
+  - name: Clean up the existing Ghostty directory
+    ansible.builtin.file:
+      path: "{{ home_dir }}/.config/ghostty"
+      state: "absent"
+    become: true
+
   - name: Setup the ghostty dotfiles
     command: "./arch"
     args:

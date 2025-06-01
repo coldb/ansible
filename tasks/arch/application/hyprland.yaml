@@ -4,6 +4,13 @@
     package:
       name: "hyprland"
 
+  - name: Setup the hyprland dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "hyprland"
+
   - name: Install hyprland must have tools 
     become: true
     package:
