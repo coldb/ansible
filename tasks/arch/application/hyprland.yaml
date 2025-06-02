@@ -37,13 +37,6 @@
     register: nvidia_check
     ignore_errors: true
 
-  # - name: Install NVIDIA driver package
-  #   apt:
-  #     name: "nvidia-driver-550"
-  #     state: present 
-  #   when: nvidia_check.rc == 0
-  #   become: true
-
   - name: Install NVidia packages 
     become: true
     when: nvidia_check.rc == 0

@@ -1,0 +1,17 @@
+- block:
+  - name: Install waybar
+    become: true
+    package:
+      name: "waybar"
+
+  - name: Add user to input group
+    shell: "usermod -aG input {{ username }}"
+    become: true
+
+  tags:
+    - debug
+    - install
+    - install-waybar
+    - update
+    - update-waybar
+

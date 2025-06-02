@@ -30,6 +30,7 @@ declare -A options=(
   ["install-thunderbird"]=""
   ["install-tmux"]=""
   ["install-vscode"]=""
+  ["install-waybar"]=""
   ["install-zsh"]=""
   ["update"]=""
   ["update-bluetooth"]=""
@@ -56,6 +57,7 @@ declare -A options=(
   ["update-thunderbird"]=""
   ["update-tmux"]=""
   ["update-vscode"]=""
+  ["update-waybar"]=""
   ["update-zsh"]=""
 )
 
