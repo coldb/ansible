@@ -1,0 +1,10 @@
+- block:
+  - name: Install pavucontrol
+    become: true
+    package:
+      name: "pavucontrol"
+
+  tags:
+    - debug
+    - install
+    - update

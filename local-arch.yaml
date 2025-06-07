@@ -6,7 +6,7 @@
     - import_tasks: tasks/arch/dotfiles.yaml
     - import_tasks: tasks/arch/bluetooth.yaml
     # - import_tasks: tasks/core.yaml
-    # - import_tasks: tasks/audio.yaml
+    - import_tasks: tasks/arch/audio.yaml
     # - import_tasks: tasks/video.yaml
     - import_tasks: tasks/arch/shell/_index.yaml
     - import_tasks: tasks/arch/terminal/_index.yaml
