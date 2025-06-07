@@ -8,8 +8,14 @@
     shell: "usermod -aG input {{ username }}"
     become: true
 
+  - name: Setup the Waybar dotfiles
+    command: "./arch"
+    args:
+      chdir: "{{ dotfiles_dir }}"
+    environment:
+      STOW_FOLDERS: "waybar"
+
   tags:
-    - debug
     - install
     - install-waybar
     - update
