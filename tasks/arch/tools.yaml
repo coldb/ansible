@@ -36,7 +36,7 @@
       - "jq" # JSON navigation
       - "yq" # Yaml navigation
       - "direnv"
-      # - "ondir" Only available as AUR package
+      - "arch-audit"
 
 
   tags:

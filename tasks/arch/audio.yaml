@@ -5,6 +5,7 @@
       name: "pavucontrol"
 
   tags:
-    - debug
     - install
+    - install-audio
     - update
+    - update-audio

@@ -1,0 +1,34 @@
+- block:
+  - name: Install Uncomplicated firewall
+    package:
+      name: ufw
+    become: true
+
+  - name: Set default deny incoming policy
+    community.general.ufw:
+      direction: incoming
+      policy: deny
+      state: enabled
+    become: true
+
+  - name: Allow incoming connetions from 192.168.0.0/24
+    community.general.ufw:
+      rule: allow
+      src: 192.168.0.0/24
+      direction: in
+      state: enabled
+    become: true
+
+  - name: Enable the Uncomplicated firewall service
+    ansible.builtin.systemd_service:
+      name: ufw.service
+      state: started
+      enabled: true
+    become: true
+    when: docker_container == False
+
+  tags:
+    - install
+    - install-firewall
+    - update
+    - update-firewall
