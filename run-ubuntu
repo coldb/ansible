@@ -3,6 +3,7 @@
 declare -A options=(
   ["debug"]=""
   ["install"]="--ask-vault-pass"
+  ["install-cursor"]=""
   ["install-appimage"]=""
   ["install-appimagelauncher"]=""
   ["install-audio"]=""
@@ -40,6 +41,7 @@ declare -A options=(
   ["install-yq"]=""
   ["install-zsh"]=""
   ["update"]=""
+  ["update-cursor"]=""
   ["update-appimage"]=""
   ["update-appimagelauncher"]=""
   ["update-audio"]=""
