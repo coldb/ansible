@@ -25,6 +25,7 @@
       - "julia" # Julia programming language
       - "python-pip" # Python package manager
       - "htop"
+      - "btop"
       - "openssh"
       - "unzip"
       - "wget"
@@ -37,6 +38,7 @@
       - "yq" # Yaml navigation
       - "direnv"
       - "arch-audit"
+      - "wl-clipboard" # Clipboard support for wayland
 
 
   tags:
