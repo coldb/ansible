@@ -39,7 +39,7 @@
       - "direnv"
       - "arch-audit"
       - "wl-clipboard" # Clipboard support for wayland
-
+      - "balena-etcher"
 
   tags:
     - install
