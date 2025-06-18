@@ -40,6 +40,8 @@
       - "arch-audit"
       - "wl-clipboard" # Clipboard support for wayland
       - "balena-etcher"
+      - "hypridle"
+      - "hyprlock"
 
   tags:
     - install
