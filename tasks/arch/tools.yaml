@@ -39,9 +39,16 @@
       - "direnv"
       - "arch-audit"
       - "wl-clipboard" # Clipboard support for wayland
-      - "balena-etcher"
       - "hypridle"
       - "hyprlock"
+
+  - name: Install Basic tools from AUR
+    kewlfft.aur.aur:
+      name: "{{ item }}"
+      state: present
+      use: yay
+    with_items:
+      - "balena-etcher"
 
   tags:
     - install
