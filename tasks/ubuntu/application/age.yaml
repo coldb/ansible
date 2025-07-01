@@ -1,0 +1,11 @@
+- block:
+  - name: Install Age
+    community.general.homebrew:
+      name: age
+      state: present
+
+  tags:
+    - install
+    - install-age
+    - update
+    - update-age

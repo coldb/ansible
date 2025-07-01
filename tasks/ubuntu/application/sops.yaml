@@ -1,0 +1,11 @@
+- block:
+  - name: Install SOPS
+    community.general.homebrew:
+      name: sops
+      state: present
+
+  tags:
+    - install
+    - install-sops
+    - update
+    - update-sops

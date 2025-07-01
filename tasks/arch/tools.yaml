@@ -41,6 +41,8 @@
       - "wl-clipboard" # Clipboard support for wayland
       - "hypridle"
       - "hyprlock"
+      - "sops"
+      - "age"
 
   - name: Install Basic tools from AUR
     kewlfft.aur.aur:
