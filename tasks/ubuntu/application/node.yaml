@@ -32,6 +32,8 @@
       - "yalc"
       - "typescript"
       - "ts-node"
+      - "swagger-ui-watcher"
+      - "vitest"
     tags:
       - install-npm-packages
       - update-npm-packages
