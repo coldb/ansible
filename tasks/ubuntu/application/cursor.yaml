@@ -1,7 +1,7 @@
 - block:
   - name: Set repository names
     set_fact:
-      cursor_download_url: https://downloads.cursor.com/production/de327274300c6f38ec9f4240d11e82c3b0660b29/linux/x64/Cursor-1.5.9-x86_64.AppImage
+      cursor_download_url: https://downloads.cursor.com/production/3ccce8f55d8cca49f6d28b491a844c699b8719a3/linux/x64/Cursor-1.6.45-x86_64.AppImage
 
   - name: Download Cursor appimage
     ansible.builtin.get_url:
