@@ -1,0 +1,45 @@
+- block:
+  - name: Download PgAdmin GPG Key
+    get_url:
+      url: https://www.pgadmin.org/static/packages_pgadmin_org.pub
+      dest: "{{ temp_dir }}/packages_pgadmin_org.pub"
+      mode: '0644'
+
+  - name: Convert GPG Key to dearmored format
+    command: gpg --dearmor --output "{{ temp_dir }}/packages-pgadmin-org.gpg" "{{ temp_dir }}/packages_pgadmin_org.pub"
+    args:
+      creates: "{{ temp_dir }}/packages-pgadmin-org.gpg"
+
+  - name: Move GPG Key to system keyrings
+    copy:
+      src: "{{ temp_dir }}/packages-pgadmin-org.gpg"
+      dest: /usr/share/keyrings/packages-pgadmin-org.gpg
+      owner: root
+      group: root
+      mode: '0644'
+    become: true
+
+  - name: Add PgAdmin Repository
+    lineinfile:
+      path: /etc/apt/sources.list.d/pgadmin4.list
+      line: "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/{{ ubuntu_codename }} pgadmin4 main"
+      create: yes
+    become: true
+
+  - name: Remove temporary GPG key files
+    file:
+      path: "{{ temp_dir }}/{{ item }}"
+      state: absent
+    loop:
+      - packages_pgadmin_org.pub
+      - packages-pgadmin-org.gpg
+
+  - name: Install PgAdmin Desktop
+    apt:
+      name: pgadmin4-desktop
+      update_cache: yes
+    become: true
+
+  tags:
+    - install-pgadmin
+    - update-pgadmin

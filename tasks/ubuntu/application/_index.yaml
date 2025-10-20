@@ -11,6 +11,7 @@
 - import_tasks: lazygit.yaml
 - import_tasks: neovim.yaml
 - import_tasks: node.yaml
+- import_tasks: pgadmin.yaml
 - import_tasks: pgcli.yaml
 - import_tasks: rancher.yaml
 - import_tasks: slack.yaml
